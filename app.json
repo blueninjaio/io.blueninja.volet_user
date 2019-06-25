@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Volet",
+    "slug": "Volet",
+    "privacy": "public",
+    "sdkVersion": "32.0.0",
+    "description": "Volet App",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "package": "io.blueninja.Volet",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "NOTIFICATIONS"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "io.blueninja.Volet",
+      "buildNumber": "1",
+      "supportsTablet": false
+    }
+  }
+}

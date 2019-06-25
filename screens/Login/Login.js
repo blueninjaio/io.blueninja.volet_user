@@ -1,0 +1,210 @@
+import React, { Component } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableHighlight,
+  Dimensions,
+  ScrollView,
+  StatusBar,
+  Image,
+  TouchableOpacity
+} from "react-native";
+import {
+  Container,
+  Content,
+  Footer,
+  FooterTab,
+  Icon,
+  Title,
+  Subtitle,
+  Item,
+  InputGroup,
+  Input,
+  Badge,
+  Header,
+  Left,
+  Body,
+  Right,
+  Accordion,
+  Tab,
+  Tabs,
+  Card,
+  CardItem,
+  Thumbnail,
+  Form,
+  Label,
+  Switch,
+  Textarea,
+  CheckBox
+} from "native-base";
+import { LinearGradient } from "expo";
+import { TextInput } from "react-native-gesture-handler";
+export const { width, height } = Dimensions.get("window");
+const url = "http://165.22.245.137";
+
+
+export class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
+
+  userLogin = () => {
+    fetch(`${url}/api/users/login`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({ 
+        email: this.state.email,
+        password: this.state.password
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Login :", data);
+        // onPress={() => this.props.navigation.navigate("Home")}
+
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server",
+          `Please check your internet or try again later`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <View style={{ height: 100, width: 200 }} />
+            <Text>Log in with your social account</Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text>Sign Up with your social account</Text>
+              <View
+                style={{
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  flexDirection: "row"
+                }}
+              >
+                <Thumbnail style={styles.Thumbnail} />
+                <Thumbnail style={styles.Thumbnail} />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom: 10
+              }}
+            >
+              <Text>---------------- </Text>
+              <Text> or </Text>
+              <Text> ---------------- </Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Left />
+              <Body>
+                <Text>Log in</Text>
+              </Body>
+              <Right style={{ paddingRight: 30 }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("ContactSupport")
+                  }
+                >
+                  <Icon name="questioncircleo" type="AntDesign" />
+                </TouchableOpacity>
+              </Right>
+            </View>
+            <View
+              style={{ justifyContent: "center", alignItems: "flex-start" }}
+            >
+              <Text>Mobile Number / Email</Text>
+              <TextInput
+                style={{
+                  alignSelf: "center",
+                  width: width / 1.2,
+                  paddingLeft: 20,
+                  // borderRadius: 20,
+                  height: 50,
+                  color: "rgb(74,74,74)",
+                  backgroundColor: "rgb(226,226,226)"
+                }}
+                onChangeText={email => this.setState({ email })}
+                value={this.state.email}
+                type="text"
+                placeholder="Email"
+                placeholderTextColor="rgb(74,74,74)"
+              />
+            </View>
+            <View
+              style={{ justifyContent: "center", alignItems: "flex-start" }}
+            >
+              <Text>Password</Text>
+              <TextInput
+                style={{
+                  alignSelf: "center",
+                  width: width / 1.2,
+                  paddingLeft: 20,
+                  height: 50,
+                  color: "rgb(74,74,74)",
+                  backgroundColor: "rgb(226,226,226)"
+                }}
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+                secureTextEntry={true}
+                type="text"
+                placeholder="password"
+                placeholderTextColor="rgb(74,74,74)"
+              />
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("ResetPassword")}
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-end",
+              paddingRight: 30
+            }}
+          >
+            <Text>Forget Password</Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: 30
+            }}
+          >
+            <TouchableOpacity onPress={() => this.userLogin()}>
+              <Text>Log In</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
+export default Login;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  Thumbnail: {
+    backgroundColor: "grey"
+  }
+});
