@@ -14,29 +14,32 @@ export class App extends React.Component {
     }
 
     componentDidMount = () => {
-        // this._retrieveData()
+        this._retrieveData()
     }
 
     _retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('token');
             if (value !== null) {
-                fetch('http://139.59.18.237/api/driver/token', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                    },
-                    body: JSON.stringify({
-                        token: value
-                    })
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            this.props.logMeIn();
-                        }
-                    })
-                    .catch((error) => console.error(error))
+                // fetch('http://139.59.18.237/api/driver/token', {
+                //     method: 'POST',
+                //     headers: {
+                //         "Content-Type": "application/json; charset=utf-8",
+                //     },
+                //     body: JSON.stringify({
+                //         token: value
+                //     })
+                // })
+                //     .then((response) => response.json())
+                //     .then((data) => {
+                //         if (data.success) {
+                //             this.props.logMeIn();
+                //         }
+                //     })
+                //     .catch((error) => console.error(error))
+                console.log("Token:", value)
+            } else {
+                console.log("No token found.")
             }
         } catch (error) {
             console.info(error)
@@ -73,13 +76,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        logMeIn: () => dispatch({ type: 'LOGIN' }),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps)(App)
 
 const styles = StyleSheet.create({
     container: {

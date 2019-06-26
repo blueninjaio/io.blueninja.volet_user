@@ -8,6 +8,7 @@ import {
   ScrollView,
   StatusBar,
   Image,
+  AsyncStorage,
   TouchableOpacity
 } from "react-native";
 import {
@@ -38,7 +39,7 @@ import {
   Textarea,
   CheckBox
 } from "native-base";
-import { LinearGradient } from "expo";
+import { connect } from 'react-redux'
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 const url = "http://165.22.245.137";
@@ -80,6 +81,47 @@ export class Login extends Component {
           { cancelable: false }
         );
       });
+  }
+
+  reduxLogin = () => {
+    if(this.state.email.length < 5 || !(this.state.email.includes("@")))
+        alert(`Please enter a valid email address.`)
+
+    else if(this.state.password.length < 6)
+      alert(`Please enter a password.`)
+
+    else{
+    fetch(`${url}/api/users/login`, {
+        method: 'POST',
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password
+    })})
+    .then((response) => response.json())
+    .then((data) => {
+        console.log("Fetch Data: ", data)
+        if(data.success){
+          this._storeData(data.token).then(() => {this.props.logMeIn()})
+        }
+        else   
+          alert(data.message)
+    })
+    .catch((err) => console.log(err) )
+    }
+  }
+
+  _storeData = async (token) => {
+    try {
+        // console.log("Saving")
+        await AsyncStorage.setItem('token', token);
+        // console.log('Saved')
+    } catch (error) {
+      alert(error)
+    }
   }
 
   render() {
@@ -189,7 +231,7 @@ export class Login extends Component {
               paddingTop: 30
             }}
           >
-            <TouchableOpacity onPress={() => this.userLogin()}>
+            <TouchableOpacity onPress={() => this.reduxLogin()}>
               <Text>Log In</Text>
             </TouchableOpacity>
           </View>
@@ -198,7 +240,22 @@ export class Login extends Component {
     );
   }
 }
-export default Login;
+
+const mapStateToProps = (state) => {
+  return {
+      login: state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      logMeIn:() => dispatch({type: 'LOGIN'}),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
