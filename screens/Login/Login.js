@@ -3,46 +3,22 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
   ScrollView,
-  StatusBar,
-  Image,
   AsyncStorage,
   TouchableOpacity
 } from "react-native";
 import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
   Icon,
-  Title,
-  Subtitle,
-  Item,
-  InputGroup,
-  Input,
-  Badge,
-  Header,
   Left,
   Body,
   Right,
-  Accordion,
-  Tab,
-  Tabs,
-  Card,
-  CardItem,
   Thumbnail,
-  Form,
-  Label,
-  Switch,
-  Textarea,
-  CheckBox
 } from "native-base";
 import { connect } from 'react-redux'
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
-const url = "http://165.22.245.137";
+import {dev, prod, url} from '../../config'
 
 
 export class Login extends Component {
@@ -74,15 +50,15 @@ export class Login extends Component {
 
       })
       .catch(error => {
-        Alert.alert(
-          "Error connecting to server",
-          `Please check your internet or try again later`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
+        
       });
   }
 
+  /**
+  |--------------------------------------------------
+  | Login Implementing Redux
+  |--------------------------------------------------
+  */
   reduxLogin = () => {
     if(this.state.email.length < 5 || !(this.state.email.includes("@")))
         alert(`Please enter a valid email address.`)
@@ -91,7 +67,7 @@ export class Login extends Component {
       alert(`Please enter a password.`)
 
     else{
-    fetch(`${url}/api/users/login`, {
+    fetch(`${dev}/api/users/login`, {
         method: 'POST',
         mode: "cors",
         headers: {
@@ -110,10 +86,25 @@ export class Login extends Component {
         else   
           alert(data.message)
     })
-    .catch((err) => console.log(err) )
+    .catch((err) => {
+      //To be removed in production
+      console.log("Error for login:", err)
+
+      Alert.alert(
+        "Error connecting to server",
+        `Please try again later`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      )
+    })
     }
   }
 
+  /**
+  |--------------------------------------------------
+  | Store Token to Async Storage
+  |--------------------------------------------------
+  */
   _storeData = async (token) => {
     try {
         // console.log("Saving")
