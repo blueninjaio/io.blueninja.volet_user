@@ -1,27 +1,31 @@
 import React from "react";
-import { Text, View, StyleSheet, TouchableHighlight, Dimensions, ScrollView, StatusBar, Image, TouchableOpacity,  } from 'react-native'
+import { Text, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "react-navigation";
-import { Icon } from "native-base"
+import { Icon } from "native-base";
 import Login from "./Login";
 import Main from "./Main";
 import Signup from "./SignUp";
 import TAC from "./TAC";
 import SignUpInfo from "./SignUpInfo";
 import SetPin from "./SetPin";
-import ContactSupport from "./ContactSupport"
-import ForgetPassword from "./ForgetPassword"
-import ResetPassword from "./ResetPassword"
-import ConfirmNewPassword from "./ConfirmNewPassword"
-import FPTac from "./FPTac"
-import Home from "../Volet/Home/Home"
+import ContactSupport from "./ContactSupport";
+import ForgetPassword from "./ForgetPassword";
+import ResetPassword from "./ResetPassword";
+import ConfirmNewPassword from "./ConfirmNewPassword";
+import FPTac from "./FPTac";
+import Home from "../Volet/Home/Home";
 
 const LoginScreen = ({ navigation }) => <Login navigation={navigation} />;
 
 LoginScreen.navigationOptions = {
   mode: "card",
   // header: null
-  headerLeft:null,
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  headerLeft: null,
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
 const MainScreen = ({ navigation }) => <Main navigation={navigation} />;
@@ -36,8 +40,12 @@ const SignupScreen = ({ navigation }) => <Signup navigation={navigation} />;
 SignupScreen.navigationOptions = {
   mode: "card",
   // header: null
-  headerLeft:null,
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  headerLeft: null,
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
 const TACScreen = ({ navigation }) => <TAC navigation={navigation} />;
@@ -45,19 +53,28 @@ const TACScreen = ({ navigation }) => <TAC navigation={navigation} />;
 TACScreen.navigationOptions = {
   mode: "card",
   // header: null
-  headerLeft:null,
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  headerLeft: null,
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
-
-const SignUpInfoScreen = ({ navigation }) => <SignUpInfo navigation={navigation} />;
+const SignUpInfoScreen = ({ navigation }) => (
+  <SignUpInfo navigation={navigation} />
+);
 
 SignUpInfoScreen.navigationOptions = {
   mode: "card",
   // header: null
-  headerLeft:null,
-  title:"Sign Up",
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  headerLeft: null,
+  title: "Sign Up",
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
 const SetPinScreen = ({ navigation }) => <SetPin navigation={navigation} />;
@@ -67,58 +84,83 @@ SetPinScreen.navigationOptions = {
   header: null
 };
 
-const ContactSupportScreen = ({ navigation }) => <ContactSupport navigation={navigation} />;
+const ContactSupportScreen = ({ navigation }) => (
+  <ContactSupport navigation={navigation} />
+);
 
 ContactSupportScreen.navigationOptions = {
   mode: "card",
   // header: null
-  title:"Contact Support",
-  headerRight:<TouchableOpacity><Icon name="closecircleo" type="AntDesign" /></TouchableOpacity>
+  title: "Contact Support",
+  headerRight: (
+    <TouchableOpacity>
+      <Icon name="closecircleo" type="AntDesign" />
+    </TouchableOpacity>
+  )
 };
 
-const ForgetPasswordScreen = ({ navigation }) => <ForgetPassword navigation={navigation} />;
+const ForgetPasswordScreen = ({ navigation }) => (
+  <ForgetPassword navigation={navigation} />
+);
 
 ForgetPasswordScreen.navigationOptions = {
   mode: "card",
   // header: null
-  title:"Forget Password",
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  title: "Forget Password",
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
-const ResetPasswordScreen = ({ navigation }) => <ResetPassword navigation={navigation} />;
+const ResetPasswordScreen = ({ navigation }) => (
+  <ResetPassword navigation={navigation} />
+);
 
 ResetPasswordScreen.navigationOptions = {
   mode: "card",
   // header: null
-  title:"Forget Password",
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  title: "Forget Password",
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
-const ConfirmNewPasswordScreen = ({ navigation }) => <ConfirmNewPassword navigation={navigation} />;
+const ConfirmNewPasswordScreen = ({ navigation }) => (
+  <ConfirmNewPassword navigation={navigation} />
+);
 
 ConfirmNewPasswordScreen.navigationOptions = {
   mode: "card",
   // header: null
-  title:"Reset Password",
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  title: "Reset Password",
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
-
 
 const FPTacScreen = ({ navigation }) => <FPTac navigation={navigation} />;
 
 FPTacScreen.navigationOptions = {
   mode: "card",
   // header: null
-  title:"Forget Password",
-  headerRight:<TouchableOpacity><Text>Cancel</Text></TouchableOpacity>
+  title: "Forget Password",
+  headerRight: (
+    <TouchableOpacity>
+      <Text>Cancel</Text>
+    </TouchableOpacity>
+  )
 };
 
-const MyHomeScreen = ({ navigation }) => (
-  <Home navigation={navigation} />
-);
+const MyHomeScreen = ({ navigation }) => <Home navigation={navigation} />;
 MyHomeScreen.navigationOptions = {
-    mode: 'card',
-    header: null,
+  mode: "card",
+  header: null
 };
 
 const ModalStack = createStackNavigator(
@@ -138,27 +180,27 @@ const ModalStack = createStackNavigator(
     SignUpInfo: {
       screen: SignUpInfoScreen
     },
-    SetPin:{
+    SetPin: {
       screen: SetPinScreen
     },
-    ContactSupport:{
+    ContactSupport: {
       screen: ContactSupportScreen
     },
-    ForgetPassword:{
+    ForgetPassword: {
       screen: ForgetPasswordScreen
     },
-    ResetPassword:{
+    ResetPassword: {
       screen: ResetPasswordScreen
     },
-    ConfirmNewPassword:{
+    ConfirmNewPassword: {
       screen: ConfirmNewPasswordScreen
     },
-    FPTac:{
+    FPTac: {
       screen: FPTacScreen
     },
     Home: {
-      screen: MyHomeScreen,
-  },
+      screen: MyHomeScreen
+    }
   },
   {
     defaultNavigationOptions: {

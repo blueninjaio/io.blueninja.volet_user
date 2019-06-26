@@ -3,53 +3,64 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
-  ScrollView,
-  StatusBar,
-  Image,
   TouchableOpacity,
   TextInput
 } from "react-native";
-import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Icon,
-  Title,
-  Subtitle,
-  Item,
-  InputGroup,
-  Input,
-  Badge,
-  Header,
-  Left,
-  Body,
-  Right,
-  Accordion,
-  Tab,
-  Tabs,
-  Card,
-  CardItem,
-  Thumbnail,
-  Form,
-  Label,
-  Switch,
-  Textarea,
-  CheckBox
-} from "native-base";
-import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
+import { dev, prod, url } from "../../config";
 
 export class ConfirmNewPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: ""
+      password: "",
+      Cpassword: ""
     };
   }
+
+  /**
+  |--------------------------------------------------
+  | Confirm Reset Password Implementation
+  |--------------------------------------------------
+  */
+  confirmPassword = () => {
+    if (this.state.password !== this.state.Cpassword) {
+      alert(`Please enter a valid password.`);
+    } 
+    else {
+      fetch(`${url}/api/users/resetPassword`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify({
+          temporary_password: this.props.navigation.state.params.temporaryPassword,
+          email: this.props.navigation.state.params.email,
+          contact: his.props.navigation.state.params.contact,
+          new_password: this.state.password
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Confrim Password :", data);
+          if (data.success === true) {
+            this.props.navigation.navigate("Login");
+          }
+        })
+        .catch(error => {
+          console.log("Error sign up", error);
+          Alert.alert(
+            "Error connecting to server",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    }
+  };
 
   render() {
     return (
@@ -79,8 +90,8 @@ export class ConfirmNewPassword extends Component {
                 color: "rgb(74,74,74)",
                 backgroundColor: "rgb(226,226,226)"
               }}
-              onChangeText={name => this.setState({ name })}
-              value={this.state.name}
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
               type="text"
               placeholderTextColor="rgb(74,74,74)"
             />
@@ -103,8 +114,8 @@ export class ConfirmNewPassword extends Component {
                 color: "rgb(74,74,74)",
                 backgroundColor: "rgb(226,226,226)"
               }}
-              onChangeText={name => this.setState({ name })}
-              value={this.state.name}
+              onChangeText={Cpassword => this.setState({ Cpassword })}
+              value={this.state.Cpassword}
               type="text"
               placeholder="password"
               placeholderTextColor="rgb(74,74,74)"
@@ -112,7 +123,9 @@ export class ConfirmNewPassword extends Component {
           </View>
         </View>
         <View>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}><Text>Confirm</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => this.confirmPassword()}>
+            <Text>Confirm</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

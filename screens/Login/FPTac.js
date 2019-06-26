@@ -3,62 +3,36 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
-  ScrollView,
-  StatusBar,
-  Image,
   TouchableOpacity
 } from "react-native";
-import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Icon,
-  Title,
-  Subtitle,
-  Item,
-  InputGroup,
-  Input,
-  Badge,
-  Header,
-  Left,
-  Body,
-  Right,
-  Accordion,
-  Tab,
-  Tabs,
-  Card,
-  CardItem,
-  Thumbnail,
-  Form,
-  Label,
-  Switch,
-  Textarea,
-  CheckBox
-} from "native-base";
-import { LinearGradient } from "expo";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 
 export class TAC extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-             name:''
-        }
-    }
-    
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      contact: ""
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={{justifyContent:"space-around", alignItems:"center", height:100, paddingTop: 20}}>
+        <View
+          style={{
+            justifyContent: "space-around",
+            alignItems: "center",
+            height: 100,
+            paddingTop: 20
+          }}
+        >
           <Text>Enter your TAC code</Text>
           <Text>We've sent the code to +60123123123</Text>
         </View>
-        <View style={{justifyContent:"center", alignItems:'center'}}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
           <TextInput
             style={{
               alignSelf: "center",
@@ -70,14 +44,29 @@ export class TAC extends Component {
               color: "rgb(74,74,74)",
               backgroundColor: "rgb(226,226,226)"
             }}
-            onChangeText={name => this.setState({ name })}
-            value={this.state.name}
+            onChangeText={contact => this.setState({ contact })}
+            value={this.state.contact}
             type="number"
             placeholder="Your mobile number"
             placeholderTextColor="rgb(74,74,74)"
           />
         </View>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('ConfirmNewPassword')} style={{justifyContent:"center", alignItems:"center", padding: 20}}><Text>Resend Code</Text></TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            this.props.navigation.navigate("ConfirmNewPassword", {
+              temporaryPassword: this.props.navigation.state.params.temporaryPassword,
+              email: this.props.navigation.state.params.email,
+              contact: this.props.navigation.state.params.contact
+            })
+          }
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20
+          }}
+        >
+          <Text>Resend Code</Text>
+        </TouchableOpacity>
       </View>
     );
   }

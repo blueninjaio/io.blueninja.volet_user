@@ -3,42 +3,9 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
-  ScrollView,
-  StatusBar,
-  Image,
   TouchableOpacity
 } from "react-native";
-import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Icon,
-  Title,
-  Subtitle,
-  Item,
-  InputGroup,
-  Input,
-  Badge,
-  Header,
-  Left,
-  Body,
-  Right,
-  Accordion,
-  Tab,
-  Tabs,
-  Card,
-  CardItem,
-  Thumbnail,
-  Form,
-  Label,
-  Switch,
-  Textarea,
-  CheckBox
-} from "native-base";
-import { LinearGradient } from "expo";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 
@@ -48,7 +15,7 @@ export class SetPin extends Component {
         super(props)
     
         this.state = {
-             name:""
+             pin:""
         }
     }
     
@@ -70,8 +37,8 @@ export class SetPin extends Component {
               color: "rgb(74,74,74)",
               backgroundColor: "rgb(226,226,226)"
             }}
-            onChangeText={name => this.setState({ name })}
-            value={this.state.name}
+            onChangeText={pin => this.setState({ pin })}
+            value={this.state.pin}
             type="number"
             placeholder="Your mobile number"
             placeholderTextColor="rgb(74,74,74)"

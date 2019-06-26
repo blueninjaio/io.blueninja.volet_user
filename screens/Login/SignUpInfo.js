@@ -3,46 +3,12 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
-  ScrollView,
-  StatusBar,
-  Image,
   TouchableOpacity
 } from "react-native";
-import {
-  Container,
-  Content,
-  Footer,
-  FooterTab,
-  Icon,
-  Title,
-  Subtitle,
-  Item,
-  InputGroup,
-  Input,
-  Badge,
-  Header,
-  Left,
-  Body,
-  Right,
-  Accordion,
-  Tab,
-  Tabs,
-  Card,
-  CardItem,
-  Thumbnail,
-  Form,
-  Label,
-  Switch,
-  Textarea,
-  CheckBox
-} from "native-base";
-import { LinearGradient } from "expo";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
-const url = "http://165.22.245.137";
-
+import { dev, prod, url } from "../../config";
 
 
 export class SignUpInfo extends Component {
@@ -61,6 +27,11 @@ export class SignUpInfo extends Component {
     };
   }
 
+  /**
+  |--------------------------------------------------
+  | Sign Up Implementation
+  |--------------------------------------------------
+  */
   userSignUp = () => {
     fetch(`${url}/api/users/`, {
       method: "POST",

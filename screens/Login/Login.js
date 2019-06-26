@@ -8,18 +8,11 @@ import {
   AsyncStorage,
   TouchableOpacity
 } from "react-native";
-import {
-  Icon,
-  Left,
-  Body,
-  Right,
-  Thumbnail,
-} from "native-base";
-import { connect } from 'react-redux'
+import { Icon, Left, Body, Right, Thumbnail } from "native-base";
+import { connect } from "react-redux";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
-import {dev, prod, url} from '../../config'
-
+import { dev, prod, url } from "../../config";
 
 export class Login extends Component {
   constructor(props) {
@@ -36,9 +29,9 @@ export class Login extends Component {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
+        "Content-Type": "application/json; charset=utf-8"
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         email: this.state.email,
         password: this.state.password
       })
@@ -47,12 +40,9 @@ export class Login extends Component {
       .then(data => {
         console.log("Login :", data);
         // onPress={() => this.props.navigation.navigate("Home")}
-
       })
-      .catch(error => {
-        
-      });
-  }
+      .catch(error => {});
+  };
 
   /**
   |--------------------------------------------------
@@ -60,60 +50,58 @@ export class Login extends Component {
   |--------------------------------------------------
   */
   reduxLogin = () => {
-    if(this.state.email.length < 5 || !(this.state.email.includes("@")))
-        alert(`Please enter a valid email address.`)
-
-    else if(this.state.password.length < 6)
-      alert(`Please enter a password.`)
-
-    else{
-    fetch(`${dev}/api/users/login`, {
-        method: 'POST',
+    if (this.state.email.length < 5 || !this.state.email.includes("@"))
+      alert(`Please enter a valid email address.`);
+    else if (this.state.password.length < 6) alert(`Please enter a password.`);
+    else {
+      fetch(`${dev}/api/users/login`, {
+        method: "POST",
         mode: "cors",
         headers: {
-            "Content-Type": "application/json; charset=utf-8",
+          "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify({
           email: this.state.email,
           password: this.state.password
-    })})
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("Fetch Data: ", data)
-        if(data.success){
-          this._storeData(data.token).then(() => {this.props.logMeIn()})
-        }
-        else   
-          alert(data.message)
-    })
-    .catch((err) => {
-      //To be removed in production
-      console.log("Error for login:", err)
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log("Fetch Data: ", data);
+          if (data.success) {
+            this._storeData(data.token).then(() => {
+              this.props.logMeIn();
+            });
+          } else alert(data.message);
+        })
+        .catch(err => {
+          //To be removed in production
+          console.log("Error for login:", err);
 
-      Alert.alert(
-        "Error connecting to server",
-        `Please try again later`,
-        [{ text: "OK", onPress: () => null }],
-        { cancelable: false }
-      )
-    })
+          Alert.alert(
+            "Error connecting to server",
+            `Please try again later`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
     }
-  }
+  };
 
   /**
   |--------------------------------------------------
   | Store Token to Async Storage
   |--------------------------------------------------
   */
-  _storeData = async (token) => {
+  _storeData = async token => {
     try {
-        // console.log("Saving")
-        await AsyncStorage.setItem('token', token);
-        // console.log('Saved')
+      // console.log("Saving")
+      await AsyncStorage.setItem("token", token);
+      // console.log('Saved')
     } catch (error) {
-      alert(error)
+      alert(error);
     }
-  }
+  };
 
   render() {
     return (
@@ -206,7 +194,7 @@ export class Login extends Component {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("ResetPassword")}
+            onPress={() => this.props.navigation.navigate("ForgetPassword")}
             style={{
               justifyContent: "center",
               alignItems: "flex-end",
@@ -232,20 +220,22 @@ export class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-      login: state
-  }
-}
+    login: state
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-      logMeIn:() => dispatch({type: 'LOGIN'}),
-  }
-}
+    logMeIn: () => dispatch({ type: "LOGIN" })
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
 
 const styles = StyleSheet.create({
   container: {
