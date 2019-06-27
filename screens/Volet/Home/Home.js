@@ -95,33 +95,10 @@ export default class App extends React.Component {
               >
                 Your Volet Balance
               </Text>
-              {/* <LinearTextGradient
-                style={{ fontWeight: "bold", fontSize: 72 }}
-                colors={['#36D1DC', '#5B86E5']}
-                locations={[0, 1]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                >
-                RM200.00
-              </LinearTextGradient> */}
               <Text style={{ fontSize: 25, fontWeight: "bold" }}>RM200.00</Text>
             </View>
           </View>
           <View style={styles.savingsCard}>
-            {/* <Card style={{ width: width / 1.2 }}>
-              <CardItem>
-                <Body style={{ padding: 5, alignItems: "center" }}>
-                  <Text style={{ color: "grey", opacity: 0.9, paddingBottom: 5 }}>Balance available today</Text>
-                  <Text style={{ color: "green", paddingBottom: 5 }}>RM 10.00</Text>
-                  <LinearGradient
-                    colors={['#36D1DC', '#5B86E5']}
-                    style={styles.savingsBar}>
-  
-                  </LinearGradient>
-                  <Text style={{ color: "grey", opacity: 0.7, fontSize: 13 }}>Monthly Savings Plan: RM 20.00/day</Text>
-                </Body>
-              </CardItem>
-            </Card> */}
             <View style={styles.savingsCardTwo}>
               <Body style={{ padding: 5, alignItems: "center" }}>
                 <Text style={{ color: "grey", opacity: 0.9, paddingBottom: 5 }}>
