@@ -19,8 +19,8 @@ export class Login extends Component {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      email: "dev_apple@blueninja.io",
+      password: "12345678"
     };
   }
 
@@ -54,7 +54,8 @@ export class Login extends Component {
       alert(`Please enter a valid email address.`);
     else if (this.state.password.length < 6) alert(`Please enter a password.`);
     else {
-      fetch(`${dev}/api/users/login`, {
+      // fetch(`${dev}/api/users/login`, {
+      fetch(`${dev}/api/merchants/login`, {
         method: "POST",
         mode: "cors",
         headers: {

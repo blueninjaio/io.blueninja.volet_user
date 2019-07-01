@@ -1,26 +1,78 @@
-import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Dimensions
+} from "react-native";
+export const { width, height } = Dimensions.get("window");
 
 export class Shops extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}> Coming Soon </Text>
-            </View>
-        )
-    }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      shops: [
+        {
+          title: "FnB"
+        },
+        { title: "Utilities" },
+        {
+          title: "Transportation"
+        }
+      ]
+    };
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <FlatList
+            data={this.state.shops}
+            showsHorizontalScrollIndicator={false}
+            // horizontal
+            pagingEnabled={true}
+            contentContainerStyle={{ marginBottom: 20 }}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "grey",
+                  width: width / 1.1,
+                  height: height / 8,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 20
+                }}
+                onPress={() =>
+                  this.props.navigation.navigate("ShopList", {
+                    title: item.title
+                  })
+                }
+              >
+                <Text>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
+      </View>
+    );
+  }
 }
 
-export default Shops
+export default Shops;
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    text: {
-        color: "#979797",
-        fontSize: 20
-    }
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  text: {
+    color: "#979797",
+    fontSize: 20
+  }
 });

@@ -95,7 +95,7 @@ export class Profile extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("")}
+              onPress={() => this.props.navigation.navigate("PersonalDetails")}
               style={styles.listItemButton}
             >
               <View style={styles.show}>
@@ -149,7 +149,7 @@ export class Profile extends React.Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("DeepWorks")}
+              onPress={() => this.props.navigation.navigate("Setting")}
               style={styles.listItemButton}
             >
               <View style={styles.show}>

@@ -50,7 +50,8 @@ export default createBottomTabNavigator(
               resizeMode="contain"
               style={{ width: 30, height: 30 }}
             />
-          )
+          ),
+          // tabBarVisible: false
       }
     },
     Purchase: {
