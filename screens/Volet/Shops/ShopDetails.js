@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 export const { width, height } = Dimensions.get("window");
+import dataInfo from "../../../dataInfo/local.json"
 
 export class ShopDetails extends Component {
   render() {
@@ -21,17 +22,17 @@ export class ShopDetails extends Component {
               width: width / 1.2
             }}
           >
-            <Text>Krusty</Text>
-            <Text>Bikini</Text>
+            <Text>{dataInfo.featuredShopsDetails.title}</Text>
+            <Text>{dataInfo.featuredShopsDetails.desc}</Text>
 
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="ios-timer" type="Ionicons" />
-                <Text>30 mins</Text>
+                <Text>{dataInfo.featuredShopsDetails.time}</Text>
               </View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="ios-timer" type="Ionicons" />
-                <Text>10 km</Text>
+                <Text>{dataInfo.featuredShopsDetails.distance}</Text>
               </View>
             </View>
             <View
@@ -47,25 +48,116 @@ export class ShopDetails extends Component {
                 <Text>Location</Text>
               </View>
               <View style={{width:width/ 2.5}}>
-                <Text>831 Bottom Feeder Lane Bikini Bottom</Text>
+                <Text>{dataInfo.featuredShopsDetails.address}</Text>
               </View>
             </View>
             <Text>Opening Hours</Text>
+            {
+              // dataInfo.featuredShopsDetails.openingHours.map((x, i) =>(
+
+              // ))
+              }
+            
             <View
-              style={{
-                width: width / 1.5,
-                justifyContent: "space-between",
-                flexDirection: "row"
-              }}
-            >
-              <View>
-                <Text>Sun</Text>
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Sun</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Sun.startTime} - {dataInfo.featuredShopsDetails.openingHours.Sun.endTime}</Text>
+                </View>
               </View>
-              <View>
-                <Text>19:00 - 21:00</Text>
+              <View
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Mon</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Mon.startTime} - {dataInfo.featuredShopsDetails.openingHours.Mon.endTime}</Text>
+                </View>
               </View>
-            </View>
-            <View
+              <View
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Tues</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Tues.startTime} - {dataInfo.featuredShopsDetails.openingHours.Tues.endTime}</Text>
+                </View>
+              </View>
+               <View
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Wed</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Wed.startTime} - {dataInfo.featuredShopsDetails.openingHours.Wed.endTime}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Thu</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Thu.startTime} - {dataInfo.featuredShopsDetails.openingHours.Thu.endTime}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Fri</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Fri.startTime} - {dataInfo.featuredShopsDetails.openingHours.Fri.endTime}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: width / 1.5,
+                  justifyContent: "space-between",
+                  flexDirection: "row"
+                }}
+              >
+                <View>
+                  <Text>Sat</Text>
+                </View>
+                <View>
+                  <Text>{dataInfo.featuredShopsDetails.openingHours.Sat.startTime} - {dataInfo.featuredShopsDetails.openingHours.Sat.endTime}</Text>
+                </View>
+              </View> 
+
+            {/* <View
               style={{
                 width: width / 1.5,
                 justifyContent: "space-between",
@@ -78,7 +170,7 @@ export class ShopDetails extends Component {
               <View>
                 <Text>19:00 - 21:00</Text>
               </View>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>

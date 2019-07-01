@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { Item, Icon, Input, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
+import dataInfo from "../../../dataInfo/local.json"
+
 
 export class ShopList extends Component {
   constructor(props) {
@@ -48,7 +50,7 @@ export class ShopList extends Component {
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <FlatList
-            data={this.state.shopList}
+            data={dataInfo.shopDetails}
             showsHorizontalScrollIndicator={false}
             // horizontal
             pagingEnabled={true}

@@ -92,11 +92,23 @@ export class PersonalDetails extends Component {
                 // backgroundColor: "grey"
               }}
             >
+            {
+              this.state.imageUri !== ""
+              ?
               <Thumbnail
                 large
                 style={{ backgroundColor: "grey" }}
                 source={{ uri: `${this.state.imageUri}` }}
               />
+              :
+              <Thumbnail
+                large
+                style={{ backgroundColor: "grey" }}
+                // source={{ uri: `${this.state.imageUri}` }}
+              />
+
+            }
+              
               <TouchableOpacity
                 style={{
                   //   justifyContent: "flex-start",

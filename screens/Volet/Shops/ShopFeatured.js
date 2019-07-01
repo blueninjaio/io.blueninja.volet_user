@@ -9,12 +9,15 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
+import dataInfo from "../../../dataInfo/local.json"
+
 
 export class ShopFeatured extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      image: "https://d2hdssvult3r4r.cloudfront.net/wp-content/uploads/2019/02/Eyeshadow--e1550500572435.png",
       featured: [
         {
           image:
@@ -33,6 +36,7 @@ export class ShopFeatured extends Component {
   }
 
   render() {
+    console.log("data info", dataInfo.shopAvailablityInfo)
     return (
       <View style={styles.container}>
         <View
@@ -54,24 +58,24 @@ export class ShopFeatured extends Component {
             <Thumbnail
               large
               style={{ backgroundColor: "grey" }}
-              source={{ uri: `${""}` }}
+              source={{ uri: `${this.state.image}` }}
             />
             <View style={{}}>
-              <Text>Krusty </Text>
-              <Text>Bikimi</Text>
+              <Text>{dataInfo.shopAvailablityInfo.title} </Text>
+              <Text>{dataInfo.shopAvailablityInfo.desc}</Text>
             </View>
           </View>
         </View>
         <View style={{ alignItems: "flex-start", justifyContent: "center" }}>
-          <Text>Open Now</Text>
+          <Text>{dataInfo.shopAvailablityInfo.availablityStatus}</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="ios-timer" type="Ionicons" />
-              <Text>30 mins</Text>
+              <Text>{dataInfo.shopAvailablityInfo.time}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="ios-timer" type="Ionicons" />
-              <Text>10 km</Text>
+              <Text>{dataInfo.shopAvailablityInfo.distance}</Text>
             </View>
           </View>
           <View>
@@ -95,7 +99,7 @@ export class ShopFeatured extends Component {
         {/* </View> */}
 
         <FlatList
-          data={this.state.featured}
+          data={dataInfo.featuredShops}
           showsHorizontalScrollIndicator={false}
           // horizontal
           pagingEnabled={true}

@@ -8,6 +8,7 @@ import {
   Dimensions
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
+import dataInfo from "../../../dataInfo/local.json"
 
 export class Shops extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export class Shops extends Component {
       <View style={styles.container}>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <FlatList
-            data={this.state.shops}
+            data={dataInfo.shopCategories}
             showsHorizontalScrollIndicator={false}
             // horizontal
             pagingEnabled={true}
@@ -48,11 +49,11 @@ export class Shops extends Component {
                 }}
                 onPress={() =>
                   this.props.navigation.navigate("ShopList", {
-                    title: item.title
+                    title: item.shopTitle
                   })
                 }
               >
-                <Text>{item.title}</Text>
+                <Text>{item.shopTitle}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
