@@ -3,7 +3,7 @@ import { View, Dimensions, StyleSheet, ScrollView } from "react-native";
 import ListButton from "../../../component/ListButton";
 export const { width, height } = Dimensions.get("window");
 
-export class Setting extends Component {
+export class AboutVolet extends Component {
   constructor(props) {
     super(props);
 
@@ -18,44 +18,33 @@ export class Setting extends Component {
       <View style={styles.container}>
         <ScrollView>
           <ListButton
-            title={"Language"}
-            desc={"English"}
-            extraProps={this.state.isTrue}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-          />
-          <ListButton
-            title={"Currency"}
-            desc={"English"}
-            extraProps={this.state.isTrue}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-          />
-          <ListButton
-            title={"About Volet"}
+            title={"FAQ"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
-            page={"AboutVolet"}
+            page={"FAQ"}
           />
           <ListButton
-            title={"Security"}
+            title={"Contact Support"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
+            page={""}
           />
           <ListButton
-            title={"Convert To Agent"}
+            title={"Feed & Ratings"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
+            page={"Feedback"}
           />
           <ListButton
-            title={"Logout"}
+            title={"Policies"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
-            page={"Logout"}
             navigation={this.props.navigation}
+            page={"Policies"}
+
           />
         </ScrollView>
       </View>
@@ -63,7 +52,7 @@ export class Setting extends Component {
   }
 }
 
-export default Setting;
+export default AboutVolet;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

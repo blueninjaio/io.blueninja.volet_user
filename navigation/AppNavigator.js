@@ -1,6 +1,6 @@
 import React from "react";
 
-import { createBottomTabNavigator } from "react-navigation";
+import { createBottomTabNavigator, createStackNavigator, createAppContainer } from "react-navigation";
 import { View, Image, Dimensions } from "react-native";
 
 const width = Dimensions.get("window").width;
@@ -12,6 +12,8 @@ import Home from "../screens/Volet/Home";
 import Shops from "../screens/Volet/Shops";
 import Purchase from "../screens/Volet/Purchases";
 import Profile from "../screens/Volet/Profile";
+
+import Setting from "../screens/Volet/Home"
 
 export default createBottomTabNavigator(
   {

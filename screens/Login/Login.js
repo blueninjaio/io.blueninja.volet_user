@@ -24,25 +24,25 @@ export class Login extends Component {
     };
   }
 
-  userLogin = () => {
-    fetch(`${url}/api/users/login`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Login :", data);
-        // onPress={() => this.props.navigation.navigate("Home")}
-      })
-      .catch(error => {});
-  };
+  // userLogin = () => {
+  //   fetch(`${url}/api/users/login`, {
+  //     method: "POST",
+  //     mode: "cors",
+  //     headers: {
+  //       "Content-Type": "application/json; charset=utf-8"
+  //     },
+  //     body: JSON.stringify({
+  //       email: this.state.email,
+  //       password: this.state.password
+  //     })
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log("Login :", data);
+  //       // onPress={() => this.props.navigation.navigate("Home")}
+  //     })
+  //     .catch(error => {});
+  // };
 
   /**
   |--------------------------------------------------
