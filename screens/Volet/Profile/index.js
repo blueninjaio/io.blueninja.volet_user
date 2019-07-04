@@ -9,6 +9,7 @@ import AboutVolet from "./AboutVolet"
 import FAQ from "./FAQ"
 import Policies from "./Policies"
 import Feedback from "./FeedBack"
+import VoletBalance from "./VoletBalance"
 
 const MyProfileScreen = ({ navigation }) => <Profile navigation={navigation} />;
 MyProfileScreen.navigationOptions = {
@@ -73,6 +74,16 @@ MyFeedbackScreen.navigationOptions = {
   }
 };
 
+const MyVoletBalanceScreen = ({ navigation }) => <VoletBalance navigation={navigation} />;
+MyVoletBalanceScreen.navigationOptions = {
+  mode: "card",
+  title: "Volet Balance",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
+
+
 
 
 const ModalStack = createStackNavigator(
@@ -100,6 +111,9 @@ const ModalStack = createStackNavigator(
     },
     Feedback:{
       screen: MyFeedbackScreen
+    },
+    VoletBalance:{
+      screen: MyVoletBalanceScreen
     }
   },
   {

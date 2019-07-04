@@ -9,9 +9,13 @@
   "dependencies": {
     "@expo/vector-icons": "^10.0.1",
     "expo": "^32.0.0",
+    "expo-permissions": "^5.0.1",
     "native-base": "^2.12.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-date-picker": "^2.4.2",
+    "react-native-material-dropdown": "^0.11.1",
+    "react-native-modal-datetime-picker": "^7.4.2",
     "react-native-star-rating": "^1.1.0",
     "react-native-vector-icons": "^6.5.0",
     "react-navigation": "^2.16.0",

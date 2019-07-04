@@ -4,12 +4,12 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-
 
 export class SignUpInfo extends Component {
   constructor(props) {
@@ -21,9 +21,9 @@ export class SignUpInfo extends Component {
       email: "",
       password: "",
       CPassword: "",
-      facebook_id:null,
-      google_id:null,
-      contact: "012312838129"
+      facebook_id: null,
+      google_id: null
+      // contact: "012312838129"
     };
   }
 
@@ -40,20 +40,20 @@ export class SignUpInfo extends Component {
         "Content-Type": "application/json; charset=utf-8"
       },
       body: JSON.stringify({
-        facebook_id: this.state.facebook_id, 
-        google_id: this.state.google_id, 
-        contact: this.state.contact , 
-        f_name: this.state.firstName, 
-        l_name:this.state.lastName, 
+        facebook_id: this.state.facebook_id,
+        google_id: this.state.google_id,
+        contact: this.props.navigation.state.params.contact,
+        f_name: this.state.firstName,
+        l_name: this.state.lastName,
         email: this.state.email,
         password: this.state.password
       })
     })
       .then(res => res.json())
       .then(data => {
-        console.log("Sign Up :", data);
-        // this.props.navigation.navigate("SetPin")
-        // onPress={() => this.props.navigation.navigate("Home")}
+        if (data.success === true) {
+          this.props.navigation.navigate("Login");
+        }
       })
       .catch(error => {
         Alert.alert(
@@ -180,8 +180,7 @@ export class SignUpInfo extends Component {
             alignItems: "center"
           }}
         >
-          <TouchableOpacity
-            onPress={() => this.userSignUp()}>
+          <TouchableOpacity onPress={() => this.userSignUp()}>
             <Text>Next</Text>
           </TouchableOpacity>
         </View>

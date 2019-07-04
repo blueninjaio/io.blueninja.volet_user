@@ -18,7 +18,7 @@ export class SignUp extends Component {
         super(props)
     
         this.state = {
-             name:""
+          number:""
         }
     }
     
@@ -55,8 +55,8 @@ export class SignUp extends Component {
                 color: "rgb(74,74,74)",
                 backgroundColor: "rgb(226,226,226)"
               }}
-              onChangeText={name => this.setState({ name })}
-              value={this.state.name}
+              onChangeText={number => this.setState({ number })}
+              value={this.state.number}
               type="number"
               placeholder="Your mobile number"
               placeholderTextColor="rgb(74,74,74)"
@@ -70,7 +70,9 @@ export class SignUp extends Component {
               paddingBottom: 10
             }}
           >
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('TAC')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('TAC',{
+              contact: this.state.number
+            })}>
               <Text>Send Code</Text>
             </TouchableOpacity>
           </View>

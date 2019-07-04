@@ -44,7 +44,9 @@ export class TAC extends Component {
             placeholderTextColor="rgb(74,74,74)"
           />
         </View>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUpInfo')} style={{justifyContent:"center", alignItems:"center", padding: 20}}><Text>Resend Code</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUpInfo',{
+          contact: this.props.navigation.state.params.contact
+        })} style={{justifyContent:"center", alignItems:"center", padding: 20}}><Text>Resend Code</Text></TouchableOpacity>
       </View>
     );
   }

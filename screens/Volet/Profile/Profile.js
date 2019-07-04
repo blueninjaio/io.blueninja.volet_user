@@ -81,7 +81,7 @@ export class Profile extends React.Component {
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("")}
+              onPress={() => this.props.navigation.navigate("VoletBalance")}
               style={styles.listItemButton}
             >
               <View style={styles.show}>

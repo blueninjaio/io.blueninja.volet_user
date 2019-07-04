@@ -31,6 +31,11 @@ export class Main extends Component {
     this.getToken();
   }
 
+  /**
+  |--------------------------------------------------
+  | Implementation of retrieving User Token
+  |--------------------------------------------------
+  */
   getToken = async () => {
     try {
       let value = await AsyncStorage.getItem("token");
@@ -52,6 +57,12 @@ export class Main extends Component {
     }
   };
 
+  /**
+  |--------------------------------------------------
+  | Implementation of Phone Touch ID 
+  |--------------------------------------------------
+  */
+
   checkDeviceForHardware = async () => {
     let compatible = await LocalAuthentication.hasHardwareAsync();
     this.setState({ compatible });
@@ -66,18 +77,20 @@ export class Main extends Component {
     let result = await LocalAuthentication.authenticateAsync(
       "Scan your finger."
     );
-    console.log("Scan Result:", result.success);
     this.login(result.success);
   };
 
   login = response => {
-    console.log("Response from Touch ID", response);
     if (response === true) {
-      // this.props.navigation.navigate("Home");
       this.props.logMeIn();
     }
   };
 
+  /**
+  |--------------------------------------------------
+  | Android Touch ID Integration
+  |--------------------------------------------------
+  */
   showAndroidAlert = () => {
     Alert.alert(
       "Fingerprint Scan",
@@ -91,7 +104,8 @@ export class Main extends Component {
         },
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel"),
+          onPress: () => this.props.navigation.navigate("Login"),
+
           style: "cancel"
         }
       ]

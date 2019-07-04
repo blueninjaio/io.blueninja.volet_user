@@ -1,6 +1,10 @@
 import React from "react";
 
-import { createBottomTabNavigator, createStackNavigator, createAppContainer } from "react-navigation";
+import {
+  createBottomTabNavigator,
+  createStackNavigator,
+  createAppContainer
+} from "react-navigation";
 import { View, Image, Dimensions } from "react-native";
 
 const width = Dimensions.get("window").width;
@@ -13,7 +17,18 @@ import Shops from "../screens/Volet/Shops";
 import Purchase from "../screens/Volet/Purchases";
 import Profile from "../screens/Volet/Profile";
 
-import Setting from "../screens/Volet/Home"
+const tabbarVisible = (navigation) => {
+  const { routes } = navigation.state;
+  console.log("Route", routes)
+  let showTabbar = true;
+  routes.forEach((route) => {
+    if (route.routeName !== 'Profile') {
+      showTabbar = false;
+    }
+  });
+  console.log("tab bar status", showTabbar)
+  return showTabbar;
+};
 
 export default createBottomTabNavigator(
   {
@@ -52,8 +67,8 @@ export default createBottomTabNavigator(
               resizeMode="contain"
               style={{ width: 30, height: 30 }}
             />
-          ),
-          // tabBarVisible: false
+          )
+        // tabBarVisible: false
       }
     },
     Purchase: {
@@ -77,7 +92,23 @@ export default createBottomTabNavigator(
     },
     Profile: {
       screen: Profile,
-      navigationOptions: {
+      // navigationOptions: {
+      // tabBarIcon: ({ tintColor }) =>
+      //   tintColor === "black" ? (
+      //     <Image
+      //       source={require("../assets/profileInactive.png")}
+      //       resizeMode="contain"
+      //       style={{ width: 30, height: 30 }}
+      //     />
+      //   ) : (
+      //     <Image
+      //       source={require("../assets/profile.png")}
+      //       resizeMode="contain"
+      //       style={{ width: 40, height: 40 }}
+      //     />
+      //   )
+      // }
+      navigationOptions: ({ navigation }) => ({
         tabBarIcon: ({ tintColor }) =>
           tintColor === "black" ? (
             <Image
@@ -91,8 +122,9 @@ export default createBottomTabNavigator(
               resizeMode="contain"
               style={{ width: 40, height: 40 }}
             />
-          )
-      }
+          ),
+        tabBarVisible: tabbarVisible(navigation)
+      })
     }
   },
   {
