@@ -8,7 +8,9 @@ import {
   ScrollView,
   StatusBar,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
+  AsyncStorage
 } from "react-native";
 import {
   Header,
@@ -17,18 +19,77 @@ import {
   Right,
   Card,
   CardItem,
-  Thumbnail,
+  Thumbnail
 } from "native-base";
 import { LinearGradient } from "expo";
+import { dev, prod, url } from "../../../config/index";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: "Fa Mulan"
+      user: "Fa Mulan",
+      id:"",
+      username:"",
+      balance:0
     };
   }
+  /**
+|--------------------------------------------------
+| Get Volet balance
+|--------------------------------------------------
+*/
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getUserID = async () => {
+    try {
+      let id = await AsyncStorage.getItem("ID");
+      let username = await AsyncStorage.getItem("firstname");
+      if (id !== null) {
+        this.getVolet(id);
+        this.setState({ id });
+        this.setState({ username });
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error connecting to server storage",
+        `${error}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
+
+  getVolet = ID => {
+    fetch(`${url}/api/volet/id`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        persona_id: ID
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Voucher :", data);
+        if (data.success === true) {
+          this.setState({ balance: data.total });
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server Volet",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
 
   render() {
     return (
@@ -95,7 +156,7 @@ export default class App extends React.Component {
               >
                 Your Volet Balance
               </Text>
-              <Text style={{ fontSize: 25, fontWeight: "bold" }}>RM200.00</Text>
+              <Text style={{ fontSize: 25, fontWeight: "bold" }}>RM{this.state.balance}</Text>
             </View>
           </View>
           <View style={styles.savingsCard}>

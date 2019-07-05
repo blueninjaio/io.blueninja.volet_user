@@ -8,15 +8,90 @@ import {
   ScrollView,
   StatusBar,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
+  Alert
 } from "react-native";
 import { Switch } from "native-base";
 import { LinearGradient } from "expo";
+import { dev, prod, url } from "../../../config/index";
+import { NavigationEvents } from "react-navigation";
 
 export class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      balance: 0
+    };
+  }
+
+  /**
+|--------------------------------------------------
+| Get Volet balance
+|--------------------------------------------------
+*/
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getUserID = async () => {
+    try {
+      let id = await AsyncStorage.getItem("ID");
+      let username = await AsyncStorage.getItem("firstname");
+      if (id !== null) {
+        this.getVolet(id);
+        this.setState({ id });
+        this.setState({ username });
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error connecting to server storage",
+        `${error}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
+
+  getVolet = ID => {
+    fetch(`${url}/api/volet/id`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        persona_id: ID
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Voucher :", data);
+        if (data.success === true) {
+          this.setState({ balance: data.total });
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server Volet",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
+
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onWillFocus={payload => console.log("will focus", payload)}
+          onWillFocus={payload => this.getUserID()}
+          onDidFocus={payload => console.log("did focus", payload)}
+          onWillBlur={payload => console.log("will blur", payload)}
+          onDidBlur={payload => console.log("did blur", payload)}
+        />
         <StatusBar />
         <ScrollView>
           <LinearGradient colors={["#36D1DC", "#5B86E5"]} style={styles.header}>
@@ -58,7 +133,9 @@ export class Profile extends React.Component {
               <Text style={{ color: "grey", opacity: 0.7 }}>
                 Your Volet Balance
               </Text>
-              <Text style={{ color: "white", fontSize: 18 }}>RM 200.00</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>
+                RM {this.state.balance}
+              </Text>
             </LinearGradient>
           </View>
           <View>

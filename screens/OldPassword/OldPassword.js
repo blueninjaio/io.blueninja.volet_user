@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  TextInput
+} from "react-native";
+export const { width, height } = Dimensions.get("window");
+import { dev, prod, url } from "../../config";
+
 
 export class OldPassword extends Component {
     constructor(props) {

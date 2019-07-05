@@ -6,10 +6,13 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  Alert,
+  AsyncStorage
 } from "react-native";
 import { Icon, Left, Right, Body, Title } from "native-base";
 export const { width, height } = Dimensions.get("window");
+import { dev, prod, url } from "../../../config/index";
 import Modal from "react-native-modal";
 export class VoletBalance extends Component {
   constructor(props) {
@@ -17,11 +20,15 @@ export class VoletBalance extends Component {
 
     this.state = {
       selectedValue: "Top Up",
-      isModalVisible: false
+      isModalVisible: false,
+      voucherCode: "",
+      username: "",
+      id: "",
+      balance: ""
     };
   }
 
-/**
+  /**
 |--------------------------------------------------
 | Implementing Onclick functions to update states
 |--------------------------------------------------
@@ -32,6 +39,112 @@ export class VoletBalance extends Component {
 
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
+
+  /**
+|--------------------------------------------------
+| Get Volet balance
+|--------------------------------------------------
+*/
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getUserID = async () => {
+    try {
+      let id = await AsyncStorage.getItem("ID");
+      let username = await AsyncStorage.getItem("firstname");
+      if (id !== null) {
+        this.getVolet(id);
+        this.setState({ id });
+        this.setState({ username });
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error connecting to server storage",
+        `${error}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
+
+  getVolet = ID => {
+    fetch(`${url}/api/volet/id`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        persona_id: ID
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Voucher :", data);
+        if (data.success === true) {
+          this.setState({ balance: data.total });
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server Volet",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
+
+  redeemVoucher = () => {
+    fetch(`${url}/api/vouchers/redeem`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        name: this.state.voucherCode,
+        user: this.state.username,
+        user_id: this.state.id
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Redeem voucher :", data);
+        console.log("ismodal :", this.state.isModalVisible);
+        if (data.success === true) {
+          Alert.alert(
+            "Success",
+            `${data.message}`,
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  this.toggleModal(), this.getVolet(this.state.id);
+                }
+              }
+            ],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            "Fail",
+            `${data.message}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server Reedem",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
   };
 
   render() {
@@ -48,7 +161,9 @@ export class VoletBalance extends Component {
             width: width
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>MYR 200.00</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+            MYR{this.state.balance}
+          </Text>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <View
@@ -166,7 +281,7 @@ export class VoletBalance extends Component {
         <Modal
           transparent={true}
           animationType="slide"
-        //   backdropColor="black"
+          //   backdropColor="black"
           visible={this.state.isModalVisible}
           style={styles.modalContent}
         >
@@ -213,7 +328,7 @@ export class VoletBalance extends Component {
           <View style={{ alignItems: "flex-end", justifyContent: "center" }}>
             <TouchableOpacity
               onPress={() => {
-                this.toggleModal();
+                this.redeemVoucher();
               }}
             >
               <Icon name="close" />
@@ -229,7 +344,8 @@ export default VoletBalance;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    marginTop: 30
   },
   text: {
     color: "#979797",
@@ -243,7 +359,7 @@ const styles = StyleSheet.create({
     // borderRadius: 8,
     borderColor: "rgba(0, 0, 0, 0.1)",
     marginTop: height / 5,
-    marginBottom: height /5,
+    marginBottom: height / 5,
     marginRight: 20,
     marginLeft: 20
   }

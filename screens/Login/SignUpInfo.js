@@ -5,11 +5,14 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
+import { Notifications, Permissions } from "expo";
+import { connect } from "react-redux";
 
 export class SignUpInfo extends Component {
   constructor(props) {
@@ -52,7 +55,13 @@ export class SignUpInfo extends Component {
       .then(res => res.json())
       .then(data => {
         if (data.success === true) {
-          this.props.navigation.navigate("Login");
+          // this.props.navigation.navigate("Login");
+          Alert.alert(
+            "Success",
+            `${data.message}`,
+            [{ text: "OK", onPress: () => this.reduxLogin() }],
+            { cancelable: false }
+          );
         }
       })
       .catch(error => {
@@ -63,6 +72,108 @@ export class SignUpInfo extends Component {
           { cancelable: false }
         );
       });
+  };
+
+  /**
+  |--------------------------------------------------
+  | Login Implementing Redux
+  |--------------------------------------------------
+  */
+  reduxLogin = () => {
+    if (this.state.email.length < 5 || !this.state.email.includes("@"))
+      alert(`Please enter a valid email address.`);
+    else if (this.state.password.length < 6) alert(`Please enter a password.`);
+    else {
+      fetch(`${url}/api/users/login`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            this._storeData(data.token, data.user).then(() => {
+              this.registerForPushNotificationsAsync();
+              this.props.logMeIn();
+            });
+          } else alert(data.message);
+        })
+        .catch(err => {
+          //To be removed in production
+          console.log("Error for login:", err);
+
+          Alert.alert(
+            "Error connecting to server",
+            `Please try again later`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    }
+  };
+
+  /**
+|--------------------------------------------------
+| Store Token to Async Storage
+|--------------------------------------------------
+*/
+  _storeData = async (token, userDetails) => {
+    try {
+      await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("firstname", userDetails.f_name);
+      await AsyncStorage.setItem("lastname", userDetails.l_name);
+      await AsyncStorage.setItem("email", userDetails.email);
+      await AsyncStorage.setItem("ID", userDetails._id);
+      await AsyncStorage.setItem("contact", userDetails.contact);
+      await AsyncStorage.setItem("userType", userDetails.user_type);
+
+      // console.log('Saved')
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  /**
+|--------------------------------------------------
+| Implementing Push Notification
+|--------------------------------------------------
+*/
+
+  registerForPushNotificationsAsync = async () => {
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    if (finalStatus !== "granted") {
+      return;
+    }
+
+    let token = await Notifications.getExpoPushTokenAsync();
+
+    return fetch(`${url}/api/users/updatePush`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        token: token,
+        email: this.state.email
+      })
+    });
   };
 
   render() {
@@ -188,8 +299,23 @@ export class SignUpInfo extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    login: state
+  };
+};
 
-export default SignUpInfo;
+const mapDispatchToProps = dispatch => {
+  return {
+    logMeIn: () => dispatch({ type: "LOGIN" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUpInfo);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
