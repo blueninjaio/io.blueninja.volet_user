@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Icon } from "native-base";
 import Login from "./Login";
 import Main from "./Main";
@@ -10,7 +10,7 @@ import SignUpInfo from "./SignUpInfo";
 import SetPin from "./SetPin";
 import ContactSupport from "./ContactSupport";
 import ForgetPassword from "./ForgetPassword";
-import ResetPassword from "./ResetPassword";
+// import ResetPassword from "./ResetPassword";
 import ConfirmNewPassword from "./ConfirmNewPassword";
 import FPTac from "./FPTac";
 import Home from "../Volet/Home/Home";
@@ -114,20 +114,20 @@ ForgetPasswordScreen.navigationOptions = {
   )
 };
 
-const ResetPasswordScreen = ({ navigation }) => (
-  <ResetPassword navigation={navigation} />
-);
+// const ResetPasswordScreen = ({ navigation }) => (
+//   <ResetPassword navigation={navigation} />
+// );
 
-ResetPasswordScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  title: "Forget Password",
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
+// ResetPasswordScreen.navigationOptions = {
+//   mode: "card",
+//   // header: null
+//   title: "Forget Password",
+//   headerRight: (
+//     <TouchableOpacity>
+//       <Text>Cancel</Text>
+//     </TouchableOpacity>
+//   )
+// };
 
 const ConfirmNewPasswordScreen = ({ navigation }) => (
   <ConfirmNewPassword navigation={navigation} />
@@ -189,9 +189,9 @@ const ModalStack = createStackNavigator(
     ForgetPassword: {
       screen: ForgetPasswordScreen
     },
-    ResetPassword: {
-      screen: ResetPasswordScreen
-    },
+    // ResetPassword: {
+    //   screen: ResetPasswordScreen
+    // },
     ConfirmNewPassword: {
       screen: ConfirmNewPasswordScreen
     },
@@ -209,4 +209,4 @@ const ModalStack = createStackNavigator(
   }
 );
 
-export default ModalStack;
+export default createAppContainer(ModalStack);

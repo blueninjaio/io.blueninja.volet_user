@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import Profile from "./Profile";
 import Setting from "./Setting";
@@ -10,6 +10,8 @@ import FAQ from "./FAQ"
 import Policies from "./Policies"
 import Feedback from "./FeedBack"
 import VoletBalance from "./VoletBalance"
+import ConvertAgent from "./ConvertAgent"
+import Security from "./Security"
 
 const MyProfileScreen = ({ navigation }) => <Profile navigation={navigation} />;
 MyProfileScreen.navigationOptions = {
@@ -83,6 +85,24 @@ MyVoletBalanceScreen.navigationOptions = {
   }
 };
 
+const MyConvertAgentScreen = ({ navigation }) => <ConvertAgent navigation={navigation} />;
+MyConvertAgentScreen.navigationOptions = {
+  mode: "card",
+  title: "Convert To Agent",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
+
+const MySecurityScreen = ({ navigation }) => <Security navigation={navigation} />;
+MySecurityScreen.navigationOptions = {
+  mode: "card",
+  title: "Security",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
+
 
 
 
@@ -114,6 +134,12 @@ const ModalStack = createStackNavigator(
     },
     VoletBalance:{
       screen: MyVoletBalanceScreen
+    },
+    ConvertAgent:{
+      screen: MyConvertAgentScreen
+    },
+    Security:{
+      screen: MySecurityScreen
     }
   },
   {
@@ -123,4 +149,4 @@ const ModalStack = createStackNavigator(
   }
 );
 
-export default ModalStack;
+export default createAppContainer(ModalStack);

@@ -43,12 +43,16 @@ export class Setting extends Component {
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
+            page={"Security"}
+
           />
           <ListButton
             title={"Convert To Agent"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
+            page={"ConvertAgent"}
+
           />
           <ListButton
             title={"Logout"}

@@ -16,21 +16,23 @@ import Home from "../screens/Volet/Home";
 import Shops from "../screens/Volet/Shops";
 import Purchase from "../screens/Volet/Purchases";
 import Profile from "../screens/Volet/Profile";
+import ResetPassword from "../screens/ResetPassword";
+import OldPassword from "../screens/OldPassword"
 
-const tabbarVisible = (navigation) => {
+const tabbarVisible = navigation => {
   const { routes } = navigation.state;
-  console.log("Route", routes)
+  console.log("Route", routes);
   let showTabbar = true;
-  routes.forEach((route) => {
-    if (route.routeName !== 'Profile') {
+  routes.forEach(route => {
+    if (route.routeName !== "Profile") {
       showTabbar = false;
     }
   });
-  console.log("tab bar status", showTabbar)
+  console.log("tab bar status", showTabbar);
   return showTabbar;
 };
 
-export default createBottomTabNavigator(
+const UserTabNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: Home,
@@ -128,8 +130,8 @@ export default createBottomTabNavigator(
     }
   },
   {
-    animationEnabled: true,
-    swipeEnabled: true,
+    // animationEnabled: true,
+    // swipeEnabled: true,
     tabBarOptions: {
       activeTintColor: "blue",
       inactiveTintColor: "black",
@@ -148,3 +150,51 @@ export default createBottomTabNavigator(
     }
   }
 );
+const StackNavigator = createStackNavigator(
+  {
+    // Login: {
+    //   screen: Login,
+    //   navigationOptions: ({ navigation }) => ({
+    //     header: null,
+    //   }),
+    // },
+
+    // SignUp: {
+    //   screen: SignUp,
+    //   navigationOptions: ({ navigation }) => ({
+    //     header: null,
+    //   }),
+    // },
+    Home: {
+      screen: UserTabNavigator,
+      navigationOptions: ({ navigation }) => ({
+        header: null
+      })
+    },
+    ResetPassword: {
+      screen: ResetPassword,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Reset Password",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    OldPassword: {
+      screen: OldPassword,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Reset Password",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    }
+  },
+  {
+    swipeEnabled: true
+  }
+);
+
+export default createAppContainer(StackNavigator);
