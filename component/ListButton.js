@@ -7,7 +7,9 @@ export class ListButton extends Component {
     return (
       <View style={styles.shadowSet}>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate(this.props.page)}
+          onPress={() => this.props.navigation.navigate(this.props.page,{
+            goBack: this.props.goBack
+          })}
           style={styles.listItemButtonSwitch}
         >
           <View style={styles.show}>

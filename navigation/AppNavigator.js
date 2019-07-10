@@ -18,6 +18,9 @@ import Purchase from "../screens/Volet/Purchases";
 import Profile from "../screens/Volet/Profile";
 import ResetPassword from "../screens/ResetPassword";
 import OldPassword from "../screens/OldPassword"
+import FPTac from "../screens/FPTac"
+import ConfirmNewPassword from "../screens/ConfirmNewPassword"
+import ResetPin from "../screens/ResetPin"
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -190,7 +193,38 @@ const StackNavigator = createStackNavigator(
           backgroundColor: "white"
         }
       })
-    }
+    },
+    FPTac: {
+      screen: FPTac,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Reset Password",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    ConfirmNewPassword: {
+      screen: ConfirmNewPassword,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Reset Password",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    ResetPin: {
+      screen: ResetPin,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Reset Pin",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+
   },
   {
     swipeEnabled: true

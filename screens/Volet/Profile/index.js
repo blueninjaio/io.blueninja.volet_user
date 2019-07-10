@@ -144,7 +144,7 @@ const ModalStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null
+      // header: null
     }
   }
 );

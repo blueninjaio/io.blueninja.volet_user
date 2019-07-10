@@ -19,6 +19,7 @@ export class TAC extends Component {
   }
 
   render() {
+    console.log("Screen", this.props.navigation.state.params.screen)
     return (
       <View style={styles.container}>
         <View
@@ -51,22 +52,43 @@ export class TAC extends Component {
             placeholderTextColor="rgb(74,74,74)"
           />
         </View>
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate("ConfirmNewPassword", {
-              temporaryPassword: this.props.navigation.state.params.temporaryPassword,
-              email: this.props.navigation.state.params.email,
-              contact: this.props.navigation.state.params.contact
-            })
-          }
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 20
-          }}
-        >
-          <Text>Resend Code</Text>
-        </TouchableOpacity>
+        {this.props.navigation.state.params.screen !== undefined ? (
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate(
+                this.props.navigation.state.params.screen,{
+                  NewPin: "NewPin"
+                }
+              )
+            }
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 20
+            }}
+          >
+            <Text>Resend Code</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate("ConfirmNewPassword", {
+                temporaryPassword: this.props.navigation.state.params
+                  .temporaryPassword,
+                email: this.props.navigation.state.params.email,
+                contact: this.props.navigation.state.params.contact,
+                goBack: this.props.navigation.state.params.goBack
+              })
+            }
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 20
+            }}
+          >
+            <Text>Resend Code</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

@@ -220,7 +220,9 @@ export class Login extends Component {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("ForgetPassword")}
+            onPress={() => this.props.navigation.navigate("ForgetPassword",{
+              goBack:"Login"
+            })}
             style={{
               justifyContent: "center",
               alignItems: "flex-end",

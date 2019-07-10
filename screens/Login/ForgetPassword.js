@@ -41,10 +41,16 @@ export class ForgetPassword extends Component {
       .then(res => res.json())
       .then(data => {
         console.log("Forgot password :", data);
-        this.props.navigation.navigate("ResetPassword",{
-          temporaryPassword: data.temporaryPassword,
-          email: this.state.email
-        })
+        if (data.success === true) {
+          this.props.navigation.navigate("ResetPassword",{
+            temporaryPassword: data.temporaryPassword,
+            email: this.state.email
+          })
+        }
+        else {
+          alert(`${data.message}`)
+        }
+
       })
       .catch(error => {
         Alert.alert(

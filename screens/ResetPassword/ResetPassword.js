@@ -71,7 +71,7 @@ export class ResetPassword extends Component {
               paddingTop: 30
             }}
           >
-            <Text>Mobile number</Text>
+            <Text>Reset Password</Text>
             <TextInput
               style={{
                 alignSelf: "center",
@@ -127,12 +127,14 @@ export class ResetPassword extends Component {
                 temporaryPassword: this.props.navigation.state.params
                   .temporaryPassword,
                 email: this.props.navigation.state.params.email,
-                contact: this.state.contact
+                contact: this.state.contact,
+              goBack: this.props.navigation.state.params.goBack
+
               })
             }
             style={{ padding: 20 }}
           >
-            <Text>Request Code</Text>
+            <Text>Next</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
@@ -140,7 +142,9 @@ export class ResetPassword extends Component {
                 temporaryPassword: this.props.navigation.state.params
                   .temporaryPassword,
                 email: this.props.navigation.state.params.email,
-                contact: this.state.contact
+                contact: this.state.contact,
+              goBack: this.props.navigation.state.params.goBack
+
               })
             }
             style={{ padding: 20 }}

@@ -5,27 +5,76 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { Item, Icon, Input, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import dataInfo from "../../../dataInfo/local.json"
-
+import dataInfo from "../../../dataInfo/local.json";
+import { dev, prod, url } from "../../../config";
 
 export class ShopList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      shopList: [
-        {
-          image:
-            "https://d2hdssvult3r4r.cloudfront.net/wp-content/uploads/2019/02/Eyeshadow--e1550500572435.png",
-          title: "Karab",
-          desc: "lorem upsem"
-        }
-      ]
+      shopList: [],
+      searchShopList: []
     };
+  }
+
+  /**
+  |--------------------------------------------------
+  | Implementation of Get Business based on selected Category
+  |--------------------------------------------------
+  */
+
+  componentDidMount = () => {
+    this.getCategoryDetails();
+  };
+
+  getCategoryDetails = () => {
+    fetch(`${url}/api/category/business`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        type_of_business: this.props.navigation.state.params.title
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Get Categories Details :", data);
+        if (data.success === true) {
+          this.setState({ shopList: data.business });
+          this.setState({ searchShopList: data.business });
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
+
+  /**
+    |--------------------------------------------------
+    | Initialize and invoke search function to filter Shoplist 
+    |--------------------------------------------------
+    */
+  search(text) {
+    this.setState({ text });
+    // SEARCH LOGIC SHOULD GO HERE
+    let searchList = this.state.searchShopList.filter(ele =>
+      ele.company_name.includes(text)
+    );
+    // console.log("Searched packages", searchedPackage)
+    this.setState({ shopList: searchList });
   }
 
   render() {
@@ -39,18 +88,23 @@ export class ShopList extends Component {
               padding: 20
             }}
           >
-            <Text>{this.props.navigation.state.params.title}</Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+              {this.props.navigation.state.params.title}
+            </Text>
           </View>
           <View style={{ width: width / 1.1 }}>
             <Item searchBar rounded>
               <Icon name="ios-search" />
-              <Input placeholder="Search" />
+              <Input
+                placeholder="Search"
+                onChangeText={text => this.search(text)}
+              />
             </Item>
           </View>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <FlatList
-            data={dataInfo.shopDetails}
+            data={this.state.shopList}
             showsHorizontalScrollIndicator={false}
             // horizontal
             pagingEnabled={true}
@@ -65,7 +119,11 @@ export class ShopList extends Component {
                   // justifyContent: "center",
                   marginBottom: 20
                 }}
-                onPress={() => this.props.navigation.navigate("ShopFeatured")}
+                onPress={() => this.props.navigation.navigate("ShopFeatured",{
+                  businessID: item._id,
+                  legalName:item.legal_name,
+                  companyName: item.company_name
+                })}
               >
                 <View
                   style={{
@@ -76,12 +134,13 @@ export class ShopList extends Component {
                 >
                   <Thumbnail
                     large
+                    square
                     style={{ backgroundColor: "grey" }}
-                    source={{ uri: `${item.image}` }}
+                    // source={{ uri: `${item.image}` }}
                   />
                   <View style={{}}>
-                    <Text>{item.title}</Text>
-                    <Text>{item.desc}</Text>
+                    <Text>{item.legal_name}</Text>
+                    <Text>{item.company_name}</Text>
                   </View>
                 </View>
               </TouchableOpacity>

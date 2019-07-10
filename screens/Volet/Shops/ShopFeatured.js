@@ -5,11 +5,13 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
 import dataInfo from "../../../dataInfo/local.json"
+import { dev, prod, url } from "../../../config";
 
 
 export class ShopFeatured extends Component {
@@ -17,26 +19,51 @@ export class ShopFeatured extends Component {
     super(props);
 
     this.state = {
-      image: "https://d2hdssvult3r4r.cloudfront.net/wp-content/uploads/2019/02/Eyeshadow--e1550500572435.png",
-      featured: [
-        {
-          image:
-            "https://d2hdssvult3r4r.cloudfront.net/wp-content/uploads/2019/02/Eyeshadow--e1550500572435.png",
-          title: "Karab",
-          price: "RM12.00"
-        },
-        {
-          image:
-            "https://d2hdssvult3r4r.cloudfront.net/wp-content/uploads/2019/02/Eyeshadow--e1550500572435.png",
-          title: "Karab",
-          price: "RM93.00"
-        }
-      ]
+      featuredShops:[]
     };
   }
 
+
+  /**
+  |--------------------------------------------------
+  | Implementation of Get Business item based on business ID
+  |--------------------------------------------------
+  */
+
+  componentDidMount = () => {
+    this.getBusinessItem();
+  };
+
+  getBusinessItem = () => {
+    fetch(`${url}/api/item/business`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        business_id: this.props.navigation.state.params.businessID
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Get business item :", data);
+        if (data.success === true) {
+          this.setState({ featuredShops: data.item });
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
+
+
   render() {
-    console.log("data info", dataInfo.shopAvailablityInfo)
     return (
       <View style={styles.container}>
         <View
@@ -61,8 +88,8 @@ export class ShopFeatured extends Component {
               source={{ uri: `${this.state.image}` }}
             />
             <View style={{}}>
-              <Text>{dataInfo.shopAvailablityInfo.title} </Text>
-              <Text>{dataInfo.shopAvailablityInfo.desc}</Text>
+              <Text>{this.props.navigation.state.params.legalName}</Text>
+              <Text>{this.props.navigation.state.params.companyName}</Text>
             </View>
           </View>
         </View>
@@ -99,7 +126,7 @@ export class ShopFeatured extends Component {
         {/* </View> */}
 
         <FlatList
-          data={dataInfo.featuredShops}
+          data={this.state.featuredShops}
           showsHorizontalScrollIndicator={false}
           // horizontal
           pagingEnabled={true}
@@ -123,19 +150,19 @@ export class ShopFeatured extends Component {
                 <Thumbnail
                   large
                   square
-                  style={{ backgroundColor: "grey" }}
-                  source={{ uri: `${item.image}` }}
+                  style={{ backgroundColor: "pink" }}
+                  // source={{ uri: `${item.image}` }}
                 />
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "flex-start",
-                    width: width / 1.8
+                    width: width / 1.5
                   }}
                 >
-                  <Text>{item.title}</Text>
-                  <Text>{item.price}</Text>
+                  <Text style={{width: width/2.2}}>{item.name}</Text>
+                  <Text>RM{item.price.value}.{item.price.decimal}</Text>
                 </View>
               </View>
             </TouchableOpacity>

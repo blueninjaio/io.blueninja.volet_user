@@ -86,11 +86,7 @@ export class Profile extends React.Component {
     return (
       <View style={styles.container}>
         <NavigationEvents
-          onWillFocus={payload => console.log("will focus", payload)}
           onWillFocus={payload => this.getUserID()}
-          onDidFocus={payload => console.log("did focus", payload)}
-          onWillBlur={payload => console.log("will blur", payload)}
-          onDidBlur={payload => console.log("did blur", payload)}
         />
         <StatusBar />
         <ScrollView>

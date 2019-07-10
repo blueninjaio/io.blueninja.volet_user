@@ -58,7 +58,8 @@ export class OldPassword extends Component {
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate("FPTac", {
-                OldPassword:this.state.OldPassword
+                OldPassword:this.state.OldPassword,
+                goBack: this.props.navigation.state.params.goBack
               })
             }
             style={{ padding: 20 }}

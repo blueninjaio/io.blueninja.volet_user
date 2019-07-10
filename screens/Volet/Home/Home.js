@@ -10,7 +10,8 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  LayoutAnimation
 } from "react-native";
 import {
   Header,
@@ -19,10 +20,13 @@ import {
   Right,
   Card,
   CardItem,
-  Thumbnail
+  Thumbnail,
+  Title
 } from "native-base";
 import { LinearGradient } from "expo";
+import SwipeUpDown from "react-native-swipe-up-down";
 import { dev, prod, url } from "../../../config/index";
+import { BarCodeScanner, Permissions } from "expo";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,9 +34,12 @@ export default class App extends React.Component {
 
     this.state = {
       user: "Fa Mulan",
-      id:"",
-      username:"",
-      balance:0
+      id: "",
+      username: "",
+      balance: 0,
+      animation: "easeInEaseOut",
+      hasCameraPermission: null,
+      lastScannedUrl: null,
     };
   }
   /**
@@ -42,6 +49,7 @@ export default class App extends React.Component {
 */
   componentDidMount = () => {
     this.getUserID();
+    this.getPermissionAsync();
   };
 
   getUserID = async () => {
@@ -91,7 +99,48 @@ export default class App extends React.Component {
       });
   };
 
+  /**
+  |--------------------------------------------------
+  | Implementing Permission Requst for Image picker
+  |--------------------------------------------------
+  */
+
+  getPermissionAsync = async () => {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({
+      hasCameraPermission: status === "granted"
+    });
+    // const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+    // if (permission.status !== "granted") {
+    //   const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    //   if (newPermission.status === "granted") {
+    //     //its granted.
+    //   }
+    // }
+  };
+
+  // When "Take" is pressed, we show the user's camera so they
+  // can take a photo to show inside the image view on screen.
+  // _onTakePic = async () => {
+  //   const result = await ImagePicker.launchCameraAsync({});
+  //   console.log("Image link", result); // this logs correctly
+  //   if (!result.cancelled) {
+  //     this.setState({ imageUri: result.uri });
+  //     // TODO: why isn't this showing up inside the Image on screen?
+  //   }
+  // };
+
+
+  _handleBarCodeRead = result => {
+    if (result.data !== this.state.lastScannedUrl) {
+      LayoutAnimation.spring();
+      console.log("Bar code", result.data)
+      this.setState({ lastScannedUrl: result.data });
+    }
+  };
+
   render() {
+    const { hasCameraPermission, scanned } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar />
@@ -156,7 +205,9 @@ export default class App extends React.Component {
               >
                 Your Volet Balance
               </Text>
-              <Text style={{ fontSize: 25, fontWeight: "bold" }}>RM{this.state.balance}</Text>
+              <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                RM{this.state.balance}
+              </Text>
             </View>
           </View>
           <View style={styles.savingsCard}>
@@ -204,7 +255,10 @@ export default class App extends React.Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <TouchableOpacity style={styles.qrcode}>
+        <TouchableOpacity
+          style={styles.qrcode}
+          onPress={() => this.swipeUpDownRef.showFull()}
+        >
           <Card style={{ width: width }}>
             <CardItem>
               <Body
@@ -227,6 +281,81 @@ export default class App extends React.Component {
             </CardItem>
           </Card>
         </TouchableOpacity>
+        <SwipeUpDown
+          hasRef={ref => (this.swipeUpDownRef = ref)}
+          // itemMini={}
+          itemFull={
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "pink"
+              }}
+            >
+              <Header>
+                <Left />
+                <Body>
+                  <Title>QR Code</Title>
+                </Body>
+                <Right>
+                  <Text>Cancel</Text>
+                </Right>
+              </Header>
+              <ScrollView>
+                <View
+                  style={{
+                    paddingTop: 20,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "flex-center"
+                    }}
+                  >
+                    <Text>Scan a QR code </Text>
+                    <Text>
+                      Scan a volet QR code to send payment to collect money from
+                      agent
+                    </Text>
+                  </View>
+                </View>
+                {this.state.hasCameraPermission === null ? (
+                  <Text>Requesting for camera permission</Text>
+                ) : this.state.hasCameraPermission === false ? (
+                  <Text style={{ color: "#fff" }}>
+                    Camera permission is not granted
+                  </Text>
+                ) : (
+                  <BarCodeScanner
+                    onBarCodeRead={this._handleBarCodeRead}
+                    style={{
+                      height: height / 2.5,
+                      width: width
+                    }}
+                  />
+                )}
+                <View
+                  style={{
+                    paddingTop: 20,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                >
+                  <TouchableOpacity style={{ paddingTop: 20 }}>
+                    <Text>Show QR Code</Text>
+                  </TouchableOpacity>
+                </View>
+              </ScrollView>
+            </View>
+          }
+          onShowMini={() => console.log("mini")}
+          onShowFull={() => console.log("full")}
+          disablePressToShow={true}
+          style={{}}
+          animation={this.state.animation}
+        />
       </View>
     );
   }
@@ -282,7 +411,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   qrcode: {
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: -5
   },

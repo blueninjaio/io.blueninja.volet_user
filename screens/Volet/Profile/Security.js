@@ -23,13 +23,16 @@ export class Security extends Component {
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
             page={"OldPassword"}
+            goBack="Security"
             />
           <ListButton
             title={"Reset Pin"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
-            page={"ConvertAgent"}
+            page={"ResetPin"}
+            goBack="Security"
+
           />
         </ScrollView>
       </View>
