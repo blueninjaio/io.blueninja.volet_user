@@ -257,7 +257,9 @@ export class Profile extends React.Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Setting")}
+              onPress={() => this.props.navigation.navigate("Setting",{
+                userType: this.state.userType
+              })}
               style={styles.listItemButton}
             >
               <View style={styles.show}>

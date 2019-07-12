@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, StyleSheet } from "react-native";
+import { Text, View, ScrollView, StyleSheet, Alert } from "react-native";
 import { dev, prod, url } from "../../../config";
 
 export class Policies extends Component {
@@ -13,7 +13,7 @@ export class Policies extends Component {
     
   /**
   |--------------------------------------------------
-  | Implementation of Get Business Categories
+  | Implementation of Get Policies
   |--------------------------------------------------
   */
 
@@ -51,7 +51,7 @@ export class Policies extends Component {
             <View style={{justifyContent:"center", alignItems:"center"}}>
                 {
                     this.state.policies.map((x, i) => (
-                        <View key={i} style={{alignItems:"flex-start", justifyContent:"center", backgroundColor:"pink", paddingBottom: 20}}>
+                        <View key={i} style={{alignItems:"flex-start", justifyContent:"center",  paddingBottom: 20}}>
                             <Text>{x.policies}</Text>
                         </View>
                     ))

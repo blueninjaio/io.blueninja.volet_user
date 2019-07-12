@@ -30,14 +30,14 @@ import TransferSummary from "../screens/TransferSummary";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
-  console.log("Route", routes);
+  // console.log("Route", routes);
   let showTabbar = true;
   routes.forEach(route => {
     if (route.routeName !== "Profile") {
       showTabbar = false;
     }
   });
-  console.log("tab bar status", showTabbar);
+  // console.log("tab bar status", showTabbar);
   return showTabbar;
 };
 

@@ -51,7 +51,7 @@ export class FAQ extends Component {
             <View style={{justifyContent:"center", alignItems:"center"}}>
                 {
                     this.state.faq.map((x, i) => (
-                        <View key={i} style={{alignItems:"flex-start", justifyContent:"center", backgroundColor:"pink", paddingBottom: 20}}>
+                        <View key={i} style={{alignItems:"flex-start", justifyContent:"center", paddingBottom: 20}}>
                             <Text>{x.faq}</Text>
                         </View>
                     ))

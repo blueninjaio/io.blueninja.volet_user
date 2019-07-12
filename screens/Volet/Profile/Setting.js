@@ -44,16 +44,17 @@ export class Setting extends Component {
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
             page={"Security"}
-
           />
-          <ListButton
-            title={"Convert To Agent"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-            page={"ConvertAgent"}
+          {this.props.navigation.state.params.userType === "User" ? (
+            <ListButton
+              title={"Convert To Agent"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/glasses.png")}
+              navigation={this.props.navigation}
+              page={"ConvertAgent"}
+            />
+          ) : null}
 
-          />
           <ListButton
             title={"Logout"}
             extraProps={this.state.isFalse}

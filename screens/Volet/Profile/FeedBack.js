@@ -239,7 +239,7 @@ export class FeedBack extends Component {
             >
               <Text>Can you tell us a little bit more?</Text>
               <TextInput
-                numberOfLines={5}
+                multiline={true}
                 style={{
                   alignSelf: "center",
                   width: width / 1.2,
@@ -247,13 +247,15 @@ export class FeedBack extends Component {
                   // borderRadius: 20,
                   height: 150,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  backgroundColor: "rgb(226,226,226)",
+                  flexShrink: 1
                 }}
                 onChangeText={feedback => this.setState({ feedback })}
                 value={this.state.feedback}
                 type="text"
                 placeholder="Your Message"
                 placeholderTextColor="rgb(74,74,74)"
+
               />
             </View>
             <TouchableOpacity

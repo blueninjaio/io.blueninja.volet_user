@@ -29,7 +29,6 @@ import { dev, prod, url } from "../../../config/index";
 import { BarCodeScanner, Permissions } from "expo";
 import { NavigationEvents } from "react-navigation";
 
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -140,10 +139,10 @@ export default class App extends React.Component {
   };
 
   render() {
-    <NavigationEvents onWillFocus={payload => this.getUserID()} />
     const { hasCameraPermission, scanned } = this.state;
     return (
       <View style={styles.container}>
+        <NavigationEvents onWillFocus={payload => this.getUserID()} />
         <StatusBar />
         <ScrollView>
           <LinearGradient colors={["#36D1DC", "#5B86E5"]} style={styles.header}>
@@ -249,7 +248,9 @@ export default class App extends React.Component {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => this.props.navigation.navigate("VoletBalance")}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("VoletBalance")}
+            >
               <Image
                 source={require("../../../assets/topUP.png")}
                 resizeMode="contain"
