@@ -37,7 +37,7 @@ export class ConfirmNewPassword extends Component {
           "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify({
-          temporary_password: this.props.navigation.state.params.temporaryPassword,
+          temporary_password: this.props.navigation.state.params.tempPassword,
           email: this.props.navigation.state.params.email,
           contact: this.props.navigation.state.params.contact,
           new_password: this.state.password
@@ -92,8 +92,11 @@ export class ConfirmNewPassword extends Component {
               }}
               onChangeText={password => this.setState({ password })}
               value={this.state.password}
+              placeholder="Password"
               type="text"
               placeholderTextColor="rgb(74,74,74)"
+              secureTextEntry={true}
+
             />
           </View>
           <View
@@ -117,8 +120,9 @@ export class ConfirmNewPassword extends Component {
               onChangeText={Cpassword => this.setState({ Cpassword })}
               value={this.state.Cpassword}
               type="text"
-              placeholder="password"
+              placeholder="Confirm Password"
               placeholderTextColor="rgb(74,74,74)"
+              secureTextEntry={true}
             />
           </View>
         </View>

@@ -6,12 +6,19 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  Platform
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { Notifications, Permissions } from "expo";
+import {
+  Notifications,
+  Permissions,
+  LocalAuthentication,
+  Expo,
+  Constants
+} from "expo";
 import { connect } from "react-redux";
 
 export class SignUpInfo extends Component {
@@ -25,9 +32,17 @@ export class SignUpInfo extends Component {
       password: "",
       CPassword: "",
       facebook_id: null,
-      google_id: null
-      // contact: "012312838129"
+      google_id: null,
+      compatible: false,
+      fingerprints: false,
+      result: "",
+      token: ""
     };
+  }
+
+  componentDidMount() {
+    this.checkDeviceForHardware();
+    this.checkForFingerprints();
   }
 
   /**
@@ -56,6 +71,7 @@ export class SignUpInfo extends Component {
       .then(data => {
         if (data.success === true) {
           // this.props.navigation.navigate("Login");
+          console.log("Sign Up info", data);
           Alert.alert(
             "Success",
             `${data.message}`,
@@ -100,7 +116,12 @@ export class SignUpInfo extends Component {
           if (data.success) {
             this._storeData(data.token, data.user).then(() => {
               this.registerForPushNotificationsAsync();
-              this.props.logMeIn();
+              if (Platform.OS === "android") {
+                this.showAndroidAlert();
+              } else {
+                this.scanFingerprint();
+              }
+              // this.props.logMeIn();
             });
           } else alert(data.message);
         })
@@ -174,6 +195,61 @@ export class SignUpInfo extends Component {
         email: this.state.email
       })
     });
+  };
+
+  /**
+  |--------------------------------------------------
+  | Implementation of Phone Touch ID 
+  |--------------------------------------------------
+  */
+
+  checkDeviceForHardware = async () => {
+    let compatible = await LocalAuthentication.hasHardwareAsync();
+    this.setState({ compatible });
+  };
+
+  checkForFingerprints = async () => {
+    let fingerprints = await LocalAuthentication.isEnrolledAsync();
+    this.setState({ fingerprints });
+  };
+
+  scanFingerprint = async () => {
+    let result = await LocalAuthentication.authenticateAsync(
+      "Login with your Touch ID ."
+    );
+    this.login(result.success);
+  };
+
+  login = response => {
+    if (response === true) {
+      this.props.logMeIn();
+    }
+  };
+
+  /**
+|--------------------------------------------------
+| Android Touch ID Integration
+|--------------------------------------------------
+*/
+  showAndroidAlert = () => {
+    Alert.alert(
+      "Fingerprint Scan For Volet",
+      "Place your finger over the touch sensor and press scan.",
+      [
+        {
+          text: "Scan",
+          onPress: () => {
+            this.scanFingerprint();
+          }
+        },
+        {
+          text: "Cancel",
+          onPress: () => this.props.logMeIn(),
+
+          style: "cancel"
+        }
+      ]
+    );
   };
 
   render() {
@@ -279,7 +355,7 @@ export class SignUpInfo extends Component {
               value={this.state.CPassword}
               secureTextEntry={true}
               type="password"
-              placeholder="Your first name"
+              placeholder="Confirm Password"
               placeholderTextColor="rgb(74,74,74)"
             />
           </View>

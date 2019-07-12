@@ -17,10 +17,16 @@ import Shops from "../screens/Volet/Shops";
 import Purchase from "../screens/Volet/Purchases";
 import Profile from "../screens/Volet/Profile";
 import ResetPassword from "../screens/ResetPassword";
-import OldPassword from "../screens/OldPassword"
-import FPTac from "../screens/FPTac"
-import ConfirmNewPassword from "../screens/ConfirmNewPassword"
-import ResetPin from "../screens/ResetPin"
+import OldPassword from "../screens/OldPassword";
+import FPTac from "../screens/FPTac";
+import ConfirmNewPassword from "../screens/ConfirmNewPassword";
+import ResetPin from "../screens/ResetPin";
+import SendPayment from "../screens/SendPayment";
+import PaymentAmount from "../screens/PaymentAmount";
+import VoletBalance from "../screens/VoletBalance";
+import TransferReason from "../screens/TransferReason";
+import PaymentMethod from "../screens/PaymentMethod";
+import TransferSummary from "../screens/TransferSummary";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -224,7 +230,66 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
-
+    SendPayment: {
+      screen: SendPayment,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Send Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    PaymentAmount: {
+      screen: PaymentAmount,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Send Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    VoletBalance: {
+      screen: VoletBalance,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    TransferReason: {
+      screen: TransferReason,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Send Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    PaymentMethod: {
+      screen: PaymentMethod,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Send Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    TransferSummary: {
+      screen: TransferSummary,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Send Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    }
   },
   {
     swipeEnabled: true

@@ -22,7 +22,10 @@ export class Profile extends React.Component {
     super(props);
 
     this.state = {
-      balance: 0
+      balance: 0,
+      contact: "",
+      userType: "",
+      username: ""
     };
   }
 
@@ -35,14 +38,46 @@ export class Profile extends React.Component {
     this.getUserID();
   };
 
+  getUserAgentStatus = ID => {
+    fetch(`${url}/api/users/id`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        _id: ID
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("user :", data);
+        if (data.success === true) {
+          this.setState({ userType: data.user.user_type });
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          "Error connecting to server Volet",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
+
   getUserID = async () => {
     try {
       let id = await AsyncStorage.getItem("ID");
       let username = await AsyncStorage.getItem("firstname");
+      let contact = await AsyncStorage.getItem("contact");
+
       if (id !== null) {
         this.getVolet(id);
+        this.getUserAgentStatus(id);
         this.setState({ id });
         this.setState({ username });
+        this.setState({ contact });
       }
     } catch (error) {
       Alert.alert(
@@ -85,9 +120,7 @@ export class Profile extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <NavigationEvents
-          onWillFocus={payload => this.getUserID()}
-        />
+        <NavigationEvents onWillFocus={payload => this.getUserID()} />
         <StatusBar />
         <ScrollView>
           <LinearGradient colors={["#36D1DC", "#5B86E5"]} style={styles.header}>
@@ -111,15 +144,17 @@ export class Profile extends React.Component {
               <Text
                 style={{ fontWeight: "bold", fontSize: 17, marginLeft: 10 }}
               >
-                Fa Mulan
+                {this.state.username}
               </Text>
-              <Image
-                source={require("../../../assets/check.png")}
-                resizeMode="contain"
-                style={{ width: 15, height: 15, marginLeft: 10 }}
-              />
+              {this.state.userType === "User" ? null : (
+                <Image
+                  source={require("../../../assets/check.png")}
+                  resizeMode="contain"
+                  style={{ width: 15, height: 15, marginLeft: 10 }}
+                />
+              )}
             </View>
-            <Text style={{ paddingTop: 10 }}>+0123345678</Text>
+            <Text style={{ paddingTop: 10 }}>+{this.state.contact}</Text>
           </View>
           <View style={styles.voletContainer}>
             <LinearGradient

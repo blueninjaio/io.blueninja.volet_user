@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Alert
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
@@ -26,10 +27,13 @@ export class ConfirmNewPassword extends Component {
   |--------------------------------------------------
   */
   confirmPassword = () => {
+    console.log(this.props.navigation.state.params.tempPassword);
+    console.log(this.props.navigation.state.params.email);
+    console.log(this.props.navigation.state.params.contact);
+    console.log(this.state.password);
     if (this.state.password !== this.state.Cpassword) {
       alert(`Please enter a valid password.`);
-    } 
-    else {
+    } else {
       fetch(`${url}/api/users/resetPassword`, {
         method: "POST",
         mode: "cors",
@@ -37,9 +41,9 @@ export class ConfirmNewPassword extends Component {
           "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify({
-          temporary_password: this.props.navigation.state.params.temporaryPassword,
+          temp_password: this.props.navigation.state.params.tempPassword,
           email: this.props.navigation.state.params.email,
-          contact: his.props.navigation.state.params.contact,
+          contact: this.props.navigation.state.params.contact,
           new_password: this.state.password
         })
       })
@@ -47,7 +51,17 @@ export class ConfirmNewPassword extends Component {
         .then(data => {
           console.log("Confrim Password :", data);
           if (data.success === true) {
-            this.props.navigation.navigate("Login");
+            Alert.alert(
+              "Success",
+              `${data.message}`,
+              [
+                {
+                  text: "OK",
+                  onPress: () => this.props.navigation.navigate("Login")
+                }
+              ],
+              { cancelable: false }
+            );
           }
         })
         .catch(error => {
@@ -94,6 +108,8 @@ export class ConfirmNewPassword extends Component {
               value={this.state.password}
               type="text"
               placeholderTextColor="rgb(74,74,74)"
+              placeholder="Password"
+              secureTextEntry={true}
             />
           </View>
           <View
@@ -117,8 +133,9 @@ export class ConfirmNewPassword extends Component {
               onChangeText={Cpassword => this.setState({ Cpassword })}
               value={this.state.Cpassword}
               type="text"
-              placeholder="password"
+              placeholder="Confirm Password"
               placeholderTextColor="rgb(74,74,74)"
+              secureTextEntry={true}
             />
           </View>
         </View>

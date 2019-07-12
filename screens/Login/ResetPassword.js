@@ -82,9 +82,10 @@ export class ResetPassword extends Component {
                 color: "rgb(74,74,74)",
                 backgroundColor: "rgb(226,226,226)"
               }}
-              onChangeText={contact => this.setState({ contact })}
-              value={this.state.contact}
+              // onChangeText={contact => this.setState({ contact })}
+              value={this.props.navigation.state.params.contact}
               type="text"
+              placeholder="Mobile Number"
               placeholderTextColor="rgb(74,74,74)"
             />
           </View>
@@ -95,7 +96,7 @@ export class ResetPassword extends Component {
               paddingTop: 30
             }}
           >
-            <Text>Temporary</Text>
+            <Text>Temporary Password</Text>
             <TextInput
               style={{
                 alignSelf: "center",
@@ -106,11 +107,13 @@ export class ResetPassword extends Component {
                 color: "rgb(74,74,74)",
                 backgroundColor: "rgb(226,226,226)"
               }}
-              onChangeText={tempPassword => this.setState({ tempPassword })}
-              value={this.state.tempPassword}
+              // onChangeText={tempPassword => this.setState({ tempPassword })}
+              value={this.props.navigation.state.params.tempPassword}
               type="text"
-              placeholder="password"
+              placeholder="Temp Password"
               placeholderTextColor="rgb(74,74,74)"
+              secureTextEntry={true}
+
             />
           </View>
         </View>
@@ -124,10 +127,10 @@ export class ResetPassword extends Component {
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate("FPTac", {
-                temporaryPassword: this.props.navigation.state.params
-                  .temporaryPassword,
+                tempPassword: this.props.navigation.state.params
+                  .tempPassword,
                 email: this.props.navigation.state.params.email,
-                contact: this.state.contact
+                contact: this.props.navigation.state.params.contact
               })
             }
             style={{ padding: 20 }}
@@ -137,8 +140,8 @@ export class ResetPassword extends Component {
           <TouchableOpacity
             onPress={() =>
               this.props.navigation.navigate("FPTac", {
-                temporaryPassword: this.props.navigation.state.params
-                  .temporaryPassword,
+                tempPassword: this.props.navigation.state.params
+                  .tempPassword,
                 email: this.props.navigation.state.params.email,
                 contact: this.state.contact
               })

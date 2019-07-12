@@ -9,7 +9,7 @@ import AboutVolet from "./AboutVolet"
 import FAQ from "./FAQ"
 import Policies from "./Policies"
 import Feedback from "./FeedBack"
-import VoletBalance from "./VoletBalance"
+// import VoletBalance from "./VoletBalance"
 import ConvertAgent from "./ConvertAgent"
 import Security from "./Security"
 
@@ -76,14 +76,14 @@ MyFeedbackScreen.navigationOptions = {
   }
 };
 
-const MyVoletBalanceScreen = ({ navigation }) => <VoletBalance navigation={navigation} />;
-MyVoletBalanceScreen.navigationOptions = {
-  mode: "card",
-  title: "Volet Balance",
-  headerStyle: {
-    backgroundColor: "white"
-  }
-};
+// const MyVoletBalanceScreen = ({ navigation }) => <VoletBalance navigation={navigation} />;
+// MyVoletBalanceScreen.navigationOptions = {
+//   mode: "card",
+//   title: "Volet Balance",
+//   headerStyle: {
+//     backgroundColor: "white"
+//   }
+// };
 
 const MyConvertAgentScreen = ({ navigation }) => <ConvertAgent navigation={navigation} />;
 MyConvertAgentScreen.navigationOptions = {
@@ -132,9 +132,9 @@ const ModalStack = createStackNavigator(
     Feedback:{
       screen: MyFeedbackScreen
     },
-    VoletBalance:{
-      screen: MyVoletBalanceScreen
-    },
+    // VoletBalance:{
+    //   screen: MyVoletBalanceScreen
+    // },
     ConvertAgent:{
       screen: MyConvertAgentScreen
     },

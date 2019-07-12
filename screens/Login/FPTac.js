@@ -54,7 +54,8 @@ export class TAC extends Component {
         <TouchableOpacity
           onPress={() =>
             this.props.navigation.navigate("ConfirmNewPassword", {
-              temporaryPassword: this.props.navigation.state.params.temporaryPassword,
+              tempPassword: this.props.navigation.state.params
+              .tempPassword,
               email: this.props.navigation.state.params.email,
               contact: this.props.navigation.state.params.contact
             })

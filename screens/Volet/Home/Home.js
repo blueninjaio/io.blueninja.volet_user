@@ -27,19 +27,20 @@ import { LinearGradient } from "expo";
 import SwipeUpDown from "react-native-swipe-up-down";
 import { dev, prod, url } from "../../../config/index";
 import { BarCodeScanner, Permissions } from "expo";
+import { NavigationEvents } from "react-navigation";
+
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: "Fa Mulan",
       id: "",
       username: "",
       balance: 0,
       animation: "easeInEaseOut",
       hasCameraPermission: null,
-      lastScannedUrl: null,
+      lastScannedUrl: null
     };
   }
   /**
@@ -130,16 +131,16 @@ export default class App extends React.Component {
   //   }
   // };
 
-
   _handleBarCodeRead = result => {
     if (result.data !== this.state.lastScannedUrl) {
       LayoutAnimation.spring();
-      console.log("Bar code", result.data)
+      console.log("Bar code", result.data);
       this.setState({ lastScannedUrl: result.data });
     }
   };
 
   render() {
+    <NavigationEvents onWillFocus={payload => this.getUserID()} />
     const { hasCameraPermission, scanned } = this.state;
     return (
       <View style={styles.container}>
@@ -182,7 +183,7 @@ export default class App extends React.Component {
                   color: "white"
                 }}
               >
-                {this.state.user}
+                {this.state.username}
               </Text>
             </View>
           </LinearGradient>
@@ -230,7 +231,9 @@ export default class App extends React.Component {
             </View>
           </View>
           <View style={styles.payments}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("SendPayment")}
+            >
               <Image
                 source={require("../../../assets/sendP.png")}
                 resizeMode="contain"
@@ -246,7 +249,7 @@ export default class App extends React.Component {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("VoletBalance")}>
               <Image
                 source={require("../../../assets/topUP.png")}
                 resizeMode="contain"

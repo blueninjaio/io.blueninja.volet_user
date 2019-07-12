@@ -77,12 +77,15 @@ export class Main extends Component {
     let result = await LocalAuthentication.authenticateAsync(
       "Scan your finger."
     );
+    console.log("Touch ID", result);
     this.login(result.success);
   };
 
   login = response => {
     if (response === true) {
       this.props.logMeIn();
+    } else {
+      this.props.navigation.navigate("Login");
     }
   };
 
