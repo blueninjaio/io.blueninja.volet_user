@@ -10,6 +10,14 @@ export const { width, height } = Dimensions.get("window");
 import dataInfo from "../../../dataInfo/local.json"
 
 export class ShopDetails extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      
+    }
+  }
+  
   render() {
     return (
       <View style={styles.container}>

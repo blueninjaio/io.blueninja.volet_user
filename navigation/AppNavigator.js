@@ -27,6 +27,7 @@ import VoletBalance from "../screens/VoletBalance";
 import TransferReason from "../screens/TransferReason";
 import PaymentMethod from "../screens/PaymentMethod";
 import TransferSummary from "../screens/TransferSummary";
+import ShowQRCode from "../screens/ShowQRCode";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -285,6 +286,16 @@ const StackNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Send Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    ShowQRCode: {
+      screen: ShowQRCode,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "QR Code",
         headerStyle: {
           backgroundColor: "white"
         }

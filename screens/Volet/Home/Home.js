@@ -110,33 +110,25 @@ export default class App extends React.Component {
     this.setState({
       hasCameraPermission: status === "granted"
     });
-    // const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-    // if (permission.status !== "granted") {
-    //   const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    //   if (newPermission.status === "granted") {
-    //     //its granted.
-    //   }
-    // }
   };
-
-  // When "Take" is pressed, we show the user's camera so they
-  // can take a photo to show inside the image view on screen.
-  // _onTakePic = async () => {
-  //   const result = await ImagePicker.launchCameraAsync({});
-  //   console.log("Image link", result); // this logs correctly
-  //   if (!result.cancelled) {
-  //     this.setState({ imageUri: result.uri });
-  //     // TODO: why isn't this showing up inside the Image on screen?
-  //   }
-  // };
 
   _handleBarCodeRead = result => {
     if (result.data !== this.state.lastScannedUrl) {
       LayoutAnimation.spring();
-      console.log("Bar code", result.data);
+      console.log("Bar code", result);
       this.setState({ lastScannedUrl: result.data });
+      Alert.alert(
+        "QR Code",
+        `${result.data}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
     }
   };
+
+  switchScreen = () => {
+    this.props.navigation.navigate("ShowQRCode")
+  }
 
   render() {
     const { hasCameraPermission, scanned } = this.state;
@@ -261,7 +253,8 @@ export default class App extends React.Component {
         </ScrollView>
         <TouchableOpacity
           style={styles.qrcode}
-          onPress={() => this.swipeUpDownRef.showFull()}
+          // onPress={() => this.swipeUpDownRef.showFull()}
+          onPress={() => this.props.navigation.navigate("ShowQRCode")}
         >
           <Card style={{ width: width }}>
             <CardItem>
@@ -279,20 +272,47 @@ export default class App extends React.Component {
                   style={{ width: 20, height: 20 }}
                 />
                 <Text style={{ paddingLeft: 10 }}>
-                  Swipe up To scan OR Code
+                  Swipe up To scan QR Code
                 </Text>
               </Body>
             </CardItem>
           </Card>
         </TouchableOpacity>
-        <SwipeUpDown
+        {/* <SwipeUpDown
           hasRef={ref => (this.swipeUpDownRef = ref)}
-          // itemMini={}
+          itemMini={
+            <TouchableOpacity
+              style={styles.qrcode}
+              onPress={() => this.swipeUpDownRef.showFull()}
+            >
+              <Card style={{ width: width }}>
+                <CardItem>
+                  <Body
+                    style={{
+                      padding: 5,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Image
+                      source={require("../../../assets/qrcode.png")}
+                      resizeMode="contain"
+                      style={{ width: 20, height: 20 }}
+                    />
+                    <Text style={{ paddingLeft: 10 }}>
+                      Swipe up To scan QR Code
+                    </Text>
+                  </Body>
+                </CardItem>
+              </Card>
+            </TouchableOpacity>
+          }
           itemFull={
             <View
               style={{
                 flex: 1,
-                backgroundColor: "pink"
+                backgroundColor: "white"
               }}
             >
               <Header>
@@ -347,19 +367,23 @@ export default class App extends React.Component {
                     alignItems: "center"
                   }}
                 >
-                  <TouchableOpacity style={{ paddingTop: 20 }}>
+                  <TouchableOpacity
+                    style={{ paddingTop: 20, backgroundColor:"yellow" }}
+                    onPress={() => this.switchScreen()}
+                  >
                     <Text>Show QR Code</Text>
                   </TouchableOpacity>
                 </View>
               </ScrollView>
             </View>
           }
+          style={{backgroundColor:"white"}}
           onShowMini={() => console.log("mini")}
           onShowFull={() => console.log("full")}
-          disablePressToShow={true}
-          style={{}}
+          // disablePressToShow={true}
+          swipeHeight={100}
           animation={this.state.animation}
-        />
+        /> */}
       </View>
     );
   }
@@ -417,7 +441,7 @@ const styles = StyleSheet.create({
   qrcode: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: -5
+    // marginBottom: -5
   },
   savingsBar: {
     height: 16,

@@ -33,12 +33,8 @@ export class TransferReason extends Component {
             }}
           >
             <Text>Reason Of Transfer</Text>
-            <Text>
-              Whats is the reason of your transfer?
-            </Text>
-            <Text>
-                Feel free to attact your receipt or skip
-            </Text>
+            <Text>Whats is the reason of your transfer?</Text>
+            <Text>Feel free to attact your receipt or skip</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -73,13 +69,31 @@ export class TransferReason extends Component {
             alignItems: "center"
           }}
         >
-          <TouchableOpacity disabled={this.state.reason === "" ? true : false} onPress={() => this.props.navigation.navigate("PaymentMethod",{
-              amount: this.props.navigation.state.params.amount,
-              reason: this.state.reason
-          })}>
+          <TouchableOpacity style={{backgroundColor:"grey", padding: 20}}
+            disabled={this.state.reason === "" ? true : false}
+            onPress={() =>
+              this.props.navigation.navigate("PaymentMethod", {
+                amount: this.props.navigation.state.params.amount,
+                reason: this.state.reason,
+                transferUser: this.props.navigation.state.params.transferUser,
+                transferContact: this.props.navigation.state.params
+                  .transferContact
+              })
+            }
+          >
             <Text>Next</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate("PaymentMethod")}>
+          <TouchableOpacity style={{backgroundColor:"grey", padding: 20}}
+            onPress={() =>
+              this.props.navigation.navigate("PaymentMethod", {
+                amount: this.props.navigation.state.params.amount,
+                reason: this.state.reason,
+                transferUser: this.props.navigation.state.params.transferUser,
+                transferContact: this.props.navigation.state.params
+                  .transferContact
+              })
+            }
+          >
             <Text>Skip</Text>
           </TouchableOpacity>
         </View>

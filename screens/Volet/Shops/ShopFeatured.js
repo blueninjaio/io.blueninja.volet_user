@@ -107,7 +107,9 @@ export class ShopFeatured extends Component {
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("ShopDetails")}
+              onPress={() => this.props.navigation.navigate("ShopDetails", {
+                shopList: this.props.navigation.state.params.shopList
+              })}
             >
               <Text>See Details</Text>
             </TouchableOpacity>

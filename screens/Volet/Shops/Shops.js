@@ -5,7 +5,8 @@ import {
   View,
   TouchableOpacity,
   FlatList,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import dataInfo from "../../../dataInfo/local.json";
@@ -31,7 +32,7 @@ export class Shops extends Component {
   };
 
   addBusiness = () => {
-    fetch(`${url}/api/category/`, {
+    fetch(`${url}/api/business_category`, {
       method: "GET",
       mode: "cors",
       headers: {

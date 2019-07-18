@@ -122,7 +122,8 @@ export class ShopList extends Component {
                 onPress={() => this.props.navigation.navigate("ShopFeatured",{
                   businessID: item._id,
                   legalName:item.legal_name,
-                  companyName: item.company_name
+                  companyName: item.company_name,
+                  shopList: this.state.shopList
                 })}
               >
                 <View

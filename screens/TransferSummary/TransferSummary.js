@@ -49,8 +49,8 @@ export class TransferSummary extends Component {
                 <Thumbnail small style={{ backgroundColor: "grey" }} />
               </View>
               <View style={{ justifyContent: "center", paddingLeft: 20 }}>
-                <Text>Ariel L. Mermaid</Text>
-                <Text>+6012345678</Text>
+                <Text>{this.props.navigation.state.params.transferUser}</Text>
+                <Text>{this.props.navigation.state.params.transferContact}</Text>
               </View>
             </View>
             <View
