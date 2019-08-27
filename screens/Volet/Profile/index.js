@@ -9,6 +9,7 @@ import AboutVolet from "./AboutVolet";
 import FAQ from "./FAQ";
 import Policies from "./Policies";
 import Feedback from "./FeedBack";
+import ContactSupport from "./ContactSupport";
 // import VoletBalance from "./VoletBalance"
 import ConvertAgent from "./ConvertAgent";
 import Security from "./Security";
@@ -96,6 +97,17 @@ MyFeedbackScreen.navigationOptions = {
 //   }
 // };
 
+const MyContactSupportScreen = ({ navigation }) => (
+  <ContactSupport navigation={navigation} />
+);
+MyContactSupportScreen.navigationOptions = {
+  mode: "card",
+  title: "Contact Support",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
+
 const MyConvertAgentScreen = ({ navigation }) => (
   <ConvertAgent navigation={navigation} />
 );
@@ -152,6 +164,9 @@ const ModalStack = createStackNavigator(
     },
     Security: {
       screen: MySecurityScreen
+    },
+    ContactSupport: {
+      screen: MyContactSupportScreen
     }
   },
   {

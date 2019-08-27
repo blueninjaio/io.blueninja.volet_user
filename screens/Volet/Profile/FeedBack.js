@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   AsyncStorage,
   ScrollView,
-  Alert
+  Alert,
+  SafeAreaView
 } from "react-native";
 import StarRating from "react-native-star-rating";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../../config/index";
+import { LinearGradient } from "expo";
 
 export class FeedBack extends Component {
   constructor(props) {
@@ -123,23 +125,39 @@ export class FeedBack extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ScrollView>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20
+            }}
+          >
             <View
               style={{
-                alignItems: "center",
                 justifyContent: "center",
-                width: width / 1.1
+                alignItems: "flex-start",
+                paddingTop: 20,
+                width: width / 1.3
               }}
             >
-              <View style={{ width: width / 1.8 }}>
-                <Text>Give us some feedback and Ratings</Text>
-                <Text>
-                  Are you happy with our app? What do you think we need to
-                  improve on
-                </Text>
-              </View>
+              <Text
+                style={{
+                  padding: 10,
+                  color: "#5B86E5",
+                  fontSize: width * 0.06,
+                  fontWeight: "500"
+                }}
+              >
+                Give us some feedback and Ratings
+              </Text>
+              <Text
+                style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
+              >
+                Are you happy with our app? What do you think we need to improve
+                on
+              </Text>
               <View>
                 <StarRating
                   disabled={false}
@@ -152,6 +170,8 @@ export class FeedBack extends Component {
                 />
               </View>
             </View>
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
             <View
               style={{
                 justifyContent: "center",
@@ -159,17 +179,18 @@ export class FeedBack extends Component {
                 paddingTop: 30
               }}
             >
-              <Text>Name</Text>
+              <Text style={{ color: "black", fontWeight: "500" }}>Name</Text>
               <TextInput
                 disabled={true}
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
                 // onChangeText={name => this.setState({ name })}
                 value={this.state.fullname}
@@ -185,19 +206,20 @@ export class FeedBack extends Component {
                 paddingTop: 30
               }}
             >
-              <Text>Email</Text>
+              <Text style={{ color: "black", fontWeight: "500" }}>Email</Text>
               <TextInput
                 disabled={true}
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
-                // onChangeText={email => this.setState({ email })}
+                // onChangeText={name => this.setState({ name })}
                 value={this.state.email}
                 type="text"
                 placeholder="Your Email"
@@ -211,19 +233,22 @@ export class FeedBack extends Component {
                 paddingTop: 30
               }}
             >
-              <Text>Mobile Number</Text>
+              <Text style={{ color: "black", fontWeight: "500" }}>
+                Mobile Number
+              </Text>
               <TextInput
                 disabled={true}
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
-                // onChangeText={contact => this.setState({ contact })}
+                // onChangeText={name => this.setState({ name })}
                 value={this.state.contact}
                 type="text"
                 placeholder="Your mobile number"
@@ -237,7 +262,9 @@ export class FeedBack extends Component {
                 paddingTop: 30
               }}
             >
-              <Text>Can you tell us a little bit more?</Text>
+              <Text style={{ color: "black", fontWeight: "500" }}>
+                Can you tell us a little bit more?
+              </Text>
               <TextInput
                 multiline={true}
                 style={{
@@ -247,26 +274,40 @@ export class FeedBack extends Component {
                   // borderRadius: 20,
                   height: 150,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)",
-                  flexShrink: 1
+                  borderWidth: 1,
+                  borderColor: "#5B86E5",
+                  fontSize: 13,
+                  flexShrink: 1,
+                  marginBottom: 15,
+                  marginTop: 10
                 }}
                 onChangeText={feedback => this.setState({ feedback })}
                 value={this.state.feedback}
                 type="text"
                 placeholder="Your Message"
                 placeholderTextColor="rgb(74,74,74)"
-
               />
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => this.addFeedback()}
               style={{ backgroundColor: "grey", padding: 20 }}
             >
               <Text>Send</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={styles.buttonStyle}
+            >
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => this.addFeedback()}
+              >
+                <Text style={styles.loginText}>Next</Text>
+              </TouchableOpacity>
+            </LinearGradient>
           </View>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -280,5 +321,17 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

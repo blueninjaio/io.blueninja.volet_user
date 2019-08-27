@@ -29,7 +29,7 @@ export class AboutVolet extends Component {
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
-            page={""}
+            page={"ContactSupport"}
           />
           <ListButton
             title={"Feed & Ratings"}
@@ -44,7 +44,6 @@ export class AboutVolet extends Component {
             icon={require("../../../assets/glasses.png")}
             navigation={this.props.navigation}
             page={"Policies"}
-
           />
         </ScrollView>
       </View>
