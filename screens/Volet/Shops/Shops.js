@@ -9,7 +9,7 @@ import {
   Alert
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
-import dataInfo from "../../../dataInfo/local.json";
+// import dataInfo from "../../../dataInfo/local.json";
 import { dev, prod, url } from "../../../config";
 
 export class Shops extends Component {
@@ -59,8 +59,8 @@ export class Shops extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <FlatList
+        {/* <View style={{ justifyContent: "center", alignItems: "center" }}> */}
+        {/* <FlatList
             data={this.state.shops}
             showsHorizontalScrollIndicator={false}
             // horizontal
@@ -86,8 +86,9 @@ export class Shops extends Component {
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
-          />
-        </View>
+          /> */}
+        <Text style={styles.text}> Coming Soon </Text>
+        {/* </View> */}
       </View>
     );
   }
@@ -97,9 +98,9 @@ export default Shops;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
   },
   text: {
     color: "#979797",

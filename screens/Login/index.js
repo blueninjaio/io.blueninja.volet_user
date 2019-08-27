@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Icon } from "native-base";
 import Login from "./Login";
@@ -17,17 +17,6 @@ import Home from "../Volet/Home/Home";
 
 const LoginScreen = ({ navigation }) => <Login navigation={navigation} />;
 
-LoginScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  headerLeft: null,
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
-
 const MainScreen = ({ navigation }) => <Main navigation={navigation} />;
 
 MainScreen.navigationOptions = {
@@ -37,45 +26,11 @@ MainScreen.navigationOptions = {
 
 const SignupScreen = ({ navigation }) => <Signup navigation={navigation} />;
 
-SignupScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  headerLeft: null,
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
-
 const TACScreen = ({ navigation }) => <TAC navigation={navigation} />;
-
-TACScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  headerLeft: null,
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
 
 const SignUpInfoScreen = ({ navigation }) => (
   <SignUpInfo navigation={navigation} />
 );
-
-SignUpInfoScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  headerLeft: null,
-  title: "Sign Up",
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
 
 const SetPinScreen = ({ navigation }) => <SetPin navigation={navigation} />;
 
@@ -88,74 +43,19 @@ const ContactSupportScreen = ({ navigation }) => (
   <ContactSupport navigation={navigation} />
 );
 
-ContactSupportScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  title: "Contact Support",
-  headerRight: (
-    <TouchableOpacity>
-      <Icon name="closecircleo" type="AntDesign" />
-    </TouchableOpacity>
-  )
-};
-
 const ForgetPasswordScreen = ({ navigation }) => (
   <ForgetPassword navigation={navigation} />
 );
-
-ForgetPasswordScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  title: "Forget Password",
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
 
 const ResetPasswordScreen = ({ navigation }) => (
   <ResetPassword navigation={navigation} />
 );
 
-ResetPasswordScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  title: "Forget Password",
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
-
 const ConfirmNewPasswordScreen = ({ navigation }) => (
   <ConfirmNewPassword navigation={navigation} />
 );
 
-ConfirmNewPasswordScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  title: "Reset Password",
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
-
 const FPTacScreen = ({ navigation }) => <FPTac navigation={navigation} />;
-
-FPTacScreen.navigationOptions = {
-  mode: "card",
-  // header: null
-  title: "Forget Password",
-  headerRight: (
-    <TouchableOpacity>
-      <Text>Cancel</Text>
-    </TouchableOpacity>
-  )
-};
 
 const MyHomeScreen = ({ navigation }) => <Home navigation={navigation} />;
 MyHomeScreen.navigationOptions = {
@@ -169,34 +69,170 @@ const ModalStack = createStackNavigator(
       screen: MainScreen
     },
     Login: {
-      screen: LoginScreen
+      screen: LoginScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     Signup: {
-      screen: SignupScreen
+      screen: SignupScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     TAC: {
-      screen: TACScreen
+      screen: TACScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        title: 'Create Account',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     SignUpInfo: {
-      screen: SignUpInfoScreen
+      screen: SignUpInfoScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        title: 'Sign Up',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     SetPin: {
       screen: SetPinScreen
     },
     ContactSupport: {
-      screen: ContactSupportScreen
+      screen: ContactSupportScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     ForgetPassword: {
-      screen: ForgetPasswordScreen
+      screen: ForgetPasswordScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Forget Password',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     ResetPassword: {
-      screen: ResetPasswordScreen
+      screen: ResetPasswordScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Forget Password',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     ConfirmNewPassword: {
-      screen: ConfirmNewPasswordScreen
+      screen: ConfirmNewPasswordScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        title: 'Reset Password',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     FPTac: {
-      screen: FPTacScreen
+      screen: FPTacScreen,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        title: 'Forget Password',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          borderBottomWidth: 0,
+          shadowColor: "transparent",
+          shadowOpacity: 0
+        }
+      })
     },
     Home: {
       screen: MyHomeScreen
@@ -210,3 +246,11 @@ const ModalStack = createStackNavigator(
 );
 
 export default createAppContainer(ModalStack);
+
+const styles = StyleSheet.create({
+  cancelBut: {
+    marginRight: 10,
+    color:"rgb(215,215,215)",
+
+  }
+});

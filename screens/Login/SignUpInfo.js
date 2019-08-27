@@ -17,7 +17,8 @@ import {
   Permissions,
   LocalAuthentication,
   Expo,
-  Constants
+  Constants,
+  LinearGradient
 } from "expo";
 import { connect } from "react-redux";
 
@@ -36,7 +37,8 @@ export class SignUpInfo extends Component {
       compatible: false,
       fingerprints: false,
       result: "",
-      token: ""
+      token: "",
+      isEmailValid: false
     };
   }
 
@@ -51,43 +53,50 @@ export class SignUpInfo extends Component {
   |--------------------------------------------------
   */
   userSignUp = () => {
-    fetch(`${url}/api/users/`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        facebook_id: this.state.facebook_id,
-        google_id: this.state.google_id,
-        contact: this.props.navigation.state.params.contact,
-        f_name: this.state.firstName,
-        l_name: this.state.lastName,
-        email: this.state.email,
-        password: this.state.password
+    if (this.state.isEmailValid === false) {
+      alert("Invalid Email");
+    } else if (this.state.password !== this.state.CPassword) {
+      alert("Password is not matching");
+    } else {
+      fetch(`${url}/api/users/`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify({
+          facebook_id: this.state.facebook_id,
+          google_id: this.state.google_id,
+          contact: this.props.navigation.state.params.contact,
+          f_name: this.state.firstName,
+          l_name: this.state.lastName,
+          email: this.state.email,
+          password: this.state.password,
+          token: this.props.navigation.state.params.token
+        })
       })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success === true) {
-          // this.props.navigation.navigate("Login");
-          console.log("Sign Up info", data);
+        .then(res => res.json())
+        .then(data => {
+          if (data.success === true) {
+            // this.props.navigation.navigate("Login");
+            console.log("Sign Up info", data);
+            Alert.alert(
+              "Success",
+              `${data.message}`,
+              [{ text: "OK", onPress: () => this.reduxLogin() }],
+              { cancelable: false }
+            );
+          }
+        })
+        .catch(error => {
           Alert.alert(
-            "Success",
-            `${data.message}`,
-            [{ text: "OK", onPress: () => this.reduxLogin() }],
+            "Error connecting to server",
+            `Please check your internet or try again later`,
+            [{ text: "OK", onPress: () => null }],
             { cancelable: false }
           );
-        }
-      })
-      .catch(error => {
-        Alert.alert(
-          "Error connecting to server",
-          `Please check your internet or try again later`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
-      });
+        });
+    }
   };
 
   /**
@@ -96,47 +105,42 @@ export class SignUpInfo extends Component {
   |--------------------------------------------------
   */
   reduxLogin = () => {
-    if (this.state.email.length < 5 || !this.state.email.includes("@"))
-      alert(`Please enter a valid email address.`);
-    else if (this.state.password.length < 6) alert(`Please enter a password.`);
-    else {
-      fetch(`${url}/api/users/login`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
-        })
+    fetch(`${url}/api/users/login`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password
       })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            this._storeData(data.token, data.user).then(() => {
-              this.registerForPushNotificationsAsync();
-              if (Platform.OS === "android") {
-                this.showAndroidAlert();
-              } else {
-                this.scanFingerprint();
-              }
-              // this.props.logMeIn();
-            });
-          } else alert(data.message);
-        })
-        .catch(err => {
-          //To be removed in production
-          console.log("Error for login:", err);
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          this._storeData(data.token, data.user).then(() => {
+            this.registerForPushNotificationsAsync();
+            if (Platform.OS === "android") {
+              this.showAndroidAlert();
+            } else {
+              this.scanFingerprint();
+            }
+            // this.props.logMeIn();
+          });
+        } else alert(data.message);
+      })
+      .catch(err => {
+        //To be removed in production
+        console.log("Error for login:", err);
 
-          Alert.alert(
-            "Error connecting to server",
-            `Please try again later`,
-            [{ text: "OK", onPress: () => null }],
-            { cancelable: false }
-          );
-        });
-    }
+        Alert.alert(
+          "Error connecting to server",
+          `Please try again later`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
   };
 
   /**
@@ -192,7 +196,8 @@ export class SignUpInfo extends Component {
       },
       body: JSON.stringify({
         token: token,
-        email: this.state.email
+        email: this.state.email,
+        changeBarColor: "red"
       })
     });
   };
@@ -252,6 +257,37 @@ export class SignUpInfo extends Component {
     );
   };
 
+  onActionCheckPassword = password => {
+    console.log("Password", password);
+    let normalPassword = /(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$)?(^(?=.*\d)(?=.*[a-z])(?=.*[@#$%^&+=]).*$)?(^(?=.*\d)(?=.*[A-Z])(?=.*[@#$%^&+=]).*$)?(^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$)?/.test(
+      password
+    );
+    let strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$/.test(
+      password
+    );
+
+    if (password.length < 5 || !normalPassword) {
+      this.setState({ changeBarColor: "weak" });
+    } else if (password.length === 5 || normalPassword) {
+      this.setState({ changeBarColor: "normal" });
+    } else if (password.length >= 8 || normalPassword) {
+      this.setState({ changeBarColor: "strong" });
+    }
+    this.setState({ password });
+  };
+
+  inputEmail = email => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if (reg.test(email) === false) {
+      this.setState({ isEmailValid: false });
+    } else {
+      email.trim();
+      this.setState({ isEmailValid: true });
+    }
+    this.setState({ email });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -259,117 +295,306 @@ export class SignUpInfo extends Component {
           style={{
             justifyContent: "center",
             alignItems: "center",
-            paddingTop: 30
+            marginTop: 30
           }}
         >
-          <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
-            <Text>First name</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-start",
+              marginBottom: 20
+            }}
+          >
+            <Text style={{ fontSize: 13, fontWeight: "600", color: "black" }}>
+              First name
+            </Text>
             <TextInput
               style={{
                 alignSelf: "center",
+                marginTop: 10,
                 width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                fontSize: 12
               }}
               onChangeText={firstName => this.setState({ firstName })}
               value={this.state.firstName}
               type="text"
               placeholder="Your first name"
-              placeholderTextColor="rgb(74,74,74)"
+              placeholderTextColor="rgb(215,215,215)"
             />
           </View>
-          <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
-            <Text>Last name</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-start",
+              marginBottom: 20
+            }}
+          >
+            <Text style={{ fontSize: 13, fontWeight: "600", color: "black" }}>
+              Last name
+            </Text>
             <TextInput
               style={{
                 alignSelf: "center",
+                marginTop: 10,
                 width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                fontSize: 12
               }}
               onChangeText={lastName => this.setState({ lastName })}
               value={this.state.lastName}
               type="text"
               placeholder="Your last name"
-              placeholderTextColor="rgb(74,74,74)"
+              placeholderTextColor="rgb(215,215,215)"
             />
           </View>
-          <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
-            <Text>Email</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-start",
+              marginBottom: 20
+            }}
+          >
+            <Text style={{ fontSize: 13, fontWeight: "600", color: "black" }}>
+              Email
+            </Text>
             <TextInput
               style={{
                 alignSelf: "center",
+                marginTop: 10,
                 width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                fontSize: 12
               }}
-              onChangeText={email => this.setState({ email })}
+              onChangeText={email => this.inputEmail(email)}
               value={this.state.email}
               type="text"
               placeholder="Your email"
-              placeholderTextColor="rgb(74,74,74)"
+              placeholderTextColor="rgb(215,215,215)"
             />
+            {/* { this.state.isEmailValid === false ? <Text>Invalid email</Text>: null} */}
           </View>
-          <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
-            <Text>Password</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-start",
+              marginBottom: 20
+            }}
+          >
+            <Text style={{ fontSize: 13, fontWeight: "600", color: "black" }}>
+              Password
+            </Text>
             <TextInput
               style={{
                 alignSelf: "center",
+                marginTop: 10,
                 width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                fontSize: 12
               }}
-              onChangeText={password => this.setState({ password })}
+              onChangeText={password => this.onActionCheckPassword(password)}
               value={this.state.password}
               secureTextEntry={true}
               type="password"
               placeholder="Password"
-              placeholderTextColor="rgb(74,74,74)"
+              placeholderTextColor="rgb(215,215,215)"
             />
+            {this.state.changeBarColor === "normal" ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: 5
+                }}
+              >
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "yellow",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "yellow",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "white",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+              </View>
+            ) : this.state.changeBarColor === "strong" ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: 5
+                }}
+              >
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "rgb(105,219,100)",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "rgb(105,219,100)",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "rgb(105,219,100)",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+              </View>
+            ) : this.state.changeBarColor === "weak" ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: 5
+                }}
+              >
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "red",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "white",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "white",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+              </View>
+            ) : (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  marginTop: 5
+                }}
+              >
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "red",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "white",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+                <View
+                  style={{
+                    width: "20%",
+                    backgroundColor: "white",
+                    padding: 7,
+                    marginLeft: 3
+                  }}
+                />
+              </View>
+            )}
           </View>
-          <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
-            <Text>Confirm Password</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-start",
+              marginBottom: 20
+            }}
+          >
+            <Text style={{ fontSize: 13, fontWeight: "600", color: "black" }}>
+              Confirm Password
+            </Text>
             <TextInput
               style={{
                 alignSelf: "center",
+                marginTop: 10,
                 width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                fontSize: 12
               }}
               onChangeText={CPassword => this.setState({ CPassword })}
               value={this.state.CPassword}
               secureTextEntry={true}
               type="password"
               placeholder="Confirm Password"
-              placeholderTextColor="rgb(74,74,74)"
+              placeholderTextColor="rgb(215,215,215)"
             />
           </View>
         </View>
         <View
           style={{
-            height: 200,
-            justifyContent: "center",
-            alignItems: "center"
+            position: "absolute",
+            bottom: 80,
+            width: width
           }}
         >
-          <TouchableOpacity onPress={() => this.userSignUp()}>
-            <Text>Next</Text>
-          </TouchableOpacity>
+          <View style={{ alignItems: "center" }}>
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={styles.buttonStyle}
+            >
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => this.userSignUp()}
+              >
+                <Text style={styles.loginText}>Next</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          </View>
         </View>
       </View>
     );
@@ -396,5 +621,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff"
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import {
   Text,
@@ -11,6 +10,7 @@ import {
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
+import { LinearGradient } from "expo";
 
 export class ForgetPassword extends Component {
   constructor(props) {
@@ -18,10 +18,14 @@ export class ForgetPassword extends Component {
 
     this.state = {
       email: "",
-      contact:"",
-      tempPassword:""
+      contact: "",
+      tempPassword: ""
     };
   }
+
+  componentDidMount = () => {
+    this.setState({ email: this.props.navigation.state.params.email });
+  };
 
   /**
   |--------------------------------------------------
@@ -30,31 +34,28 @@ export class ForgetPassword extends Component {
   */
 
   forgetpassword = () => {
-    fetch(`${url}/api/users/tempPassword`, {
+    fetch(`${url}/api/users/forget-password`, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json; charset=utf-8"
       },
       body: JSON.stringify({
-        email: this.state.email
+        email: this.props.navigation.state.params.email,
+        token: this.props.navigation.state.params.token
       })
     })
       .then(res => res.json())
       .then(data => {
         console.log("Forgot password :", data);
         // if (data.success === true) {
-        if (data.success === false) {
-          this.props.navigation.navigate("ResetPassword",{
-            tempPassword: data.tempPassword,
-            contact: data.contact,
-            email: this.state.email
-          })
+        if (data.success === true) {
+          this.props.navigation.navigate("ConfirmNewPassword", {
+            token: this.props.navigation.state.params.token
+          });
+        } else {
+          alert(`${data.message}`);
         }
-        else {
-          alert(`${data.message}`)
-        }
-
       })
       .catch(error => {
         Alert.alert(
@@ -70,40 +71,85 @@ export class ForgetPassword extends Component {
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <View style={{ width: width / 1.5, paddingTop: 30 }}>
-            <Text style={{ textAlign: "center" }}>
-              Please enter your email and mobile number below to recieve a
-              temporary password
-            </Text>
-          </View>
           <View
             style={{
-              justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 30
+              width: width / 1.5,
+              marginTop: 50,
+              marginBottom: height * 0.04
             }}
           >
-            <Text>Email</Text>
+            <Text style={{ textAlign: "center", color: "rgb(74,74,74)" }}>
+              Please enter your temporay password below based on email you
+              recieved
+            </Text>
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
+            <Text style={{ fontSize: 13, fontWeight: "bold", color: "black" }}>
+              Email
+            </Text>
             <TextInput
               style={{
-                alignSelf: "center",
                 width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                marginBottom: 15,
+                marginTop: 10,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                fontSize: 13
               }}
-              onChangeText={email => this.setState({ email })}
+              // onChangeText={email => this.setState({ email })}
               value={this.state.email}
               type="text"
               placeholder="Email"
-              placeholderTextColor="rgb(74,74,74)"
+              placeholderTextColor="rgb(215,215,215)"
             />
           </View>
-          <TouchableOpacity onPress={() => this.forgetpassword()}>
-            <Text>Submit</Text>
-          </TouchableOpacity>
+          {/* <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
+            <Text style={{ fontSize: 13, fontWeight: "bold", color: "black" }}>
+              Temporary Password
+            </Text>
+            <TextInput
+              style={{
+                alignItems: "flex-end",
+                width: width / 1.2,
+                marginBottom: 15,
+                marginTop: 10,
+                height: 20,
+                color: "rgb(74,74,74)",
+                borderBottomWidth: 1,
+                borderBottomColor: "rgb(52, 182, 215)",
+                fontSize: 13
+              }}
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+              secureTextEntry={true}
+              type="text"
+              placeholder="Password"
+              placeholderTextColor="rgb(215,215,215)"
+            />
+          </View> */}
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 50,
+            width: width
+          }}
+        >
+          <LinearGradient
+            colors={["#36D1DC", "#5B86E5"]}
+            style={styles.buttonStyle}
+          >
+            <TouchableOpacity
+              onPress={() => this.forgetpassword()}
+              style={styles.buttonStyle}
+            >
+              <Text style={styles.loginText}>Submit</Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </View>
     );
@@ -121,5 +167,17 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
     height: height / 3.5,
     width: width / 1.2
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

@@ -7,7 +7,9 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  TextInput
+  TextInput,
+  SafeAreaView,
+  Image
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
@@ -24,51 +26,87 @@ export class SendPayment extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 20
+          }}
+        >
           <View
             style={{
-              width: width / 1.5,
               justifyContent: "center",
-              alignItems: "flex-start"
+              alignItems: "flex-start",
+              paddingTop: 20,
+              width: width / 1.3
             }}
           >
-            <Text>Send Payment</Text>
-            <Text>
+            <Text
+              style={{
+                padding: 10,
+                color: "#5B86E5",
+                fontSize: width * 0.06,
+                fontWeight: "500"
+              }}
+            >
+              Send Payment
+            </Text>
+            <Text
+              style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
+            >
               Enter a name, contact number or scan your friends OR code to send
               a payment
             </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingTop: 30
-              }}
-            >
-              <TextInput
-                style={{
-                  alignSelf: "center",
-                  width: width / 2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
-                  color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
-                }}
-                onChangeText={contact => this.setState({ contact })}
-                value={this.state.contact}
-                type="text"
-                placeholder="Name Contact Number/  "
-                placeholderTextColor="rgb(74,74,74)"
-              />
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("PaymentAmount")}>
-                <Icon name="qrcode" type="AntDesign" />
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
-      </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: 30,
+            width: width / 1.5,
+            // paddingLeft: 10
+
+            }}
+          >
+            <TextInput
+              style={{
+                alignSelf: "center",
+                width: width / 2,
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                height: 20,
+                color: "rgb(74,74,74)",
+              }}
+              onChangeText={contact => this.setState({ contact })}
+              value={this.state.contact}
+              type="text"
+              placeholder="Name / Contact Number  "
+              placeholderTextColor="rgb(215,215,215)"
+            />
+            <TouchableOpacity
+              style={{
+
+              }}
+              onPress={() => this.props.navigation.navigate("PaymentAmount")}
+            >
+              <Image
+                source={require("../../assets/qrcode.png")}
+                resizeMode="contain"
+                style={{ width: 20, height: 20 }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }

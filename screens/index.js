@@ -58,7 +58,6 @@ export class App extends React.Component {
                             ?
                             // <Login logMeIn={this.props.logMeIn} />
                             <LoginNavigator />
-
                             :
                             <View style={styles.container}>
                                 <Text>Can't Connect to Redux</Text>

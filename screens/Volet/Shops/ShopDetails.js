@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import dataInfo from "../../../dataInfo/local.json"
+// import dataInfo from "../../../dataInfo/local.json"
 
 export class ShopDetails extends Component {
   constructor(props) {
@@ -30,17 +30,17 @@ export class ShopDetails extends Component {
               width: width / 1.2
             }}
           >
-            <Text>{dataInfo.featuredShopsDetails.title}</Text>
-            <Text>{dataInfo.featuredShopsDetails.desc}</Text>
+            {/* <Text>{dataInfo.featuredShopsDetails.title}</Text> */}
+            {/* <Text>{dataInfo.featuredShopsDetails.desc}</Text> */}
 
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="ios-timer" type="Ionicons" />
-                <Text>{dataInfo.featuredShopsDetails.time}</Text>
+                {/* <Text>{dataInfo.featuredShopsDetails.time}</Text> */}
               </View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Icon name="ios-timer" type="Ionicons" />
-                <Text>{dataInfo.featuredShopsDetails.distance}</Text>
+                {/* <Text>{dataInfo.featuredShopsDetails.distance}</Text> */}
               </View>
             </View>
             <View
@@ -56,7 +56,7 @@ export class ShopDetails extends Component {
                 <Text>Location</Text>
               </View>
               <View style={{width:width/ 2.5}}>
-                <Text>{dataInfo.featuredShopsDetails.address}</Text>
+                {/* <Text>{dataInfo.featuredShopsDetails.address}</Text> */}
               </View>
             </View>
             <Text>Opening Hours</Text>
@@ -77,7 +77,7 @@ export class ShopDetails extends Component {
                   <Text>Sun</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Sun.startTime} - {dataInfo.featuredShopsDetails.openingHours.Sun.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Sun.startTime} - {dataInfo.featuredShopsDetails.openingHours.Sun.endTime}</Text> */}
                 </View>
               </View>
               <View
@@ -91,7 +91,7 @@ export class ShopDetails extends Component {
                   <Text>Mon</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Mon.startTime} - {dataInfo.featuredShopsDetails.openingHours.Mon.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Mon.startTime} - {dataInfo.featuredShopsDetails.openingHours.Mon.endTime}</Text> */}
                 </View>
               </View>
               <View
@@ -105,7 +105,7 @@ export class ShopDetails extends Component {
                   <Text>Tues</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Tues.startTime} - {dataInfo.featuredShopsDetails.openingHours.Tues.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Tues.startTime} - {dataInfo.featuredShopsDetails.openingHours.Tues.endTime}</Text> */}
                 </View>
               </View>
                <View
@@ -119,7 +119,7 @@ export class ShopDetails extends Component {
                   <Text>Wed</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Wed.startTime} - {dataInfo.featuredShopsDetails.openingHours.Wed.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Wed.startTime} - {dataInfo.featuredShopsDetails.openingHours.Wed.endTime}</Text> */}
                 </View>
               </View>
               <View
@@ -133,7 +133,7 @@ export class ShopDetails extends Component {
                   <Text>Thu</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Thu.startTime} - {dataInfo.featuredShopsDetails.openingHours.Thu.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Thu.startTime} - {dataInfo.featuredShopsDetails.openingHours.Thu.endTime}</Text> */}
                 </View>
               </View>
               <View
@@ -147,7 +147,7 @@ export class ShopDetails extends Component {
                   <Text>Fri</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Fri.startTime} - {dataInfo.featuredShopsDetails.openingHours.Fri.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Fri.startTime} - {dataInfo.featuredShopsDetails.openingHours.Fri.endTime}</Text> */}
                 </View>
               </View>
               <View
@@ -161,7 +161,7 @@ export class ShopDetails extends Component {
                   <Text>Sat</Text>
                 </View>
                 <View>
-                  <Text>{dataInfo.featuredShopsDetails.openingHours.Sat.startTime} - {dataInfo.featuredShopsDetails.openingHours.Sat.endTime}</Text>
+                  {/* <Text>{dataInfo.featuredShopsDetails.openingHours.Sat.startTime} - {dataInfo.featuredShopsDetails.openingHours.Sat.endTime}</Text> */}
                 </View>
               </View> 
 

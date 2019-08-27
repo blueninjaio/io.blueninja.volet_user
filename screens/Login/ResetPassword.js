@@ -9,147 +9,114 @@ import {
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
+import { LinearGradient } from "expo";
 
 export class ResetPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      contact: "",
-      tempPassword: ""
+      contact: ""
     };
   }
 
-  // forgetpassword = () => {
-  //   this.props.navigation.state.params.temporaryPassword,
-  //     this.props.navigation.state.params.email;
-  //   fetch(`${url}/api/users/tempPassword`, {
-  //     method: "POST",
-  //     mode: "cors",
-  //     headers: {
-  //       "Content-Type": "application/json; charset=utf-8"
-  //     },
-  //     body: JSON.stringify({
-  //       email: this.state.email
-  //     })
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log("Forgot password :", data);
-  //       this.props.navigation.navigate("FPTac", {
-  //         temporaryPassword: this.props.navigation.state.params
-  //           .temporaryPassword,
-  //         email: this.props.navigation.state.params.email,
-  //         contact: this.state.contact
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.log("Error sign up", error);
-  //       Alert.alert(
-  //         "Error connecting to server",
-  //         `${error}`,
-  //         [{ text: "OK", onPress: () => null }],
-  //         { cancelable: false }
-  //       );
-  //     });
-  // };
+  forgetpassword = () => {
+    fetch(`${url}/api/tac/`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        contact: this.state.contact,
+        type: 1
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Forgot password :", data);
+        if (data.success === true) {
+          this.props.navigation.navigate("TAC", {
+            contact: "+60"+this.state.contact,
+            requestMethod: "ResetPassword",
+            token:data.token
+          });
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.log("Error Tac", error);
+        Alert.alert(
+          "Error connecting to server",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <View style={{ width: width / 1.5, paddingTop: 30 }}>
-            <Text style={{ textAlign: "center" }}>
-              Please enter your mobile number and your temporary password to
-              receive a new TAC code and reset your
+          <View style={{ width: width / 1.5, marginTop: 50 }}>
+            <Text style={{ textAlign: "center", color: "rgb(74,74,74)" }}>
+              Please enter your mobile number to receive a new TAC code
             </Text>
           </View>
           <View
             style={{
+              marginTop: height * 0.03,
               justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 30
+              alignItems: "center",
+              flexDirection: "row",
+              width: "80%"
             }}
           >
-            <Text>Mobile number</Text>
+            <Text style={{ fontSize: width * 0.04, marginRight: 10 }}>+60</Text>
             <TextInput
               style={{
-                alignSelf: "center",
-                width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
+                width: "80%",
+                marginBottom: 10,
+                height: 20,
                 color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5"
               }}
-              // onChangeText={contact => this.setState({ contact })}
-              value={this.props.navigation.state.params.contact}
-              type="text"
-              placeholder="Mobile Number"
-              placeholderTextColor="rgb(74,74,74)"
-            />
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 30
-            }}
-          >
-            <Text>Temporary Password</Text>
-            <TextInput
-              style={{
-                alignSelf: "center",
-                width: width / 1.2,
-                paddingLeft: 20,
-                // borderRadius: 20,
-                height: 50,
-                color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
-              }}
-              // onChangeText={tempPassword => this.setState({ tempPassword })}
-              value={this.props.navigation.state.params.tempPassword}
-              type="text"
-              placeholder="Temp Password"
-              placeholderTextColor="rgb(74,74,74)"
-              secureTextEntry={true}
-
+              onChangeText={text =>
+                this.setState({
+                  contact: text.replace(/[^0-9]/g, "")
+                })
+              }
+              value={this.state.contact}
+              type="number"
+              placeholder="Your mobile number"
+              placeholderTextColor="rgb(215,215,215)"
+              keyboardType="numeric"
             />
           </View>
         </View>
         <View
           style={{
-            justifyContent: "flex-end",
+            justifyContent: "center",
             alignItems: "center",
-            height: height / 2
+            position: "absolute",
+            bottom: 50,
+            width: width
           }}
         >
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate("FPTac", {
-                tempPassword: this.props.navigation.state.params
-                  .tempPassword,
-                email: this.props.navigation.state.params.email,
-                contact: this.props.navigation.state.params.contact
-              })
-            }
-            style={{ padding: 20 }}
+          <LinearGradient
+            colors={["#36D1DC", "#5B86E5"]}
+            style={styles.buttonStyle}
           >
-            <Text>Request Code</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              this.props.navigation.navigate("FPTac", {
-                tempPassword: this.props.navigation.state.params
-                  .tempPassword,
-                email: this.props.navigation.state.params.email,
-                contact: this.state.contact
-              })
-            }
-            style={{ padding: 20 }}
-          >
-            <Text>Resend Code</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.forgetpassword()}
+              style={styles.buttonStyle}
+            >
+              <Text style={styles.loginText}>Request Code</Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
       </View>
     );
@@ -167,5 +134,17 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
     height: height / 3.5,
     width: width / 1.2
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

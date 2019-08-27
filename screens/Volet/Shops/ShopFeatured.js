@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import dataInfo from "../../../dataInfo/local.json"
+// import dataInfo from "../../../dataInfo/local.json"
 import { dev, prod, url } from "../../../config";
 
 
@@ -94,15 +94,15 @@ export class ShopFeatured extends Component {
           </View>
         </View>
         <View style={{ alignItems: "flex-start", justifyContent: "center" }}>
-          <Text>{dataInfo.shopAvailablityInfo.availablityStatus}</Text>
+          {/* <Text>{dataInfo.shopAvailablityInfo.availablityStatus}</Text> */}
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="ios-timer" type="Ionicons" />
-              <Text>{dataInfo.shopAvailablityInfo.time}</Text>
+              {/* <Text>{dataInfo.shopAvailablityInfo.time}</Text> */}
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="ios-timer" type="Ionicons" />
-              <Text>{dataInfo.shopAvailablityInfo.distance}</Text>
+              {/* <Text>{dataInfo.shopAvailablityInfo.distance}</Text> */}
             </View>
           </View>
           <View>

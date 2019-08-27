@@ -5,12 +5,13 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
-import { ImagePicker, Permissions } from "expo";
+import { ImagePicker, Permissions, LinearGradient } from "expo";
 
 export class PersonalDetails extends Component {
   constructor(props) {
@@ -25,7 +26,6 @@ export class PersonalDetails extends Component {
       imageUri: ""
     };
   }
-
 
   /**
   |--------------------------------------------------
@@ -45,7 +45,7 @@ export class PersonalDetails extends Component {
     }
   };
 
-    /**
+  /**
   |--------------------------------------------------
   | Image Picker Implementation
   |--------------------------------------------------
@@ -73,14 +73,14 @@ export class PersonalDetails extends Component {
 
   render() {
     return (
-      <View styles={styles.container}>
+      <SafeAreaView styles={styles.container}>
         <ScrollView>
           <View
             style={{
               justifyContent: "center",
               alignItems: "center",
-              paddingLeft: 15,
-              paddingRight: 20,
+              // paddingLeft: 15,
+              // paddingRight: 20,
               marginTop: 30
             }}
           >
@@ -88,27 +88,18 @@ export class PersonalDetails extends Component {
               style={{
                 alignItems: "center",
                 justifyContent: "center"
-                // height: height / 8
-                // backgroundColor: "grey"
               }}
             >
-            {
-              this.state.imageUri !== ""
-              ?
-              <Thumbnail
-                large
-                style={{ backgroundColor: "grey" }}
-                source={{ uri: `${this.state.imageUri}` }}
-              />
-              :
-              <Thumbnail
-                large
-                style={{ backgroundColor: "grey" }}
-                // source={{ uri: `${this.state.imageUri}` }}
-              />
+              {this.state.imageUri !== "" ? (
+                <Thumbnail
+                  large
+                  style={{ backgroundColor: "grey" }}
+                  source={{ uri: `${this.state.imageUri}` }}
+                />
+              ) : (
+                <Thumbnail large style={{ backgroundColor: "grey" }} />
+              )}
 
-            }
-              
               <TouchableOpacity
                 style={{
                   //   justifyContent: "flex-start",
@@ -118,8 +109,16 @@ export class PersonalDetails extends Component {
                 }}
                 onPress={() => this._onChoosePic()}
               >
-                <Icon name="ios-add-circle-outline" type="Ionicons" />
-                <Text>Upload Profile Images</Text>
+                <Icon
+                  name="ios-add-circle-outline"
+                  type="Ionicons"
+                  style={{ fontSize: 17, color: "#5B86E5" }}
+                />
+                <Text
+                  style={{ marginLeft: 10, fontSize: 14, fontWeight: "500" }}
+                >
+                  Upload Profile Images
+                </Text>
               </TouchableOpacity>
             </View>
             <View
@@ -129,16 +128,17 @@ export class PersonalDetails extends Component {
                 paddingTop: 30
               }}
             >
-              <Text>First Name</Text>
+              <Text style={{ color: "rgb(74, 74, 74)" }}>First Name</Text>
               <TextInput
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
                 onChangeText={firstName => this.setState({ firstName })}
                 value={this.state.firstName}
@@ -157,13 +157,14 @@ export class PersonalDetails extends Component {
               <Text>Last Name</Text>
               <TextInput
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
                 onChangeText={lastName => this.setState({ lastName })}
                 value={this.state.lastName}
@@ -182,13 +183,14 @@ export class PersonalDetails extends Component {
               <Text>Email</Text>
               <TextInput
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
                 onChangeText={email => this.setState({ email })}
                 value={this.state.email}
@@ -207,13 +209,14 @@ export class PersonalDetails extends Component {
               <Text>Mobile Number</Text>
               <TextInput
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
                 onChangeText={contact => this.setState({ contact })}
                 value={this.state.contact}
@@ -226,41 +229,43 @@ export class PersonalDetails extends Component {
               style={{
                 justifyContent: "center",
                 alignItems: "flex-start",
-                paddingTop: 30
+                paddingTop: 30,
+                marginBottom:20
               }}
             >
               <Text>Address </Text>
               <TextInput
                 style={{
-                  alignSelf: "center",
                   width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
+                  marginBottom: 15,
+                  marginTop: 10,
+                  height: 20,
                   color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  fontSize: 13
                 }}
                 onChangeText={id => this.setState({ address })}
                 value={this.state.address}
                 type="text"
-                placeholder="Passport Number"
+                placeholder="Address"
                 placeholderTextColor="rgb(74,74,74)"
               />
             </View>
-
-            <TouchableOpacity
-              style={{
-                justifyContent: "center",
-                alignItems: "flex-start",
-                paddingTop: 30
-              }}
-              onPress={() => this.inputCheck()}
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={styles.buttonStyle}
             >
-              <Text>Next</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => this.inputCheck()}
+              >
+                <Text style={styles.loginText}>Next</Text>
+              </TouchableOpacity>
+            </LinearGradient>
           </View>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -276,5 +281,17 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

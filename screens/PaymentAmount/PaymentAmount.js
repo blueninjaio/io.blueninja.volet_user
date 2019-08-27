@@ -9,11 +9,14 @@ import {
   Alert,
   TextInput,
   AsyncStorage,
-  ScrollView
+  ScrollView,
+  SafeAreaView
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
+import { Notifications, Permissions, LinearGradient } from "expo";
+import { Input } from "react-native-elements";
 
 export class PaymentAmount extends Component {
   constructor(props) {
@@ -35,17 +38,17 @@ export class PaymentAmount extends Component {
 |--------------------------------------------------
 */
   componentDidMount = () => {
-    this.getUserID();
+    // this.getUserID();
     // console.log("Transfer User Details", this.props.navigation.state.params.userDetails)
-    this.setState({
-      transferUser:
-        this.props.navigation.state.params.userDetails.f_name +
-        " " +
-        this.props.navigation.state.params.userDetails.l_name
-    });
-    this.setState({
-      transferContact: this.props.navigation.state.params.userDetails.contact
-    });
+    // this.setState({
+    //   transferUser:
+    //     this.props.navigation.state.params.userDetails.f_name +
+    //     " " +
+    //     this.props.navigation.state.params.userDetails.l_name
+    // });
+    // this.setState({
+    //   transferContact: this.props.navigation.state.params.userDetails.contact
+    // });
   };
 
   getUserID = async () => {
@@ -114,101 +117,129 @@ export class PaymentAmount extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <View
+      <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 20
+          }}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "flex-start",
+              paddingTop: 20,
+              width: width / 1.3
+            }}
+          >
+            <Text
               style={{
-                width: width / 1.5,
-                justifyContent: "center",
-                alignItems: "flex-start"
+                padding: 10,
+                color: "#5B86E5",
+                fontSize: width * 0.06,
+                fontWeight: "500"
               }}
             >
-              <Text>Amount To Pay</Text>
-              <Text>How much do you want to pay your friends</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  marginBottom: 20
-                }}
-              >
-                <View>
-                  <Thumbnail small style={{ backgroundColor: "grey" }} />
-                </View>
-                <View style={{ justifyContent: "center", paddingLeft: 20 }}>
-                  <Text>{this.state.transferUser}</Text>
-                  <Text>{this.state.transferContact}</Text>
-                </View>
-              </View>
-              <TextInput
-                style={{
-                  alignSelf: "center",
-                  width: width / 2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
-                  color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
-                }}
-                onChangeText={price => this.checkVoletBalance(price)}
-                value={this.state.price}
-                type="text"
-                placeholder="amount"
-                // keyboardType="numeric"
-                placeholderTextColor="rgb(74,74,74)"
-              />
-              {this.state.errorMessage === "Amount Exceeds" ? (
-                <Text style={{ color: "red" }}>
-                  Amount exceeds from balance
-                </Text>
-              ) : this.state.errorMessage === "Not Suffcient" ? (
-                <View>
-                  <Text style={{ color: "red" }}>
-                    Amount is not suffcient to be transfered.{" "}
-                  </Text>
-                  <Text style={{ color: "red" }}>
-                    Please increase the amount
-                  </Text>
-                </View>
-              ) : this.state.errorMessage === "Insuffcient" ||
-                this.state.balance === 0 ? (
-                <Text style={{ color: "red" }}>Insuffcient Balance</Text>
-              ) : null}
+              Amount To Pay
+            </Text>
+            <Text
+              style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
+            >
+              How much do you want to pay your friends
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: 20,
+              marginBottom: 40,
+              width: width / 1.5
+              // paddingLeft: 10
+            }}
+          >
+            <View>
+              <Thumbnail small style={{ backgroundColor: "grey" }} />
+            </View>
+            <View style={{ justifyContent: "center", paddingLeft: 10 }}>
+              <Text>{this.state.transferUser}</Text>
+              <Text>{this.state.transferContact}</Text>
             </View>
           </View>
           <View
             style={{
-              justifyContent: "flex-end",
-              alignItems: "center",
-              height: height / 2
+              width: width / 1.3,
+              flexDirection: "row",
+              justifyContent: "center"
             }}
           >
-            {this.state.errorMessage === "Not Suffcient" ? (
-              <View>
+            <Input
+              inputStyle={{
+                flex: 1,
+                alignSelf: "center",
+                color: "black",
+                fontSize: 18,
+                paddingLeft: 8
+              }}
+              inputContainerStyle={{
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+              }}
+              onChangeText={price => this.checkVoletBalance(price)}
+              value={this.state.price}
+              keyboardType="numeric"
+              placeholderTextColor="rgb(74,74,74)"
+              leftIcon={
+                <Text style={{fontSize:18}}>MYR</Text>
+              }
+            />
+          </View>
+
+          {this.state.errorMessage === "Amount Exceeds" ? (
+            <Text style={{ color: "red" }}>Amount exceeds from balance</Text>
+          ) : this.state.errorMessage === "Not Suffcient" ? (
+            <View>
+              <Text style={{ color: "red" }}>
+                Amount is not suffcient to be transfered.{" "}
+              </Text>
+              <Text style={{ color: "red" }}>Please increase the amount</Text>
+            </View>
+          ) : this.state.errorMessage === "Insuffcient" ||
+            this.state.balance === 0 ? (
+            <Text style={{ color: "red" }}>Insuffcient Balance</Text>
+          ) : null}
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 70,
+            width: width
+          }}
+        >
+          {this.state.errorMessage === "Not Suffcient" ? (
+            <View>
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
                 <TouchableOpacity
                   onPress={() => this.props.navigation.navigate("VoletBalance")}
+                  style={styles.buttonStyle}
                 >
-                  <Text>Top Up Volet</Text>
+                  <Text style={styles.loginText}>Top Up Volet</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("TransferReason", {
-                      transferUser: this.state.transferUser,
-                      transferContact: this.state.transferContact,
-                      amount: this.state.price
-                    })
-                  }
-                >
-                  <Text>Change payment method</Text>
-                </TouchableOpacity>
-              </View>
-            ) : this.state.errorMessage === null ? (
-              <TouchableOpacity disabled={true}>
-                <Text>Next</Text>
-              </TouchableOpacity>
-            ) : (
+              </LinearGradient>
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("TransferReason", {
@@ -217,13 +248,38 @@ export class PaymentAmount extends Component {
                     amount: this.state.price
                   })
                 }
+                style={styles.buttonStyle}
               >
-                <Text>Next</Text>
+                <Text style={{ color: "rgb(74, 74, 74)", marginTop: 10 }}>
+                  Continue with other payment method
+                </Text>
               </TouchableOpacity>
-            )}
-          </View>
-        </ScrollView>
-      </View>
+            </View>
+          ) : this.state.errorMessage === null ? (
+            <TouchableOpacity disabled={true} style={styles.buttonStyle}>
+              <Text style={styles.loginText}>Next</Text>
+            </TouchableOpacity>
+          ) : (
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={styles.buttonStyle}
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("TransferReason", {
+                    transferUser: this.state.transferUser,
+                    transferContact: this.state.transferContact,
+                    amount: this.state.price
+                  })
+                }
+                style={styles.buttonStyle}
+              >
+                <Text style={styles.loginText}>Next</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          )}
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -239,5 +295,17 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

@@ -4,14 +4,14 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Profile from "./Profile";
 import Setting from "./Setting";
 import Logout from "./Logout";
-import PersonalDetails from "./PersonalDetails"
-import AboutVolet from "./AboutVolet"
-import FAQ from "./FAQ"
-import Policies from "./Policies"
-import Feedback from "./FeedBack"
+import PersonalDetails from "./PersonalDetails";
+import AboutVolet from "./AboutVolet";
+import FAQ from "./FAQ";
+import Policies from "./Policies";
+import Feedback from "./FeedBack";
 // import VoletBalance from "./VoletBalance"
-import ConvertAgent from "./ConvertAgent"
-import Security from "./Security"
+import ConvertAgent from "./ConvertAgent";
+import Security from "./Security";
 
 const MyProfileScreen = ({ navigation }) => <Profile navigation={navigation} />;
 MyProfileScreen.navigationOptions = {
@@ -34,13 +34,20 @@ MyLogoutScreen.navigationOptions = {
   header: null
 };
 
-const MyPersonalDetailsScreen = ({ navigation }) => <PersonalDetails navigation={navigation} />;
+const MyPersonalDetailsScreen = ({ navigation }) => (
+  <PersonalDetails navigation={navigation} />
+);
 MyPersonalDetailsScreen.navigationOptions = {
   mode: "card",
-  header: null
+  title: "Personal Details",
+  headerStyle: {
+    backgroundColor: "white"
+  }
 };
 
-const MyAboutVoletScreen = ({ navigation }) => <AboutVolet navigation={navigation} />;
+const MyAboutVoletScreen = ({ navigation }) => (
+  <AboutVolet navigation={navigation} />
+);
 MyAboutVoletScreen.navigationOptions = {
   mode: "card",
   title: "About Volet",
@@ -58,7 +65,9 @@ MyFAQScreen.navigationOptions = {
   }
 };
 
-const MyPoliciesScreen = ({ navigation }) => <Policies navigation={navigation} />;
+const MyPoliciesScreen = ({ navigation }) => (
+  <Policies navigation={navigation} />
+);
 MyPoliciesScreen.navigationOptions = {
   mode: "card",
   title: "Policies",
@@ -67,7 +76,9 @@ MyPoliciesScreen.navigationOptions = {
   }
 };
 
-const MyFeedbackScreen = ({ navigation }) => <Feedback navigation={navigation} />;
+const MyFeedbackScreen = ({ navigation }) => (
+  <Feedback navigation={navigation} />
+);
 MyFeedbackScreen.navigationOptions = {
   mode: "card",
   title: "Feedback & Ratings",
@@ -85,7 +96,9 @@ MyFeedbackScreen.navigationOptions = {
 //   }
 // };
 
-const MyConvertAgentScreen = ({ navigation }) => <ConvertAgent navigation={navigation} />;
+const MyConvertAgentScreen = ({ navigation }) => (
+  <ConvertAgent navigation={navigation} />
+);
 MyConvertAgentScreen.navigationOptions = {
   mode: "card",
   title: "Convert To Agent",
@@ -94,7 +107,9 @@ MyConvertAgentScreen.navigationOptions = {
   }
 };
 
-const MySecurityScreen = ({ navigation }) => <Security navigation={navigation} />;
+const MySecurityScreen = ({ navigation }) => (
+  <Security navigation={navigation} />
+);
 MySecurityScreen.navigationOptions = {
   mode: "card",
   title: "Security",
@@ -102,9 +117,6 @@ MySecurityScreen.navigationOptions = {
     backgroundColor: "white"
   }
 };
-
-
-
 
 const ModalStack = createStackNavigator(
   {
@@ -126,19 +138,19 @@ const ModalStack = createStackNavigator(
     FAQ: {
       screen: MyFAQScreen
     },
-    Policies:{
+    Policies: {
       screen: MyPoliciesScreen
     },
-    Feedback:{
+    Feedback: {
       screen: MyFeedbackScreen
     },
     // VoletBalance:{
     //   screen: MyVoletBalanceScreen
     // },
-    ConvertAgent:{
+    ConvertAgent: {
       screen: MyConvertAgentScreen
     },
-    Security:{
+    Security: {
       screen: MySecurityScreen
     }
   },

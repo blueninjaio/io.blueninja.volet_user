@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   AsyncStorage,
   Alert,
-  Platform
+  Platform,
+  Image
 } from "react-native";
-import { LocalAuthentication, Expo, Constants } from "expo";
-export const { width, height } = Dimensions.get("window");
+import { LocalAuthentication, Expo, Constants, LinearGradient } from "expo";
 import { connect } from "react-redux";
+export const { width, height } = Dimensions.get("window");
 
 export class Main extends Component {
   constructor(props) {
@@ -119,25 +120,35 @@ export class Main extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.SignUpView}>
-          <View style={styles.Logo} />
-          <View style={styles.buttonSignUp}>
+          <Image
+            source={require("../../assets/voletBlueLogo.png")}
+            resizeMode="contain"
+            style={styles.Logo}
+          />
+        </View>
+
+        <View style={styles.buttonSignUp}>
+          <LinearGradient
+            colors={["#36D1DC", "#5B86E5"]}
+            style={styles.buttonStyle}
+          >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Signup")}
               style={styles.buttonStyle}
+              onPress={() => this.props.navigation.navigate("Signup")}
             >
-              <Text>Sign Up</Text>
+              <Text style={styles.signupText}>Sign Up</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={
-                this.state.token !== ""
-                  ? () => this.getToken()
-                  : () => this.props.navigation.navigate("Login")
-              }
-              style={styles.buttonStyle2}
-            >
-              <Text>Log in</Text>
-            </TouchableOpacity>
-          </View>
+          </LinearGradient>
+          <TouchableOpacity
+            onPress={
+              this.state.token !== ""
+                ? () => this.getToken()
+                : () => this.props.navigation.navigate("Login")
+            }
+            style={styles.buttonStyle2}
+          >
+            <Text style={styles.loginText}>Log In</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -159,14 +170,15 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Main);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff"
   },
   SignUpView: {
-    height: height / 1.1,
-    justifyContent: "space-around",
+    height: height / 1.3,
+    justifyContent: "center",
     alignItems: "center"
   },
   text: {
@@ -174,27 +186,38 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   Logo: {
-    backgroundColor: "grey",
-    height: 200,
-    width: 200
+    height: width / 1.3,
+    width: width / 1.3
   },
   buttonSignUp: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    width: width,
+    position: "absolute",
+    bottom: 70,
+  },
+
+  signupText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
+  },
+
+  loginText: {
+    color: "#5B86E5",
+    fontWeight: "500",
+    fontSize: 16
   },
   buttonStyle: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 50,
-    paddingLeft: 50,
-    backgroundColor: "grey"
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.5,
+    borderRadius: 10
   },
   buttonStyle2: {
     paddingTop: 10,
     paddingBottom: 10,
-    paddingRight: 50,
-    paddingLeft: 50,
-    backgroundColor: "grey",
-    marginTop: 20
+    marginTop: 10
   }
 });

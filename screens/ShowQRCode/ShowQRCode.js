@@ -13,9 +13,9 @@ import {
   AsyncStorage,
   LayoutAnimation
 } from "react-native";
-import { LinearGradient } from "expo";
-import { dev, prod, url } from "../../config/index"
-import { BarCodeScanner, Permissions } from "expo";
+import { dev, prod, url } from "../../config/index";
+import { BarCodeScanner, Permissions, LinearGradient } from "expo";
+
 import { NavigationEvents } from "react-navigation";
 import QRCode from "react-native-qrcode-svg";
 
@@ -83,8 +83,8 @@ export class ShowQRCode extends Component {
   };
 
   getUserDetails = userID => {
-    let ID = userID.split("_")[0]
-    console.log("Splits ID", ID )
+    let ID = userID.split("_")[0];
+    console.log("Splits ID", ID);
     fetch(`${url}/api/users/id`, {
       method: "POST",
       mode: "cors",
@@ -105,9 +105,10 @@ export class ShowQRCode extends Component {
             [
               {
                 text: "OK",
-                onPress: () => this.props.navigation.navigate("PaymentAmount",{
+                onPress: () =>
+                  this.props.navigation.navigate("PaymentAmount", {
                     userDetails: data.user
-                })
+                  })
               }
             ],
             { cancelable: false }
@@ -133,91 +134,147 @@ export class ShowQRCode extends Component {
     return (
       <View style={styles.container}>
         {this.state.selectedValue === "Scan QR" ? (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "flex-start",
-                width: width / 1.2,
-                marginTop: 20,
-                height: height / 6
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                Scan A QR Code
-              </Text>
-              <Text>Show your QR Code to a friend to receive payment.</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  width: width / 1.3,
+                  marginTop: 20,
+                  marginBottom: height * 0.03
+                }}
+              >
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "#5B86E5",
+                    fontSize: 18,
+                    fontWeight: "600"
+                  }}
+                >
+                  Scan A QR Code
+                </Text>
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "grey",
+                    fontSize: width * 0.034
+                  }}
+                >
+                  Show your QR Code to a friend to receive payment.
+                </Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <QRCode value={id + "_" + userType} size={250} />
+              </View>
             </View>
             <View
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                height: height / 3
+                position: "absolute",
+                bottom: 50,
+                width: width
               }}
             >
-              <QRCode value={id + "_" + userType} size={250} />
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: height / 3
-              }}
-            >
-              <TouchableOpacity onPress={() => this.switchScreen("Show QR")}>
-                <Text>Scan a QR Code</Text>
-              </TouchableOpacity>
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
+                <TouchableOpacity
+                  onPress={() => this.switchScreen("Show QR")}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.loginText}>Scan A QR Code!</Text>
+                </TouchableOpacity>
+              </LinearGradient>
             </View>
           </View>
         ) : (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "flex-start",
-                width: width / 1.2,
-                marginTop: 20,
-                height: height / 6
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                Show A QR Code
-              </Text>
-              <Text>Show your QR Code to a friend to receive payment.</Text>
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                height: height / 3
-              }}
-            >
-              {this.state.hasCameraPermission === null ? (
-                <Text>Requesting for camera permission</Text>
-              ) : this.state.hasCameraPermission === false ? (
-                <Text style={{ color: "#fff" }}>
-                  Camera permission is not granted
-                </Text>
-              ) : (
-                <BarCodeScanner
-                  onBarCodeRead={this._handleBarCodeRead}
+          <View style={{ flex: 1 }}>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  width: width / 1.3,
+                  marginTop: 20,
+                  marginBottom: height * 0.03
+                }}
+              >
+                <Text
                   style={{
-                    height: height / 2.5,
-                    width: width
+                    padding: 10,
+                    color: "#5B86E5",
+                    fontSize: 18,
+                    fontWeight: "600"
                   }}
-                />
-              )}
+                >
+                  Show A QR Code
+                </Text>
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "grey",
+                    fontSize: width * 0.034
+                  }}
+                >
+                 Scan a Volet OR Code to send payment or collect money from agent
+                </Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: height *0.5
+
+                }}
+              >
+                {this.state.hasCameraPermission === null ? (
+                  <Text>Requesting for camera permission</Text>
+                ) : this.state.hasCameraPermission === false ? (
+                  <Text style={{ color: "#fff" }}>
+                    Camera permission is not granted
+                  </Text>
+                ) : (
+                  <BarCodeScanner
+                    onBarCodeRead={this._handleBarCodeRead}
+                    style={{
+                      // height: height / 2.5,
+                      flex: 1,
+                      width: width
+                    }}
+                  />
+                )}
+              </View>
             </View>
+
             <View
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                height: height / 3
+                position: "absolute",
+                bottom: 50,
+                width: width
               }}
             >
-              <TouchableOpacity onPress={() => this.switchScreen("Scan QR")}>
-                <Text>Show QR Code</Text>
-              </TouchableOpacity>
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
+                <TouchableOpacity
+                  onPress={() => this.switchScreen("Scan QR")}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.loginText}>Show QR Code!</Text>
+                </TouchableOpacity>
+              </LinearGradient>
             </View>
           </View>
         )}
@@ -234,5 +291,17 @@ const styles = StyleSheet.create({
   },
   header: {
     height: height / 4
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

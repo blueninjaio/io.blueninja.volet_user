@@ -161,7 +161,7 @@ export class VoletBalance extends Component {
             width: width
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+          <Text style={{ fontWeight: "bold", fontSize: 20, color: "#5B86E5" }}>
             MYR{this.state.balance}
           </Text>
         </View>
@@ -179,19 +179,19 @@ export class VoletBalance extends Component {
               <TouchableOpacity
                 style={{
                   padding: 10,
-                  borderBottomWidth: 1,
+                  borderBottomWidth: 1.5,
                   borderColor: "blue"
                 }}
                 onPress={() => this.Onclick("Top Up")}
               >
-                <Text>Top Up</Text>
+                <Text style={{ color: "rgb(74, 74, 74)" }}>Top Up</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={{ padding: 10 }}
                 onPress={() => this.Onclick("Top Up")}
               >
-                <Text>Top Up</Text>
+                <Text style={{ color: "rgb(74, 74, 74)" }}>Top Up</Text>
               </TouchableOpacity>
             )}
 
@@ -199,96 +199,129 @@ export class VoletBalance extends Component {
               <TouchableOpacity
                 style={{
                   padding: 10,
-                  borderBottomWidth: 1,
+                  borderBottomWidth: 1.5,
                   borderColor: "blue"
                 }}
                 onPress={() => this.Onclick("Widthdraw")}
               >
-                <Text>Widthdraw</Text>
+                <Text style={{ color: "rgb(74, 74, 74)" }}>Widthdraw</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={{ padding: 10 }}
                 onPress={() => this.Onclick("Widthdraw")}
               >
-                <Text>Widthdraw</Text>
+                <Text style={{ color: "rgb(74, 74, 74)" }}>Widthdraw</Text>
               </TouchableOpacity>
             )}
           </View>
           {this.state.selectedValue === "Top Up" ? (
-            <View>
+            <View style={{ alignItems: "center" }}>
               <TouchableOpacity
+                style={styles.savingsCardTwo}
                 onPress={() => this.toggleModal()}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: width / 1.2,
-                  alignItems: "center",
-                  height: height / 8,
-                  marginBottom: 10,
-                  backgroundColor: "grey"
-                }}
               >
-                <Icon name="close" />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    // justifyContent: "space-between",
+                    paddingLeft: 30,
+                    width: width / 1.8,
+                    alignItems: "center",
+                    height: height * 0.089
+                    // marginBottom: 10,
+                    // backgroundColor: "grey"
+                  }}
+                >
+                  <Icon name="close" />
 
-                <Text>Voucher code</Text>
+                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30, fontWeight:"500"  }}>
+                    Voucher code
+                  </Text>
+                </View>
               </TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: width / 1.2,
-                  alignItems: "center",
-                  height: height / 8,
-                  backgroundColor: "grey"
-                }}
-              >
-                <Icon name="close" />
+              <TouchableOpacity style={styles.savingsCardTwo}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingLeft: 30,
+                    width: width / 1.8,
+                    alignItems: "center",
+                    height: height * 0.089
 
-                <Text>Credit / Debit Card</Text>
-              </View>
+                    // marginBottom: 10,
+                    // backgroundColor: "grey"
+                  }}
+                >
+                  <Icon name="close" />
+
+                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30, fontWeight:"500"  }}>
+                    Credit / Debit Card
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           ) : (
             <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: width / 1.2,
-                  alignItems: "center",
-                  height: height / 8
-                }}
-              >
-                <Icon name="close" />
-                <Text>From Agent</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: width / 1.2,
-                  alignItems: "center",
-                  height: height / 8
-                }}
-              >
-                <Icon name="close" />
+              <TouchableOpacity style={styles.savingsCardTwo}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingLeft: 30,
+                    width: width / 1.8,
+                    alignItems: "center",
+                    height: height * 0.089
 
-                <Text>Transfer to Bank Account</Text>
-              </View>
+                    // marginBottom: 10,
+                    // backgroundColor: "grey"
+                  }}
+                >
+                  <Icon name="close" />
+                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30, fontWeight:"500" }}>
+                    From Agent
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.savingsCardTwo}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingLeft: 30,
+                    width: width / 1.3,
+                    alignItems: "center",
+                    height: height * 0.089
+
+                    // marginBottom: 10,
+                    // backgroundColor: "grey"
+                  }}
+                >
+                  <Icon name="close" />
+                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30,fontWeight:"500"  }}>
+                    Transfer to Bank Account
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
           )}
         </View>
         <Modal
           transparent={true}
-          animationType="slide"
           //   backdropColor="black"
-          visible={this.state.isModalVisible}
+          // visible={this.state.isModalVisible}
           style={styles.modalContent}
+          animationIn="slideInDown"
+          animationOut="slideOutUp"
+          isVisible={this.state.isModalVisible}
+          // deviceWidth={10}
+          // deviceHeight={250}
+          backdropColor="black"
+          // backdropOpacity={0.2}
         >
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <View style={{ flexDirection: "row" }}>
             <Left />
             <Body>
-              <Title>Voucher</Title>
+              <Title style={{ color: "#5B86E5" }}>Voucher</Title>
             </Body>
             <Right>
               <TouchableHighlight
@@ -296,7 +329,7 @@ export class VoletBalance extends Component {
                   this.toggleModal();
                 }}
               >
-                <Icon name="close" />
+                <Icon style={{ color: "#5B86E5" }} name="close" />
               </TouchableHighlight>
             </Right>
           </View>
@@ -304,34 +337,36 @@ export class VoletBalance extends Component {
             style={{
               justifyContent: "center",
               alignItems: "flex-start",
-              paddingTop: 30
+              marginTop: 50
             }}
           >
-            <Text>Voucher Code</Text>
+            <Text style={{ color: "rgb(74, 74, 74)", marginBottom: 15 }}>
+              Voucher code
+            </Text>
             <TextInput
               style={{
                 alignSelf: "center",
-                width: width / 1.8,
-                paddingLeft: 20,
+                width: width / 1.5,
                 // borderRadius: 20,
-                height: 50,
-                color: "rgb(74,74,74)",
-                backgroundColor: "rgb(226,226,226)"
+                borderBottomWidth: 1,
+                borderBottomColor: "#5B86E5",
+                height: 20,
+                color: "black"
               }}
               onChangeText={voucherCode => this.setState({ voucherCode })}
               value={this.state.voucherCode}
               type="text"
-              placeholder="voucher Code"
+              // placeholder="voucher Code"
               placeholderTextColor="rgb(74,74,74)"
             />
           </View>
-          <View style={{ alignItems: "flex-end", justifyContent: "center" }}>
+          <View style={{ position: "absolute", bottom: 50 }}>
             <TouchableOpacity
               onPress={() => {
                 this.redeemVoucher();
               }}
             >
-              <Icon name="check" type="Entypo"/>
+              <Icon name="check" type="Entypo" />
             </TouchableOpacity>
           </View>
         </Modal>
@@ -352,15 +387,35 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   modalContent: {
-    backgroundColor: "pink",
+    // backgroundColor: "pink",
     padding: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    // borderRadius: 8,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+    // // justifyContent: "center",
+    // alignItems: "center",
+    // // borderRadius: 8,
+    // borderColor: "rgba(0, 0, 0, 0.1)",
     marginTop: height / 5,
     marginBottom: height / 5,
-    marginRight: 20,
-    marginLeft: 20
+    // marginRight: 20,
+    // marginLeft: 20
+    backgroundColor: "white",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
+  savingsCardTwo: {
+    width: width / 1.2,
+    marginBottom: 10,
+    borderRadius: 10,
+    backgroundColor: "white",
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: "white",
+    borderBottomWidth: 0,
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 1
   }
 });

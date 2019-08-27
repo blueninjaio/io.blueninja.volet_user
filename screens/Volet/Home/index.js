@@ -6,7 +6,7 @@ import Home from "./Home";
 const MyHomeScreen = ({ navigation }) => <Home navigation={navigation} />;
 MyHomeScreen.navigationOptions = {
   mode: "card",
-  header: null
+  header: null,
 };
 
 const ModalStack = createStackNavigator(

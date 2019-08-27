@@ -12,7 +12,6 @@ export const { width, height } = Dimensions.get("window");
 import { connect } from "react-redux";
 import { dev, prod, url } from "../../../config/index";
 
-
 export class Logout extends Component {
   constructor(props) {
     super(props);
@@ -74,30 +73,32 @@ export class Logout extends Component {
 |--------------------------------------------------
 */
   removeNotificationToken = () => {
-    fetch(`${url}/api/users/removePush`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        email: this.state.email
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success === true) {
-          this.props.logMeIn();
-        }
-      })
-      .catch(error => {
-        Alert.alert(
-          "Error connecting to server",
-          `${error}`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
-      });
+    this.props.logMeIn();
+    // fetch(`${url}/api/users/removePush`, {
+    //   method: "POST",
+    //   mode: "cors",
+    //   headers: {
+    //     "Content-Type": "application/json; charset=utf-8"
+    //   },
+    //   body: JSON.stringify({
+    //     email: this.state.email
+    //   })
+    // })
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log()
+    //     if (data.success === true) {
+    //       this.props.logMeIn();
+    //     }
+    //   })
+    //   .catch(error => {
+    //     Alert.alert(
+    //       "Error connecting to server",
+    //       `${error}`,
+    //       [{ text: "OK", onPress: () => null }],
+    //       { cancelable: false }
+    //     );
+    //   });
   };
 
   render() {

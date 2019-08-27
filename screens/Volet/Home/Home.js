@@ -401,7 +401,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderColor: null,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    borderBottomWidth: 0,
+    shadowColor: "transparent",
+    shadowOpacity: 0
   },
   headerOneBody: {
     alignItems: "center"

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Item, Icon, Input, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import dataInfo from "../../../dataInfo/local.json";
+// import dataInfo from "../../../dataInfo/local.json";
 import { dev, prod, url } from "../../../config";
 
 export class ShopList extends Component {

@@ -7,15 +7,20 @@ import {
   ScrollView,
   AsyncStorage,
   TouchableOpacity,
-  Alert
+  Alert,
+  Image,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Icon, Left, Body, Right, Thumbnail } from "native-base";
 import { connect } from "react-redux";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { Notifications, Permissions } from "expo";
-// import * as Permissions from "expo-permissions";
+import { Notifications, Permissions, LinearGradient } from "expo";
 
 export class Login extends Component {
   constructor(props) {
@@ -33,42 +38,45 @@ export class Login extends Component {
   |--------------------------------------------------
   */
   reduxLogin = () => {
-    if (this.state.email.length < 5 || !this.state.email.includes("@"))
-      alert(`Please enter a valid email address.`);
-    else if (this.state.password.length < 6) alert(`Please enter a password.`);
-    else {
-      fetch(`${url}/api/users/login`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
-        })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            this._storeData(data.token, data.user).then(() => {
-              this.registerForPushNotificationsAsync();
-              this.props.logMeIn();
-            });
-          } else alert(data.message);
-        })
-        .catch(err => {
-          //To be removed in production
-          console.log("Error for login:", err);
+    this.props.logMeIn();
 
-          Alert.alert(
-            "Error connecting to server",
-            `Please try again later`,
-            [{ text: "OK", onPress: () => null }],
-            { cancelable: false }
-          );
-        });
-    }
+    // if (this.state.email.length < 5 || !this.state.email.includes("@"))
+    //   alert(`Please enter a valid email address.`);
+    // else if (this.state.password.length < 6) alert(`Please enter a password.`);
+    // else {
+    //   fetch(`${url}/api/users/login`, {
+    //     method: "POST",
+    //     mode: "cors",
+    //     headers: {
+    //       "Content-Type": "application/json; charset=utf-8"
+    //     },
+    //     body: JSON.stringify({
+    //       email: this.state.email,
+    //       password: this.state.password
+    //     })
+    //   })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       if (data.success) {
+    //         console.log("Login", data)
+    //         this._storeData(data.token, data.user).then(() => {
+    //           this.registerForPushNotificationsAsync();
+    //           this.props.logMeIn();
+    //         });
+    //       } else alert(data.message);
+    //     })
+    //     .catch(err => {
+    //       //To be removed in production
+    //       console.log("Error for login:", err);
+
+    //       Alert.alert(
+    //         "Error connecting to server",
+    //         `Please try again later`,
+    //         [{ text: "OK", onPress: () => null }],
+    //         { cancelable: false }
+    //       );
+    //     });
+    // }
   };
 
   /**
@@ -85,8 +93,6 @@ export class Login extends Component {
       await AsyncStorage.setItem("ID", userDetails._id);
       await AsyncStorage.setItem("contact", userDetails.contact);
       await AsyncStorage.setItem("userType", userDetails.user_type);
-
-      // console.log('Saved')
     } catch (error) {
       alert(error);
     }
@@ -131,119 +137,214 @@ export class Login extends Component {
 
   render() {
     return (
+      // <KeyboardAvoidingView
+      //   behavior={Platform.OS === "ios" ? "padding" : null}
+      //   // style={{ flex: 1 }}
+      // >
       <View style={styles.container}>
-        <ScrollView>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <View style={{ height: 100, width: 200 }} />
-            <Text>Log in with your social account</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1 }}>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text>Sign Up with your social account</Text>
               <View
                 style={{
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  flexDirection: "row"
+                  height: height * 0.2,
+                  width: width * 0.5,
+                  alignItems: "center"
                 }}
               >
-                <Thumbnail style={styles.Thumbnail} />
-                <Thumbnail style={styles.Thumbnail} />
+                <Image
+                  source={require("../../assets/voletBlueLogo.png")}
+                  resizeMode="contain"
+                  style={{ flex: 1, width: width * 0.5 }}
+                />
+              </View>
+              <Text
+                style={{
+                  color: "#5B86E5",
+                  fontSize: 18,
+                  marginBottom: 10
+                }}
+              >
+                Log in with your social account
+              </Text>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <View
+                  style={{
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    width: width / 1.8
+                  }}
+                >
+                  <Thumbnail style={styles.Thumbnail} />
+                  <Thumbnail style={styles.Thumbnail} />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: 10
+                }}
+              >
+                <View
+                  style={{
+                    borderTopWidth: 1,
+                    borderTopColor: "#5B86E5",
+                    width: width * 0.35
+                  }}
+                />
+                <Text
+                  style={{
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                    color: "black",
+                    fontSize: 15
+                  }}
+                >
+                  or
+                </Text>
+                <View
+                  style={{
+                    borderTopWidth: 1,
+                    borderTopColor: "#5B86E5",
+                    width: width * 0.35
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: width / 1.3,
+                  justifyContent: "center",
+                  marginBottom: 20
+                }}
+              >
+                <Left />
+                <Body style={{ alignItems: "center" }}>
+                  <Text
+                    style={{
+                      color: "#5B86E5",
+                      fontSize: 15,
+                      fontWeight: "500"
+                    }}
+                  >
+                    LOG IN
+                  </Text>
+                </Body>
+                <Right>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate("ContactSupport")
+                    }
+                  >
+                    <Icon
+                      name="questioncircleo"
+                      type="AntDesign"
+                      style={{ color: "#5B86E5", fontSize: 16 }}
+                    />
+                  </TouchableOpacity>
+                </Right>
+              </View>
+              <View
+                style={{ justifyContent: "center", alignItems: "flex-start" }}
+              >
+                <Text
+                  style={{ fontSize: 13, fontWeight: "bold", color: "black" }}
+                >
+                  Mobile Number / Email
+                </Text>
+                <TextInput
+                  style={{
+                    width: width / 1.2,
+                    marginBottom: 15,
+                    marginTop: 10,
+                    height: 20,
+                    color: "rgb(74,74,74)",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#5B86E5",
+                    fontSize: 13
+                  }}
+                  onChangeText={email => this.setState({ email })}
+                  value={this.state.email}
+                  type="text"
+                  placeholder="Your Mobile Number / Email"
+                  placeholderTextColor="rgb(215,215,215)"
+                />
+              </View>
+              <View
+                style={{ justifyContent: "center", alignItems: "flex-start" }}
+              >
+                <Text
+                  style={{ fontSize: 13, fontWeight: "bold", color: "black" }}
+                >
+                  Password
+                </Text>
+                <TextInput
+                  style={{
+                    alignItems: "flex-end",
+                    width: width / 1.2,
+                    marginBottom: 15,
+                    marginTop: 10,
+                    height: 20,
+                    color: "rgb(74,74,74)",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgb(52, 182, 215)",
+                    fontSize: 13
+                  }}
+                  onChangeText={password => this.setState({ password })}
+                  value={this.state.password}
+                  secureTextEntry={true}
+                  type="text"
+                  placeholder="Password"
+                  placeholderTextColor="rgb(215,215,215)"
+                />
               </View>
             </View>
-            <View
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("ResetPassword", {
+                  goBack: "Login"
+                })
+              }
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingBottom: 10
+                justifyContent: "flex-start",
+                alignItems: "flex-end",
+                paddingRight: 30
               }}
             >
-              <Text>---------------- </Text>
-              <Text> or </Text>
-              <Text> ---------------- </Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Left />
-              <Body>
-                <Text>Log in</Text>
-              </Body>
-              <Right style={{ paddingRight: 30 }}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("ContactSupport")
-                  }
-                >
-                  <Icon name="questioncircleo" type="AntDesign" />
-                </TouchableOpacity>
-              </Right>
-            </View>
-            <View
-              style={{ justifyContent: "center", alignItems: "flex-start" }}
-            >
-              <Text>Mobile Number / Email</Text>
-              <TextInput
-                style={{
-                  alignSelf: "center",
-                  width: width / 1.2,
-                  paddingLeft: 20,
-                  // borderRadius: 20,
-                  height: 50,
-                  color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
-                }}
-                onChangeText={email => this.setState({ email })}
-                value={this.state.email}
-                type="text"
-                placeholder="Email"
-                placeholderTextColor="rgb(74,74,74)"
-              />
-            </View>
-            <View
-              style={{ justifyContent: "center", alignItems: "flex-start" }}
-            >
-              <Text>Password</Text>
-              <TextInput
-                style={{
-                  alignSelf: "center",
-                  width: width / 1.2,
-                  paddingLeft: 20,
-                  height: 50,
-                  color: "rgb(74,74,74)",
-                  backgroundColor: "rgb(226,226,226)"
-                }}
-                onChangeText={password => this.setState({ password })}
-                value={this.state.password}
-                secureTextEntry={true}
-                type="text"
-                placeholder="password"
-                placeholderTextColor="rgb(74,74,74)"
-              />
-            </View>
-          </View>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("ForgetPassword",{
-              goBack:"Login"
-            })}
-            style={{
-              justifyContent: "center",
-              alignItems: "flex-end",
-              paddingRight: 30
-            }}
-          >
-            <Text>Forget Password</Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: 30
-            }}
-          >
-            <TouchableOpacity onPress={() => this.reduxLogin()}>
-              <Text>Log In</Text>
+              <Text style={{ fontSize: 13, color: "rgb(74,74,74)" }}>
+                Forget Password?
+              </Text>
             </TouchableOpacity>
+
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                bottom: 50,
+                width: width
+              }}
+            >
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
+                <TouchableOpacity
+                  onPress={() => this.reduxLogin()}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.loginText}>Log In</Text>
+                </TouchableOpacity>
+              </LinearGradient>
+            </View>
           </View>
-        </ScrollView>
+        </TouchableWithoutFeedback>
       </View>
+      //  </KeyboardAvoidingView>
     );
   }
 }
@@ -271,6 +372,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   Thumbnail: {
-    backgroundColor: "grey"
+    backgroundColor: "rgb(215, 215, 215)"
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

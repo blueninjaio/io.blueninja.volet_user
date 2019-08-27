@@ -5,7 +5,7 @@ import {
   createStackNavigator,
   createAppContainer
 } from "react-navigation";
-import { View, Image, Dimensions } from "react-native";
+import { View, Image, Dimensions, TouchableOpacity, Text, StyleSheet } from "react-native";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -52,13 +52,13 @@ const UserTabNavigator = createBottomTabNavigator(
             <Image
               source={require("../assets/homeInactive.png")}
               resizeMode="contain"
-              style={{ width: 30, height: 30 }}
+              style={{ width: 40, height: 40 }}
             />
           ) : (
             <Image
               source={require("../assets/home.png")}
               resizeMode="contain"
-              style={{ width: 30, height: 30 }}
+              style={{ width: 40, height: 40 }}
             />
           )
       }
@@ -71,13 +71,13 @@ const UserTabNavigator = createBottomTabNavigator(
             <Image
               source={require("../assets/shopbagInactive.png")}
               resizeMode="contain"
-              style={{ width: 30, height: 30 }}
+              style={{ width: 40, height: 40 }}
             />
           ) : (
             <Image
               source={require("../assets/shopbagActive.png")}
               resizeMode="contain"
-              style={{ width: 30, height: 30 }}
+              style={{ width: 40, height: 40 }}
             />
           )
         // tabBarVisible: false
@@ -91,48 +91,32 @@ const UserTabNavigator = createBottomTabNavigator(
             <Image
               source={require("../assets/pInActive.png")}
               resizeMode="contain"
-              style={{ width: 30, height: 30 }}
+              style={{ width: 50, height: 50 }}
             />
           ) : (
             <Image
               source={require("../assets/pActive.png")}
               resizeMode="contain"
-              style={{ width: 40, height: 40 }}
+              style={{ width: 50, height: 50 }}
             />
           )
       }
     },
     Profile: {
       screen: Profile,
-      // navigationOptions: {
-      // tabBarIcon: ({ tintColor }) =>
-      //   tintColor === "black" ? (
-      //     <Image
-      //       source={require("../assets/profileInactive.png")}
-      //       resizeMode="contain"
-      //       style={{ width: 30, height: 30 }}
-      //     />
-      //   ) : (
-      //     <Image
-      //       source={require("../assets/profile.png")}
-      //       resizeMode="contain"
-      //       style={{ width: 40, height: 40 }}
-      //     />
-      //   )
-      // }
       navigationOptions: ({ navigation }) => ({
         tabBarIcon: ({ tintColor }) =>
           tintColor === "black" ? (
             <Image
               source={require("../assets/profileInactive.png")}
               resizeMode="contain"
-              style={{ width: 30, height: 30 }}
+              style={{ width: 40, height: 40 }}
             />
           ) : (
             <Image
               source={require("../assets/profile.png")}
               resizeMode="contain"
-              style={{ width: 40, height: 40 }}
+              style={{ width: 35, height: 35 }}
             />
           ),
         tabBarVisible: tabbarVisible(navigation)
@@ -296,6 +280,12 @@ const StackNavigator = createStackNavigator(
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "QR Code",
+        headerLeft: null,
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
         headerStyle: {
           backgroundColor: "white"
         }
@@ -308,3 +298,11 @@ const StackNavigator = createStackNavigator(
 );
 
 export default createAppContainer(StackNavigator);
+
+const styles = StyleSheet.create({
+  cancelBut: {
+    marginRight: 10,
+    color:"rgb(215,215,215)",
+
+  }
+});
