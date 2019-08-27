@@ -1,16 +1,25 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, StyleSheet, Alert } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  Alert,
+  SafeAreaView,
+  Dimensions
+} from "react-native";
 import { dev, prod, url } from "../../../config";
+export const { width, height } = Dimensions.get("window");
 
 export class Policies extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-             policies: []
-        }
-    }
-    
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      policies: []
+    };
+  }
+
   /**
   |--------------------------------------------------
   | Implementation of Get Policies
@@ -47,30 +56,57 @@ export class Policies extends Component {
   };
   render() {
     return (
-      <View style={styles.container}>   
-            <View style={{justifyContent:"center", alignItems:"center"}}>
-                {
-                    this.state.policies.map((x, i) => (
-                        <View key={i} style={{alignItems:"flex-start", justifyContent:"center",  paddingBottom: 20}}>
-                            <Text>{x.policies}</Text>
-                        </View>
-                    ))
-                }
+      <SafeAreaView style={styles.container}>
+        <View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            {/* {this.state.policies.map((x, i) => (
+              <View
+                key={i}
+                style={{
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  paddingBottom: 20
+                }}
+              >
+                <Text>{x.policies}</Text>
+              </View>
+            ))} */}
+            <View>
+              <Text
+                style={{
+                  padding: 10,
+                  color: "#5B86E5",
+                  fontSize: width * 0.06,
+                  fontWeight: "500"
+                }}
+              >
+                Introduction
+              </Text>
+              <Text style={{ fontSize: 15, padding: 10, lineHeight: 20 }}>
+                Lorem Ipsum is the single greatest threat. We are not - we are
+                not keeping up with other websites. Lorem Ipsum best not make
+                any more threats to your website. It will be met with fire and
+                fury like the world has never seen. Does everybody know that pig
+                named Lorem Ipsum? An ‘extremely credible source’ has called my
+                office and told me that Barack Obama’s placeholder text is a
+                fraud.
+              </Text>
             </View>
-      </View>
+          </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }
 
 export default Policies;
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff"
-    },
-    text: {
-      color: "#979797",
-      fontSize: 20
-    }
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  text: {
+    color: "#979797",
+    fontSize: 20
+  }
+});
