@@ -71,7 +71,7 @@ export class Policies extends Component {
                 <Text>{x.policies}</Text>
               </View>
             ))} */}
-            <View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
               <Text
                 style={{
                   padding: 10,
