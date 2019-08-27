@@ -10,6 +10,7 @@ import FAQ from "./FAQ";
 import Policies from "./Policies";
 import Feedback from "./FeedBack";
 import ContactSupport from "./ContactSupport";
+import MonthlySavingsPlan from "./MonthlySavingsPlan";
 // import VoletBalance from "./VoletBalance"
 import ConvertAgent from "./ConvertAgent";
 import Security from "./Security";
@@ -61,6 +62,17 @@ const MyFAQScreen = ({ navigation }) => <FAQ navigation={navigation} />;
 MyFAQScreen.navigationOptions = {
   mode: "card",
   title: "FAQ",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
+
+const MyMonthlySavingsPlanScreen = ({ navigation }) => (
+  <MonthlySavingsPlan navigation={navigation} />
+);
+MyMonthlySavingsPlanScreen.navigationOptions = {
+  mode: "card",
+  title: "Monthly Savings Plan",
   headerStyle: {
     backgroundColor: "white"
   }
@@ -167,6 +179,9 @@ const ModalStack = createStackNavigator(
     },
     ContactSupport: {
       screen: MyContactSupportScreen
+    },
+    MonthlySavingsPlan: {
+      screen: MyMonthlySavingsPlanScreen
     }
   },
   {

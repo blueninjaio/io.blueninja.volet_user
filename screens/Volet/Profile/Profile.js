@@ -217,7 +217,9 @@ export class Profile extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("DeepWorks")}
+              onPress={() =>
+                this.props.navigation.navigate("MonthlySavingsPlan")
+              }
               style={styles.listItemButton}
             >
               <View style={styles.show}>
@@ -257,9 +259,11 @@ export class Profile extends React.Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("Setting",{
-                userType: this.state.userType
-              })}
+              onPress={() =>
+                this.props.navigation.navigate("Setting", {
+                  userType: this.state.userType
+                })
+              }
               style={styles.listItemButton}
             >
               <View style={styles.show}>
