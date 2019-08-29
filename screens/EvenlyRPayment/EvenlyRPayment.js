@@ -158,7 +158,7 @@ export class EvenlyRPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("")}
+              onPress={() => this.props.navigation.navigate("ReasonRPayment")}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>NEXT</Text>
