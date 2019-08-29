@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { Switch } from "native-base";
 import { LinearGradient } from "expo";
-import { dev, prod, url } from "../../../config/index";
+import { url } from "../../../config/index";
 import { NavigationEvents } from "react-navigation";
 
 export class Profile extends React.Component {
