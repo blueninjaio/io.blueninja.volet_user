@@ -127,8 +127,8 @@ export default class App extends React.Component {
   };
 
   switchScreen = () => {
-    this.props.navigation.navigate("ShowQRCode")
-  }
+    this.props.navigation.navigate("ShowQRCode");
+  };
 
   render() {
     const { hasCameraPermission, scanned } = this.state;
@@ -232,7 +232,9 @@ export default class App extends React.Component {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("RequestPayment")}
+            >
               <Image
                 source={require("../../../assets/requestP.png")}
                 resizeMode="contain"
@@ -443,7 +445,7 @@ const styles = StyleSheet.create({
   },
   qrcode: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
     // marginBottom: -5
   },
   savingsBar: {

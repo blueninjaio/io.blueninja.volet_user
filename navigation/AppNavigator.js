@@ -5,7 +5,14 @@ import {
   createStackNavigator,
   createAppContainer
 } from "react-navigation";
-import { View, Image, Dimensions, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  StyleSheet
+} from "react-native";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -22,6 +29,7 @@ import FPTac from "../screens/FPTac";
 import ConfirmNewPassword from "../screens/ConfirmNewPassword";
 import ResetPin from "../screens/ResetPin";
 import SendPayment from "../screens/SendPayment";
+import RequestPayment from "../screens/RequestPayment";
 import PaymentAmount from "../screens/PaymentAmount";
 import VoletBalance from "../screens/VoletBalance";
 import TransferReason from "../screens/TransferReason";
@@ -225,6 +233,16 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
+    RequestPayment: {
+      screen: RequestPayment,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
     PaymentAmount: {
       screen: PaymentAmount,
       navigationOptions: ({ navigation }) => ({
@@ -302,7 +320,6 @@ export default createAppContainer(StackNavigator);
 const styles = StyleSheet.create({
   cancelBut: {
     marginRight: 10,
-    color:"rgb(215,215,215)",
-
+    color: "rgb(215,215,215)"
   }
 });
