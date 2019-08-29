@@ -158,7 +158,7 @@ export class RequestPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate()}
+              onPress={() => this.props.navigation.navigate("SplitRPayment")}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>DONE</Text>

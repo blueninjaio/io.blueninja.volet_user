@@ -30,6 +30,7 @@ import ConfirmNewPassword from "../screens/ConfirmNewPassword";
 import ResetPin from "../screens/ResetPin";
 import SendPayment from "../screens/SendPayment";
 import RequestPayment from "../screens/RequestPayment";
+import SplitRPayment from "../screens/SplitRPayment";
 import PaymentAmount from "../screens/PaymentAmount";
 import VoletBalance from "../screens/VoletBalance";
 import TransferReason from "../screens/TransferReason";
@@ -235,6 +236,16 @@ const StackNavigator = createStackNavigator(
     },
     RequestPayment: {
       screen: RequestPayment,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    SplitRPayment: {
+      screen: SplitRPayment,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Request Payment",
