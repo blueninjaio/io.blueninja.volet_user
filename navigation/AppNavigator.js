@@ -31,7 +31,9 @@ import ResetPin from "../screens/ResetPin";
 import SendPayment from "../screens/SendPayment";
 import RequestPayment from "../screens/RequestPayment";
 import SplitRPayment from "../screens/SplitRPayment";
+import SplitRSummary from "../screens/SplitRSummary";
 import SeparatelyRPayment from "../screens/SeparatelyRPayment";
+import ReasonRPayment from "../screens/ReasonRPayment";
 import PaymentAmount from "../screens/PaymentAmount";
 import VoletBalance from "../screens/VoletBalance";
 import TransferReason from "../screens/TransferReason";
@@ -255,8 +257,28 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
+    SplitRSummary: {
+      screen: SplitRSummary,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
     SeparatelyRPayment: {
       screen: SeparatelyRPayment,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    ReasonRPayment: {
+      screen: ReasonRPayment,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Request Payment",

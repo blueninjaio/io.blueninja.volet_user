@@ -128,6 +128,7 @@ export class SeparatelyRPayment extends Component {
             />
           </View>
         </View>
+
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <View
             style={{
@@ -190,7 +191,7 @@ export class SeparatelyRPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SplitRPayment")}
+              onPress={() => this.props.navigation.navigate("ReasonRPayment")}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>DONE</Text>
