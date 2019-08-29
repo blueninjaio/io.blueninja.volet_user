@@ -9,6 +9,8 @@ import AboutVolet from "./AboutVolet";
 import FAQ from "./FAQ";
 import Policies from "./Policies";
 import Feedback from "./FeedBack";
+import ContactSupport from "./ContactSupport";
+import MonthlySavingsPlan from "./MonthlySavingsPlan";
 // import VoletBalance from "./VoletBalance"
 import ConvertAgent from "./ConvertAgent";
 import Security from "./Security";
@@ -65,6 +67,17 @@ MyFAQScreen.navigationOptions = {
   }
 };
 
+const MyMonthlySavingsPlanScreen = ({ navigation }) => (
+  <MonthlySavingsPlan navigation={navigation} />
+);
+MyMonthlySavingsPlanScreen.navigationOptions = {
+  mode: "card",
+  title: "Monthly Savings Plan",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
+
 const MyPoliciesScreen = ({ navigation }) => (
   <Policies navigation={navigation} />
 );
@@ -95,6 +108,17 @@ MyFeedbackScreen.navigationOptions = {
 //     backgroundColor: "white"
 //   }
 // };
+
+const MyContactSupportScreen = ({ navigation }) => (
+  <ContactSupport navigation={navigation} />
+);
+MyContactSupportScreen.navigationOptions = {
+  mode: "card",
+  title: "Contact Support",
+  headerStyle: {
+    backgroundColor: "white"
+  }
+};
 
 const MyConvertAgentScreen = ({ navigation }) => (
   <ConvertAgent navigation={navigation} />
@@ -152,6 +176,12 @@ const ModalStack = createStackNavigator(
     },
     Security: {
       screen: MySecurityScreen
+    },
+    ContactSupport: {
+      screen: MyContactSupportScreen
+    },
+    MonthlySavingsPlan: {
+      screen: MyMonthlySavingsPlanScreen
     }
   },
   {
