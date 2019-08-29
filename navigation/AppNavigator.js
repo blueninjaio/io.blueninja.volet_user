@@ -30,10 +30,12 @@ import ConfirmNewPassword from "../screens/ConfirmNewPassword";
 import ResetPin from "../screens/ResetPin";
 import SendPayment from "../screens/SendPayment";
 import RequestPayment from "../screens/RequestPayment";
+import EvenlyRPayment from "../screens/EvenlyRPayment";
 import SplitRPayment from "../screens/SplitRPayment";
 import SplitRSummary from "../screens/SplitRSummary";
 import SeparatelyRPayment from "../screens/SeparatelyRPayment";
 import ReasonRPayment from "../screens/ReasonRPayment";
+import SPaymentSuccess from "../screens/SPaymentSuccess";
 import PaymentAmount from "../screens/PaymentAmount";
 import VoletBalance from "../screens/VoletBalance";
 import TransferReason from "../screens/TransferReason";
@@ -237,6 +239,16 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
+    EvenlyRPayment: {
+      screen: EvenlyRPayment,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
     RequestPayment: {
       screen: RequestPayment,
       navigationOptions: ({ navigation }) => ({
@@ -259,6 +271,16 @@ const StackNavigator = createStackNavigator(
     },
     SplitRSummary: {
       screen: SplitRSummary,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    SPaymentSuccess: {
+      screen: SPaymentSuccess,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Request Payment",

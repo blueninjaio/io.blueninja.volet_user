@@ -43,7 +43,10 @@ export class SplitRPayment extends Component {
         </View>
         <View>
           <View>
-            <TouchableOpacity style={styles.listItemButtonSwitch}>
+            <TouchableOpacity
+              style={styles.listItemButtonSwitch}
+              onPress={() => this.props.navigation.navigate("EvenlyRPayment")}
+            >
               <View style={styles.show}>
                 <Image
                   source={require("../../assets/glasses.png")}
