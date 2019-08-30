@@ -40,6 +40,7 @@ import ReasonEPayment from "../screens/Evenly/ReasonEPayment";
 import SPaymentSuccess from "../screens/SPaymentSuccess";
 import PaymentAmount from "../screens/PaymentAmount";
 import VoletBalance from "../screens/VoletBalance";
+import WithdrawAgent from "../screens/WithdrawAgent";
 import TransferReason from "../screens/TransferReason";
 import PaymentMethod from "../screens/PaymentMethod";
 import TransferSummary from "../screens/TransferSummary";
@@ -344,6 +345,16 @@ const StackNavigator = createStackNavigator(
     },
     VoletBalance: {
       screen: VoletBalance,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    WithdrawAgent: {
+      screen: WithdrawAgent,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Volet Balance",

@@ -235,7 +235,13 @@ export class VoletBalance extends Component {
                 >
                   <Icon name="close" />
 
-                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30, fontWeight:"500"  }}>
+                  <Text
+                    style={{
+                      color: "rgb(74, 74, 74)",
+                      paddingLeft: 30,
+                      fontWeight: "500"
+                    }}
+                  >
                     Voucher code
                   </Text>
                 </View>
@@ -255,7 +261,13 @@ export class VoletBalance extends Component {
                 >
                   <Icon name="close" />
 
-                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30, fontWeight:"500"  }}>
+                  <Text
+                    style={{
+                      color: "rgb(74, 74, 74)",
+                      paddingLeft: 30,
+                      fontWeight: "500"
+                    }}
+                  >
                     Credit / Debit Card
                   </Text>
                 </View>
@@ -263,7 +275,10 @@ export class VoletBalance extends Component {
             </View>
           ) : (
             <View>
-              <TouchableOpacity style={styles.savingsCardTwo}>
+              <TouchableOpacity
+                style={styles.savingsCardTwo}
+                onPress={() => this.props.navigation.navigate("WithdrawAgent")}
+              >
                 <View
                   style={{
                     flexDirection: "row",
@@ -277,7 +292,13 @@ export class VoletBalance extends Component {
                   }}
                 >
                   <Icon name="close" />
-                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30, fontWeight:"500" }}>
+                  <Text
+                    style={{
+                      color: "rgb(74, 74, 74)",
+                      paddingLeft: 30,
+                      fontWeight: "500"
+                    }}
+                  >
                     From Agent
                   </Text>
                 </View>
@@ -297,7 +318,13 @@ export class VoletBalance extends Component {
                   }}
                 >
                   <Icon name="close" />
-                  <Text style={{ color: "rgb(74, 74, 74)", paddingLeft: 30,fontWeight:"500"  }}>
+                  <Text
+                    style={{
+                      color: "rgb(74, 74, 74)",
+                      paddingLeft: 30,
+                      fontWeight: "500"
+                    }}
+                  >
                     Transfer to Bank Account
                   </Text>
                 </View>
