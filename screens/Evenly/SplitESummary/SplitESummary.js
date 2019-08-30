@@ -17,7 +17,23 @@ import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
 // import { dev, prod, url } from "../../../config";
 
-export class EvenlyRPayment extends Component {
+export class SplitESummary extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      contact: ""
+    };
+  }
+  componentDidMount() {}
+
+  onActionImgPopUp = contact => {
+    Keyboard.addListener("keyboardDidShow");
+    if (contact !== null) {
+      this.setState({ contact });
+    }
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -44,103 +60,126 @@ export class EvenlyRPayment extends Component {
                 fontWeight: "500"
               }}
             >
-              Amount To Request
+              Split Request Summary
             </Text>
             <Text
               style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
             >
-              How much are you requesting from your friend?
+              Payment Requested From
             </Text>
           </View>
-          <View style={{ width: width / 1.4, paddingTop: 20 }}>
-            <Text style={{ fontWeight: "bold" }}>
-              Split evenly among 2 friends
-            </Text>
+          <View
+            style={{
+              backgroundColor: "white",
+              marginTop: 20,
+              width: width / 1.3,
+              padding: 18,
+              borderWidth: 1,
+              borderRadius: 10,
+              borderColor: "#ddd",
+              shadowColor: "#000",
+              shadowOffset: { width: 3, height: 5 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+              elevation: 1
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
-                // justifyContent: "center",
-                marginTop: 20
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 35, paddingTop: 15 }}>
-                <Icon
-                  type="AntDesign"
-                  name="close"
-                  style={{ fontSize: 14, color: "#5B86E5" }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                // justifyContent: "center",
-                marginTop: 20
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 35, paddingTop: 15 }}>
-                <Icon
-                  type="AntDesign"
-                  name="close"
-                  style={{ fontSize: 14, color: "#5B86E5" }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
                 justifyContent: "center",
-                alignItems: "flex-start",
-                width: width / 1.5,
-                paddingTop: 30
+                marginBottom: 28
               }}
             >
-              <TextInput
-                disabled={true}
-                style={{
-                  width: width / 1.5,
-                  marginBottom: 15,
-                  marginTop: 10,
-                  height: 20,
-                  color: "rgb(74,74,74)",
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#5B86E5",
-                  fontSize: 13
+              <Thumbnail
+                small
+                source={{
+                  uri:
+                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
                 }}
-                type="text"
-                placeholder="MYR"
-                placeholderTextColor="rgb(74,74,74)"
               />
+              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
+                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                  Ariel L.Mermaid
+                </Text>
+                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
+                  +6012-2345789
+                </Text>
+              </View>
+              <View style={{ paddingLeft: 15 }}>
+                <Text style={{ fontWeight: "bold" }}>MYR</Text>
+                <Text style={{ paddingTop: 5 }}>10.00</Text>
+              </View>
             </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginBottom: 28
+              }}
+            >
+              <Thumbnail
+                small
+                source={{
+                  uri:
+                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
+                }}
+              />
+              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
+                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                  Ariel L.Mermaid
+                </Text>
+                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
+                  +6012-2345789
+                </Text>
+              </View>
+              <View style={{ paddingLeft: 15 }}>
+                <Text style={{ fontWeight: "bold" }}>MYR</Text>
+                <Text style={{ paddingTop: 5 }}>10.00</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                marginBottom: 28
+              }}
+            >
+              <Thumbnail
+                small
+                source={{
+                  uri:
+                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
+                }}
+              />
+              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
+                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                  Ariel L.Mermaid
+                </Text>
+                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
+                  +6012-2345789
+                </Text>
+              </View>
+              <View style={{ paddingLeft: 15 }}>
+                <Text style={{ fontWeight: "bold" }}>MYR</Text>
+                <Text style={{ paddingTop: 5 }}>10.00</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between"
+              }}
+            >
+              <Text style={{ color: "rgb(144,144,144)" }}>Total Request</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+                MYR 20.00
+              </Text>
+            </View>
+            <Text style={{ color: "rgb(144,144,144)", marginTop: 30 }}>
+              Reasons of Transfer
+            </Text>
+            <Text style={{ marginTop: 20 }}>Lorem ipsum bla blabla bla</Text>
           </View>
         </View>
 
@@ -158,10 +197,10 @@ export class EvenlyRPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("ReasonRPayment")}
+              onPress={() => this.props.navigation.navigate("SPaymentSuccess")}
               style={styles.buttonStyle}
             >
-              <Text style={styles.loginText}>NEXT</Text>
+              <Text style={styles.loginText}>Request</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>
@@ -170,7 +209,7 @@ export class EvenlyRPayment extends Component {
   }
 }
 
-export default EvenlyRPayment;
+export default SplitESummary;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

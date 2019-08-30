@@ -17,7 +17,7 @@ import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
 // import { dev, prod, url } from "../../../config";
 
-export class ReasonRPayment extends Component {
+export class ReasonEPayment extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -99,7 +99,7 @@ export class ReasonRPayment extends Component {
               //   onPress={() => this.props.navigation.navigate("PaymentAmount")}
             >
               <Image
-                source={require("../../assets/qrcode.png")}
+                source={require("../../../assets/qrcode.png")}
                 resizeMode="contain"
                 style={{ width: 20, height: 20 }}
               />
@@ -113,7 +113,7 @@ export class ReasonRPayment extends Component {
           >
             <View style={styles.show}>
               <Image
-                source={require("../../assets/glasses.png")}
+                source={require("../../../assets/glasses.png")}
                 resizeMode="contain"
                 style={{ width: 40, height: 40 }}
               />
@@ -128,7 +128,7 @@ export class ReasonRPayment extends Component {
           >
             <View style={styles.show}>
               <Image
-                source={require("../../assets/glasses.png")}
+                source={require("../../../assets/glasses.png")}
                 resizeMode="contain"
                 style={{ width: 40, height: 40 }}
               />
@@ -143,7 +143,7 @@ export class ReasonRPayment extends Component {
           >
             <View style={styles.show}>
               <Image
-                source={require("../../assets/glasses.png")}
+                source={require("../../../assets/glasses.png")}
                 resizeMode="contain"
                 style={{ width: 40, height: 40 }}
               />
@@ -158,7 +158,7 @@ export class ReasonRPayment extends Component {
           >
             <View style={styles.show}>
               <Image
-                source={require("../../assets/glasses.png")}
+                source={require("../../../assets/glasses.png")}
                 resizeMode="contain"
                 style={{ width: 40, height: 40 }}
               />
@@ -173,7 +173,7 @@ export class ReasonRPayment extends Component {
           >
             <View style={styles.show}>
               <Image
-                source={require("../../assets/glasses.png")}
+                source={require("../../../assets/glasses.png")}
                 resizeMode="contain"
                 style={{ width: 40, height: 40 }}
               />
@@ -195,7 +195,7 @@ export class ReasonRPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SplitRSummary")}
+              onPress={() => this.props.navigation.navigate("SplitESummary")}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>DONE</Text>
@@ -207,7 +207,7 @@ export class ReasonRPayment extends Component {
   }
 }
 
-export default ReasonRPayment;
+export default ReasonEPayment;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

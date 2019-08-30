@@ -137,7 +137,7 @@ export class RequestPayment extends Component {
               onPress={() => this.props.navigation.navigate("PaymentAmount")}
             >
               <Image
-                source={require("../../assets/qrcode.png")}
+                source={require("../../../assets/qrcode.png")}
                 resizeMode="contain"
                 style={{ width: 20, height: 20 }}
               />

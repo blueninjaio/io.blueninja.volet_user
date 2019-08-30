@@ -49,7 +49,7 @@ export class SplitRPayment extends Component {
             >
               <View style={styles.show}>
                 <Image
-                  source={require("../../assets/glasses.png")}
+                  source={require("../../../assets/glasses.png")}
                   resizeMode="contain"
                   style={{ width: 40, height: 40 }}
                 />
@@ -66,7 +66,7 @@ export class SplitRPayment extends Component {
             >
               <View style={styles.show}>
                 <Image
-                  source={require("../../assets/glasses.png")}
+                  source={require("../../../assets/glasses.png")}
                   resizeMode="contain"
                   style={{ width: 40, height: 40 }}
                 />

@@ -29,12 +29,14 @@ import FPTac from "../screens/FPTac";
 import ConfirmNewPassword from "../screens/ConfirmNewPassword";
 import ResetPin from "../screens/ResetPin";
 import SendPayment from "../screens/SendPayment";
-import RequestPayment from "../screens/RequestPayment";
-import EvenlyRPayment from "../screens/EvenlyRPayment";
-import SplitRPayment from "../screens/SplitRPayment";
-import SplitRSummary from "../screens/SplitRSummary";
-import SeparatelyRPayment from "../screens/SeparatelyRPayment";
-import ReasonRPayment from "../screens/ReasonRPayment";
+import RequestPayment from "../screens/Separately/RequestPayment";
+import EvenlyRPayment from "../screens/Evenly/EvenlyRPayment";
+import SplitRPayment from "../screens/Separately/SplitRPayment";
+import SplitRSummary from "../screens/Separately/SplitRSummary";
+import SplitESummary from "../screens/Evenly/SplitESummary";
+import SeparatelyRPayment from "../screens/Separately/SeparatelyRPayment";
+import ReasonRPayment from "../screens/Separately/ReasonRPayment";
+import ReasonEPayment from "../screens/Evenly/ReasonEPayment";
 import SPaymentSuccess from "../screens/SPaymentSuccess";
 import PaymentAmount from "../screens/PaymentAmount";
 import VoletBalance from "../screens/VoletBalance";
@@ -269,8 +271,19 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
+
     SplitRSummary: {
       screen: SplitRSummary,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    SplitESummary: {
+      screen: SplitESummary,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Request Payment",
@@ -301,6 +314,16 @@ const StackNavigator = createStackNavigator(
     },
     ReasonRPayment: {
       screen: ReasonRPayment,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Request Payment",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    ReasonEPayment: {
+      screen: ReasonEPayment,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Request Payment",
