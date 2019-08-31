@@ -304,7 +304,10 @@ export class VoletBalance extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.savingsCardTwo}>
+              <TouchableOpacity
+                style={styles.savingsCardTwo}
+                onPress={() => this.props.navigation.navigate("TransferToBAcc")}
+              >
                 <View
                   style={{
                     flexDirection: "row",

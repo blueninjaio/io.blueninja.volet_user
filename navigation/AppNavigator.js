@@ -45,6 +45,7 @@ import TransferReason from "../screens/TransferReason";
 import PaymentMethod from "../screens/PaymentMethod";
 import TransferSummary from "../screens/TransferSummary";
 import ShowQRCode from "../screens/ShowQRCode";
+import TransferToBAcc from "../screens/TransferToBAcc";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -355,6 +356,16 @@ const StackNavigator = createStackNavigator(
     },
     WithdrawAgent: {
       screen: WithdrawAgent,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    TransferToBAcc: {
+      screen: TransferToBAcc,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Volet Balance",
