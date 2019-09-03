@@ -50,6 +50,8 @@ import TransferToBAccWithdraw from "../screens/TransferToBAccWithdraw";
 import TransferToBAccSuccess from "../screens/TransferToBAccSuccess";
 import TransferToBAccWithdrawReceipt from "../screens/TransferToBAccWithdrawReceipt";
 import FromAgentWithdrawal from "../screens/FromAgentWithdrawal";
+import FromAgentCollection from "../screens/FromAgentCollection";
+import FromAgentReadyCollect from "../screens/FromAgentReadyCollect";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -408,8 +410,28 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
+    FromAgentCollection: {
+      screen: FromAgentCollection,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
     FromAgentWithdrawal: {
       screen: FromAgentWithdrawal,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    FromAgentReadyCollect: {
+      screen: FromAgentReadyCollect,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Volet Balance",
