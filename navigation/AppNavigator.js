@@ -46,6 +46,10 @@ import PaymentMethod from "../screens/PaymentMethod";
 import TransferSummary from "../screens/TransferSummary";
 import ShowQRCode from "../screens/ShowQRCode";
 import TransferToBAcc from "../screens/TransferToBAcc";
+import TransferToBAccWithdraw from "../screens/TransferToBAccWithdraw";
+import TransferToBAccSuccess from "../screens/TransferToBAccSuccess";
+import TransferToBAccWithdrawReceipt from "../screens/TransferToBAccWithdrawReceipt";
+import FromAgentWithdrawal from "../screens/FromAgentWithdrawal";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -366,6 +370,46 @@ const StackNavigator = createStackNavigator(
     },
     TransferToBAcc: {
       screen: TransferToBAcc,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    TransferToBAccWithdraw: {
+      screen: TransferToBAccWithdraw,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    TransferToBAccWithdrawReceipt: {
+      screen: TransferToBAccWithdrawReceipt,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    TransferToBAccSuccess: {
+      screen: TransferToBAccSuccess,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        title: "Volet Balance",
+        headerStyle: {
+          backgroundColor: "white"
+        }
+      })
+    },
+    FromAgentWithdrawal: {
+      screen: FromAgentWithdrawal,
       navigationOptions: ({ navigation }) => ({
         mode: "card",
         title: "Volet Balance",

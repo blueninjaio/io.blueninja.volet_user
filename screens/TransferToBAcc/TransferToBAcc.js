@@ -95,6 +95,9 @@ export default class TransferToBAcc extends Component {
             }}
           >
             <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("TransferToBAccWithdraw")
+              }
               style={{
                 width: 50,
                 height: 50,

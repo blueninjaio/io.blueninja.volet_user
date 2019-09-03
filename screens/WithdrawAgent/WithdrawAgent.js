@@ -45,7 +45,11 @@ export default class WithdrawAgent extends Component {
               Nearby agents
             </Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate("FromAgentWithdrawal")
+            }
+          >
             <View
               style={{
                 flexDirection: "row",
