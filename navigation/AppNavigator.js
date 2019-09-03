@@ -5,7 +5,14 @@ import {
   createStackNavigator,
   createAppContainer
 } from "react-navigation";
-import { View, Image, Dimensions, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+  StyleSheet
+} from "react-native";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -222,7 +229,12 @@ const StackNavigator = createStackNavigator(
         title: "Send Payment",
         headerStyle: {
           backgroundColor: "white"
-        }
+        },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
       })
     },
     PaymentAmount: {
@@ -302,7 +314,6 @@ export default createAppContainer(StackNavigator);
 const styles = StyleSheet.create({
   cancelBut: {
     marginRight: 10,
-    color:"rgb(215,215,215)",
-
+    color: "rgb(215,215,215)"
   }
 });
