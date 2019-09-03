@@ -244,7 +244,12 @@ const StackNavigator = createStackNavigator(
         title: "Send Payment",
         headerStyle: {
           backgroundColor: "white"
-        }
+        },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
       })
     },
     EvenlyRPayment: {
