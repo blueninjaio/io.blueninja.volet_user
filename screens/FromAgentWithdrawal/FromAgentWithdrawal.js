@@ -143,7 +143,7 @@ export default class FromAgentWithdrawal extends Component {
             <TouchableOpacity
               style={styles.buttonStyle}
               onPress={() =>
-                this.props.navigation.navigate("TransferToBAccWithdrawReceipt")
+                this.props.navigation.navigate("FromAgentCollection")
               }
             >
               <Text style={styles.loginText}>Request</Text>
