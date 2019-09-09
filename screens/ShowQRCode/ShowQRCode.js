@@ -43,12 +43,12 @@ export class ShowQRCode extends Component {
   getUserID = async () => {
     try {
       let id = await AsyncStorage.getItem("ID");
-      let userType = await AsyncStorage.getItem("userType");
+      // let userType = await AsyncStorage.getItem("userType");
       if (id !== null) {
-        console.log("User type", userType);
-        console.log("QR Code value", id + "_" + userType);
+        // console.log("User type", userType);
+        // console.log("QR Code value", id + "_" + userType);
         this.setState({ id });
-        this.setState({ userType });
+        // this.setState({ userType });
       }
     } catch (error) {
       Alert.alert(
@@ -78,14 +78,14 @@ export class ShowQRCode extends Component {
       LayoutAnimation.spring();
       console.log("Bar code", result);
       this.setState({ lastScannedUrl: result.data });
-      this.getUserDetails(result.data);
+      // this.getUserDetails(result.data);
     }
   };
 
   getUserDetails = userID => {
     let ID = userID.split("_")[0];
     console.log("Splits ID", ID);
-    fetch(`${url}/api/users/id`, {
+    fetch(`${url}/users/id`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -130,7 +130,7 @@ export class ShowQRCode extends Component {
   };
 
   render() {
-    const { id, userType, hasCameraPermission, scanned } = this.state;
+    const { id, hasCameraPermission, scanned, userType } = this.state;
     return (
       <View style={styles.container}>
         {this.state.selectedValue === "Scan QR" ? (
@@ -172,6 +172,8 @@ export class ShowQRCode extends Component {
                 }}
               >
                 <QRCode value={id + "_" + userType} size={250} />
+                {/* <QRCode value={id} size={250} /> */}
+
               </View>
             </View>
             <View

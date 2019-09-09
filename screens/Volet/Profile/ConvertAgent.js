@@ -76,7 +76,7 @@ export class ConvertAgent extends Component {
   convertAgent = () => {
       console.log(this.state._id)
     if (this.state.isSelected === true){
-    fetch(`${url}/api/agents`, {
+    fetch(`${url}/agents`, {
       method: "POST",
       mode: "cors",
       headers: {

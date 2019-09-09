@@ -31,7 +31,7 @@ export class Policies extends Component {
   };
 
   getPolicies = () => {
-    fetch(`${url}/api/static/`, {
+    fetch(`${url}/static/`, {
       method: "GET",
       mode: "cors",
       headers: {

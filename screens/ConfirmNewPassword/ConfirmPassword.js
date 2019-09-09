@@ -30,7 +30,7 @@ export class ConfirmNewPassword extends Component {
       alert(`Please enter a valid password.`);
     } 
     else {
-      fetch(`${url}/api/users/resetPassword`, {
+      fetch(`${url}/users/resetPassword`, {
         method: "POST",
         mode: "cors",
         headers: {

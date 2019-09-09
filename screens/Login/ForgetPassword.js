@@ -34,7 +34,7 @@ export class ForgetPassword extends Component {
   */
 
   forgetpassword = () => {
-    fetch(`${url}/api/users/forget-password`, {
+    fetch(`${url}/users/forget-password`, {
       method: "POST",
       mode: "cors",
       headers: {

@@ -32,14 +32,14 @@ export class SignUp extends Component {
   sendTacCode = () => {
     if (this.state.number.length < 5) alert(`Please enter a valid number`);
     else {
-      fetch(`${url}/api/tac`, {
+      fetch(`${url}/tac/new`, {
         method: "POST",
         mode: "cors",
         headers: {
           "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify({
-          contact: "60" + this.state.number
+          contact: "+60"+this.state.number,
         })
       })
         .then(response => response.json())
@@ -47,9 +47,8 @@ export class SignUp extends Component {
           console.log("Tac", data);
           if (data.success === true) {
             this.props.navigation.navigate("TAC", {
-              contact: "60" + this.state.number,
+              contact: "+60" + this.state.number,
               requestMethod: "SignUp",
-              token: data.token
             });
           } else {
             alert(data.message);

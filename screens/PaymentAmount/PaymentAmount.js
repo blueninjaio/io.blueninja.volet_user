@@ -10,7 +10,9 @@ import {
   TextInput,
   AsyncStorage,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
@@ -38,7 +40,7 @@ export class PaymentAmount extends Component {
 |--------------------------------------------------
 */
   componentDidMount = () => {
-    // this.getUserID();
+    this.getUserID();
     // console.log("Transfer User Details", this.props.navigation.state.params.userDetails)
     // this.setState({
     //   transferUser:
@@ -53,11 +55,11 @@ export class PaymentAmount extends Component {
 
   getUserID = async () => {
     try {
-      let id = await AsyncStorage.getItem("ID");
+      let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
-      if (id !== null) {
-        this.getVolet(id);
-        this.setState({ id });
+      if (token !== null) {
+        this.getVolet(token);
+        // this.setState({ id });
         this.setState({ username });
       }
     } catch (error) {
@@ -70,154 +72,217 @@ export class PaymentAmount extends Component {
     }
   };
 
-  getVolet = ID => {
-    fetch(`${url}/api/volet/id`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        persona_id: ID
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Voucher :", data);
-        if (data.success === true) {
-          this.setState({ balance: data.total });
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
         }
       })
-      .catch(error => {
-        Alert.alert(
-          "Error connecting to server Volet",
-          `${error}`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
-      });
-  };
-
-  checkVoletBalance = price => {
-    const { balance } = this.state;
-    if (price > balance) {
-      this.setState({ errorMessage: "Not Suffcient" });
-      this.setState({ price });
-    } else if (price < balance) {
-      this.setState({ errorMessage: "Amount Exceeds" });
-      this.setState({ price });
-    } else if (price === balance || balance === 0) {
-      this.setState({ errorMessage: "Insuffcient" });
-      this.setState({ price });
-    } else {
-      this.setState({ errorMessage: null });
-      this.setState({ price });
+        .then(res => res.json())
+        .then(data => {
+          console.log("Users :", data);
+          if (data.success === true) {
+            this.setState({ balance: data.user.credits });
+            this.setState({ savings: data.user.monthly_savings });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  // checkVoletBalance = price => {
+  //   console.log("volet balance", balance);
+  //   const { balance } = this.state;
+
+  //   if (price > balance || price > balance) {
+  //     this.setState({ errorMessage: "Not Suffcient" });
+  //     this.setState({ price });
+  //   } else if (price === balance || balance === 0) {
+  //     this.setState({ errorMessage: "Insuffcient" });
+  //     this.setState({ price });
+  //   } else {
+  //     this.setState({ errorMessage: null });
+  //     this.setState({ price });
+  //   }
+  // };
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 20
-          }}
-        >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 20,
-              width: width / 1.3
-            }}
-          >
-            <Text
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View>
+            <View
               style={{
-                padding: 10,
-                color: "#5B86E5",
-                fontSize: width * 0.06,
-                fontWeight: "500"
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 20
               }}
             >
-              Amount To Pay
-            </Text>
-            <Text
-              style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  paddingTop: 20,
+                  width: width / 1.3
+                }}
+              >
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "#5B86E5",
+                    fontSize: width * 0.06,
+                    fontWeight: "500"
+                  }}
+                >
+                  Amount To Pay
+                </Text>
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "grey",
+                    fontSize: width * 0.034
+                  }}
+                >
+                  How much do you want to pay your friends
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center"
+              }}
             >
-              How much do you want to pay your friends
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginTop: 20,
-              marginBottom: 40,
-              width: width / 1.5
-              // paddingLeft: 10
-            }}
-          >
-            <View>
-              <Thumbnail small style={{ backgroundColor: "grey" }} />
-            </View>
-            <View style={{ justifyContent: "center", paddingLeft: 10 }}>
-              <Text>{this.state.transferUser}</Text>
-              <Text>{this.state.transferContact}</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              width: width / 1.3,
-              flexDirection: "row",
-              justifyContent: "center"
-            }}
-          >
-            <Input
-              inputStyle={{
-                flex: 1,
-                alignSelf: "center",
-                color: "black",
-                fontSize: 18,
-                paddingLeft: 8
-              }}
-              inputContainerStyle={{
-                borderBottomWidth: 1,
-                borderBottomColor: "#5B86E5",
-              }}
-              onChangeText={price => this.checkVoletBalance(price)}
-              value={this.state.price}
-              keyboardType="numeric"
-              placeholderTextColor="rgb(74,74,74)"
-              leftIcon={
-                <Text style={{fontSize:18}}>MYR</Text>
-              }
-            />
-          </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: 20,
+                  marginBottom: 40,
+                  width: width / 1.5
+                  // paddingLeft: 10
+                }}
+              >
+                <View
+                  style={{
+                    alignItems: "center",
+                    flexDirection: "row",
+                    width: width / 1.3
+                  }}
+                >
+                  <Thumbnail small style={{ backgroundColor: "grey" }} />
+                  <View style={{ justifyContent: "center", paddingLeft: 10 }}>
+                    <Text
+                      style={{
+                        paddingTop: 3,
+                        paddingBottom: 3,
+                        color: "black",
+                        fontSize: 17,
+                        fontWeight: "600"
+                      }}
+                    >
+                      {this.props.navigation.state.params.selectedContact.name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "rgb(74,74,74)",
+                        fontSize: 17
+                      }}
+                    >
+                      {
+                        this.props.navigation.state.params.selectedContact
+                          .phoneNumbers[0].digits
+                      }
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ justifyContent: "center", paddingLeft: 10 }}>
+                  <Text>{this.state.transferUser}</Text>
+                  <Text>{this.state.transferContact}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  width: width / 1.3,
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+              >
+                <Input
+                  inputStyle={{
+                    flex: 1,
+                    alignSelf: "center",
+                    color: "black",
+                    fontSize: 18,
+                    paddingLeft: 8
+                  }}
+                  inputContainerStyle={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#5B86E5"
+                  }}
+                  // onChangeText={price => this.checkVoletBalance(price)}
+                  onChangeText={price => this.setState({ price })}
+                  value={this.state.price}
+                  sst
+                  keyboardType="numeric"
+                  placeholderTextColor="rgb(74,74,74)"
+                  leftIcon={<Text style={{ fontSize: 18 }}>MYR</Text>}
+                />
+              </View>
 
-          {this.state.errorMessage === "Amount Exceeds" ? (
-            <Text style={{ color: "red" }}>Amount exceeds from balance</Text>
-          ) : this.state.errorMessage === "Not Suffcient" ? (
-            <View>
-              <Text style={{ color: "red" }}>
-                Amount is not suffcient to be transfered.{" "}
-              </Text>
-              <Text style={{ color: "red" }}>Please increase the amount</Text>
+              {this.state.price === 0 ? (
+                <View>
+                  <Text style={{ color: "red" }}>
+                    Amount is not suffcient to be transfered.
+                  </Text>
+                  <Text style={{ color: "red" }}>
+                    Please increase the amount
+                  </Text>
+                </View>
+              ) : this.state.price > this.state.balance ? (
+                <Text style={{ color: "red" }}>
+                  Amount exceeds from balance
+                </Text>
+              ) : this.state.balance === 0 ? (
+                <Text style={{ color: "red" }}>Insuffcient Balance</Text>
+              ) : this.state.price === 0 || this.state.balance === 0 ? (
+                <Text style={{ color: "red" }}>Insuffcient Balance</Text>
+              ) : null}
+
+              {/* {this.state.errorMessage === "Amount Exceeds" ? (
+                <Text style={{ color: "red" }}>
+                  Amount exceeds from balance
+                </Text>
+              ) : this.state.errorMessage === "Not Suffcient" ? (
+                <View>
+                  <Text style={{ color: "red" }}>
+                    Amount is not suffcient to be transfered.
+                  </Text>
+                  <Text style={{ color: "red" }}>
+                    Please increase the amount
+                  </Text>
+                </View>
+              ) : this.state.errorMessage === "Insuffcient" ||
+                this.state.balance === 0 ? (
+                <Text style={{ color: "red" }}>Insuffcient Balance</Text>
+              ) : null} */}
             </View>
-          ) : this.state.errorMessage === "Insuffcient" ||
-            this.state.balance === 0 ? (
-            <Text style={{ color: "red" }}>Insuffcient Balance</Text>
-          ) : null}
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
         <View
           style={{
             justifyContent: "center",
@@ -227,7 +292,7 @@ export class PaymentAmount extends Component {
             width: width
           }}
         >
-          {this.state.errorMessage === "Not Suffcient" ? (
+          {this.state.balance === 0 || this.state.price > this.state.balance ? (
             <View>
               <LinearGradient
                 colors={["#36D1DC", "#5B86E5"]}
@@ -243,8 +308,10 @@ export class PaymentAmount extends Component {
               <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("TransferReason", {
-                    transferUser: this.state.transferUser,
-                    transferContact: this.state.transferContact,
+                    transferUser: this.props.navigation.state.params
+                      .selectedContact.name,
+                    transferContact: this.props.navigation.state.params
+                      .selectedContact.phoneNumbers[0].digits,
                     amount: this.state.price
                   })
                 }
@@ -255,20 +322,23 @@ export class PaymentAmount extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
-          ) : this.state.errorMessage === null ? (
-            <TouchableOpacity disabled={true} style={styles.buttonStyle}>
-              <Text style={styles.loginText}>Next</Text>
-            </TouchableOpacity>
           ) : (
             <LinearGradient
               colors={["#36D1DC", "#5B86E5"]}
               style={styles.buttonStyle}
             >
               <TouchableOpacity
+                disabled={
+                  this.state.balance >= 1 && this.state.price >= 1
+                    ? false
+                    : true
+                }
                 onPress={() =>
                   this.props.navigation.navigate("TransferReason", {
-                    transferUser: this.state.transferUser,
-                    transferContact: this.state.transferContact,
+                    transferUser: this.props.navigation.state.params
+                      .selectedContact.name,
+                    transferContact: this.props.navigation.state.params
+                      .selectedContact.phoneNumbers[0].digits,
                     amount: this.state.price
                   })
                 }

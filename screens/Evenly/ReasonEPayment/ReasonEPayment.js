@@ -9,184 +9,229 @@ import {
   Alert,
   TextInput,
   SafeAreaView,
-  Image,
-  Keyboard
+  TouchableWithoutFeedback,
+  Keyboard,
+  Image
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
-import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
-// import { dev, prod, url } from "../../../config";
+import { Notifications, Permissions, LinearGradient } from "expo";
 
 export class ReasonEPayment extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      reason: "",
+      selectedValue: ""
+    };
+  }
+
+  selectedTransfer = value => {
+    this.setState({ selectedValue: value });
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 20
-          }}
-        >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View
             style={{
               justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 20,
-              width: width / 1.3
+              alignItems: "center",
+              marginTop: 10
             }}
           >
-            <Text
-              style={{
-                padding: 10,
-                color: "#5B86E5",
-                fontSize: width * 0.06,
-                fontWeight: "500"
-              }}
-            >
-              Reason Of Request
-            </Text>
             <View
               style={{
-                padding: 10
+                justifyContent: "center",
+                alignItems: "flex-start",
+                paddingTop: 20,
+                width: width / 1.3
               }}
             >
               <Text
                 style={{
-                  color: "grey",
-                  fontSize: width * 0.034,
-                  marginBottom: 5
+                  padding: 10,
+                  color: "#5B86E5",
+                  fontSize: width * 0.06,
+                  fontWeight: "500"
                 }}
               >
-                What is the reason for you request?
+                Reason Of Request
               </Text>
-              <Text style={{ color: "grey", fontSize: width * 0.034 }}>
-                Feel free to attach your receipt or skip
-              </Text>
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: "grey", fontSize: width * 0.034 }}>
+                  Whats is the reason of your request?
+                </Text>
+                <Text style={{ color: "grey", fontSize: width * 0.034 }}>
+                  Feel free to attact your receipt or skip
+                </Text>
+              </View>
             </View>
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginTop: 30,
-              width: width / 1.5
-            }}
-          >
-            <TextInput
+            <View
               style={{
-                alignSelf: "center",
-                width: width / 2,
-                borderBottomWidth: 1,
-                borderBottomColor: "#5B86E5",
-                height: 20,
-                color: "rgb(74,74,74)"
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: 30,
+                width: width / 1.3
+                // paddingLeft: 10
               }}
-              type="text"
-              placeholder="Reason of my transfer"
-              placeholderTextColor="rgb(215,215,215)"
-            />
-            <TouchableOpacity
-              style={{}}
-              //   onPress={() => this.props.navigation.navigate("PaymentAmount")}
             >
-              <Image
-                source={require("../../../assets/qrcode.png")}
-                resizeMode="contain"
-                style={{ width: 20, height: 20 }}
+              <TextInput
+                style={{
+                  alignSelf: "center",
+                  flex: 1,
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5",
+                  height: 20,
+                  color: "rgb(74,74,74)"
+                }}
+                onChangeText={reason => this.setState({ reason })}
+                value={this.state.reason}
+                type="text"
+                placeholder="Reason of my transfer  "
+                placeholderTextColor="rgb(74,74,74)"
               />
-            </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.listItemButtonSwitch}
+                onPress={() =>
+                  // this.setState({reason: "Transportation"})
+                  this.selectedTransfer("Transportation")
+                }
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/glasses.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+
+                  <Text
+                    style={
+                      this.state.selectedValue === "Transportation"
+                        ? styles.listItemTextFontBig
+                        : styles.listItemText
+                    }
+                  >
+                    Transportation
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.listItemButtonSwitch}
+                onPress={() => this.selectedTransfer("Utilities")}
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/glasses.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text
+                    style={
+                      this.state.selectedValue === "Utilities"
+                        ? styles.listItemTextFontBig
+                        : styles.listItemText
+                    }
+                  >
+                    Utilities
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.listItemButtonSwitch}
+                onPress={() =>
+                  // this.setState({reason: "Food & Beverage"})
+                  this.selectedTransfer("Food & Beverage")
+                }
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/glasses.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text
+                    style={
+                      this.state.selectedValue === "Food & Beverage"
+                        ? styles.listItemTextFontBig
+                        : styles.listItemText
+                    }
+                  >
+                    Food & Beverage
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.listItemButtonSwitch}
+                onPress={() =>
+                  // this.setState({reason: "Shopping"})
+                  this.selectedTransfer("Shopping")
+                }
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/glasses.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text
+                    style={
+                      this.state.selectedValue === "Shopping"
+                        ? styles.listItemTextFontBig
+                        : styles.listItemText
+                    }
+                  >
+                    Shopping
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.listItemButtonSwitch}
+                onPress={() =>
+                  // this.setState({ reason: "Entertainment" })
+                  this.selectedTransfer("Entertainment")
+                }
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/glasses.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text
+                    style={
+                      this.state.selectedValue === "Entertainment"
+                        ? styles.listItemTextFontBig
+                        : styles.listItemText
+                    }
+                  >
+                    Entertainment
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={styles.listItemButtonSwitch}
-            onPress={() => this.props.navigation.navigate("SeparatelyRPayment")}
-          >
-            <View style={styles.show}>
-              <Image
-                source={require("../../../assets/glasses.png")}
-                resizeMode="contain"
-                style={{ width: 40, height: 40 }}
-              />
-              <Text style={styles.listItemText}>Transportation</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={styles.listItemButtonSwitch}
-            onPress={() => this.props.navigation.navigate("SeparatelyRPayment")}
-          >
-            <View style={styles.show}>
-              <Image
-                source={require("../../../assets/glasses.png")}
-                resizeMode="contain"
-                style={{ width: 40, height: 40 }}
-              />
-              <Text style={styles.listItemText}>Utilities</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={styles.listItemButtonSwitch}
-            onPress={() => this.props.navigation.navigate("SeparatelyRPayment")}
-          >
-            <View style={styles.show}>
-              <Image
-                source={require("../../../assets/glasses.png")}
-                resizeMode="contain"
-                style={{ width: 40, height: 40 }}
-              />
-              <Text style={styles.listItemText}>Food & Beverage</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={styles.listItemButtonSwitch}
-            onPress={() => this.props.navigation.navigate("SeparatelyRPayment")}
-          >
-            <View style={styles.show}>
-              <Image
-                source={require("../../../assets/glasses.png")}
-                resizeMode="contain"
-                style={{ width: 40, height: 40 }}
-              />
-              <Text style={styles.listItemText}>Shopping</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            style={styles.listItemButtonSwitch}
-            onPress={() => this.props.navigation.navigate("SeparatelyRPayment")}
-          >
-            <View style={styles.show}>
-              <Image
-                source={require("../../../assets/glasses.png")}
-                resizeMode="contain"
-                style={{ width: 40, height: 40 }}
-              />
-              <Text style={styles.listItemText}>Entertainment</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+        </TouchableWithoutFeedback>
+
         <View
           style={{
             justifyContent: "center",
             alignItems: "center",
             position: "absolute",
-            bottom: 60,
+            bottom: 50,
             width: width
           }}
         >
@@ -195,12 +240,38 @@ export class ReasonEPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SplitESummary")}
               style={styles.buttonStyle}
+              disabled={this.state.reason === "" ? true : false}
+              onPress={() =>
+                this.props.navigation.navigate("SplitESummary", {
+                  amount: this.props.navigation.state.params.amount,
+                  reason: this.state.reason,
+                  selectedContact: this.props.navigation.state.params
+                    .selectedContact,
+                  selectedValue: this.state.selectedValue
+                })
+              }
             >
-              <Text style={styles.loginText}>DONE</Text>
+              <Text style={styles.loginText}>Next</Text>
             </TouchableOpacity>
           </LinearGradient>
+
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() =>
+              this.props.navigation.navigate("SplitESummary", {
+                amount: this.props.navigation.state.params.amount,
+                reason: this.state.reason,
+                selectedContact: this.props.navigation.state.params
+                  .selectedContact,
+                selectedValue: this.state.selectedValue
+              })
+            }
+          >
+            <Text style={{ color: "rgb(74, 74, 74)", marginTop: 10 }}>
+              Skip
+            </Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
@@ -211,7 +282,8 @@ export default ReasonEPayment;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    marginTop: 30
   },
   text: {
     color: "#979797",
@@ -250,6 +322,12 @@ const styles = StyleSheet.create({
   listItemText: {
     fontSize: 15,
     color: "#979797",
+    marginLeft: 20
+  },
+
+  listItemTextFontBig: {
+    fontSize: 18,
+    color: "black",
     marginLeft: 20
   }
 });

@@ -38,45 +38,44 @@ export class Login extends Component {
   |--------------------------------------------------
   */
   reduxLogin = () => {
-    this.props.logMeIn();
+    // this.props.logMeIn();
 
-    // if (this.state.email.length < 5 || !this.state.email.includes("@"))
-    //   alert(`Please enter a valid email address.`);
-    // else if (this.state.password.length < 6) alert(`Please enter a password.`);
-    // else {
-    //   fetch(`${url}/api/users/login`, {
-    //     method: "POST",
-    //     mode: "cors",
-    //     headers: {
-    //       "Content-Type": "application/json; charset=utf-8"
-    //     },
-    //     body: JSON.stringify({
-    //       email: this.state.email,
-    //       password: this.state.password
-    //     })
-    //   })
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       if (data.success) {
-    //         console.log("Login", data)
-    //         this._storeData(data.token, data.user).then(() => {
-    //           this.registerForPushNotificationsAsync();
-    //           this.props.logMeIn();
-    //         });
-    //       } else alert(data.message);
-    //     })
-    //     .catch(err => {
-    //       //To be removed in production
-    //       console.log("Error for login:", err);
+    if (this.state.email.length < 5 || !this.state.email.includes("@"))
+      alert(`Please enter a valid email address.`);
+    else if (this.state.password.length < 6) alert(`Please enter a password.`);
+    else {
+      fetch(`${url}/users/login`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify({
+          login_input: this.state.email,
+          password: this.state.password
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success === true) {
+            console.log("Login", data);
+            this._storeData(data.token, data.user).then(() => {
+              // this.registerForPushNotificationsAsync();
+              this.props.logMeIn();
+            });
+          } else alert(data.message);
+        })
+        .catch(err => {
+          console.log("Error for login:", err);
 
-    //       Alert.alert(
-    //         "Error connecting to server",
-    //         `Please try again later`,
-    //         [{ text: "OK", onPress: () => null }],
-    //         { cancelable: false }
-    //       );
-    //     });
-    // }
+          Alert.alert(
+            "Error connecting to server",
+            `Please try again later`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    }
   };
 
   /**
@@ -92,7 +91,6 @@ export class Login extends Component {
       await AsyncStorage.setItem("email", userDetails.email);
       await AsyncStorage.setItem("ID", userDetails._id);
       await AsyncStorage.setItem("contact", userDetails.contact);
-      await AsyncStorage.setItem("userType", userDetails.user_type);
     } catch (error) {
       alert(error);
     }
@@ -122,7 +120,7 @@ export class Login extends Component {
 
     let token = await Notifications.getExpoPushTokenAsync();
 
-    return fetch(`${url}/api/users/updatePush`, {
+    return fetch(`${url}/users/updatePush`, {
       method: "POST",
       headers: {
         Accept: "application/json",

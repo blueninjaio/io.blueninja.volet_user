@@ -15,9 +15,9 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import { Contacts, Permissions, Constants } from "expo";
+import { Contacts, Permissions, Constants, LinearGradient } from "expo";
 import ContactList from "../../component/ContactList/index";
-// import { dev, prod, url } from "../../../config";
+import { dev, prod, url } from "../../config/index";
 
 export class SendPayment extends Component {
   constructor(props) {
@@ -51,13 +51,14 @@ export class SendPayment extends Component {
       X: [],
       Y: [],
       Z: [],
-      isLoading: false
+      isLoading: false,
+      selectedContact: "",
+      voletContacts: ""
     };
   }
 
   componentDidMount() {
     this.getPermissionAsync();
-    // setTimeout(() => this.showFirstContactAsync(), 1);
     this.showFirstContactAsync();
   }
 
@@ -66,43 +67,86 @@ export class SendPayment extends Component {
       fields: [Expo.Contacts.PHONE_NUMBERS]
     });
 
-    if (contacts !== "") {
-      this.setState({ isLoading: false });
-      this.setState({ A: this.filterMatches(contacts.data, /^A/) });
-      this.setState({ B: this.filterMatches(contacts.data, /^B/) });
-      this.setState({ C: this.filterMatches(contacts.data, /^C/) });
-      this.setState({ D: this.filterMatches(contacts.data, /^D/) });
-      this.setState({ E: this.filterMatches(contacts.data, /^E/) });
-      this.setState({ F: this.filterMatches(contacts.data, /^F/) });
-      this.setState({ G: this.filterMatches(contacts.data, /^G/) });
-      this.setState({ H: this.filterMatches(contacts.data, /^H/) });
-      this.setState({ I: this.filterMatches(contacts.data, /^I/) });
-      this.setState({ J: this.filterMatches(contacts.data, /^J/) });
-      this.setState({ K: this.filterMatches(contacts.data, /^K/) });
-      this.setState({ L: this.filterMatches(contacts.data, /^L/) });
-      this.setState({ M: this.filterMatches(contacts.data, /^M/) });
-      this.setState({ N: this.filterMatches(contacts.data, /^N/) });
-      this.setState({ O: this.filterMatches(contacts.data, /^O/) });
-      this.setState({ P: this.filterMatches(contacts.data, /^P/) });
-      this.setState({ Q: this.filterMatches(contacts.data, /^Q/) });
-      this.setState({ R: this.filterMatches(contacts.data, /^R/) });
-      this.setState({ S: this.filterMatches(contacts.data, /^S/) });
-      this.setState({ T: this.filterMatches(contacts.data, /^T/) });
-      this.setState({ U: this.filterMatches(contacts.data, /^U/) });
-      this.setState({ V: this.filterMatches(contacts.data, /^V/) });
-      this.setState({ W: this.filterMatches(contacts.data, /^W/) });
-      this.setState({ X: this.filterMatches(contacts.data, /^X/) });
-      this.setState({ Y: this.filterMatches(contacts.data, /^Y/) });
-      this.setState({ Z: this.filterMatches(contacts.data, /^Z/) });
-    } else {
-      this.setState({ isLoading: true });
-    }
+    console.log("Contacts", contacts.data);
+    this.filterNumbers(contacts.data);
+
+    // if (contacts !== "") {
+    //   this.setState({ isLoading: false });
+    //   this.setState({ A: this.filterMatches(contacts.data, /^A/) });
+    //   this.setState({ B: this.filterMatches(contacts.data, /^B/) });
+    //   this.setState({ C: this.filterMatches(contacts.data, /^C/) });
+    //   this.setState({ D: this.filterMatches(contacts.data, /^D/) });
+    //   this.setState({ E: this.filterMatches(contacts.data, /^E/) });
+    //   this.setState({ F: this.filterMatches(contacts.data, /^F/) });
+    //   this.setState({ G: this.filterMatches(contacts.data, /^G/) });
+    //   this.setState({ H: this.filterMatches(contacts.data, /^H/) });
+    //   this.setState({ I: this.filterMatches(contacts.data, /^I/) });
+    //   this.setState({ J: this.filterMatches(contacts.data, /^J/) });
+    //   this.setState({ K: this.filterMatches(contacts.data, /^K/) });
+    //   this.setState({ L: this.filterMatches(contacts.data, /^L/) });
+    //   this.setState({ M: this.filterMatches(contacts.data, /^M/) });
+    //   this.setState({ N: this.filterMatches(contacts.data, /^N/) });
+    //   this.setState({ O: this.filterMatches(contacts.data, /^O/) });
+    //   this.setState({ P: this.filterMatches(contacts.data, /^P/) });
+    //   this.setState({ Q: this.filterMatches(contacts.data, /^Q/) });
+    //   this.setState({ R: this.filterMatches(contacts.data, /^R/) });
+    //   this.setState({ S: this.filterMatches(contacts.data, /^S/) });
+    //   this.setState({ T: this.filterMatches(contacts.data, /^T/) });
+    //   this.setState({ U: this.filterMatches(contacts.data, /^U/) });
+    //   this.setState({ V: this.filterMatches(contacts.data, /^V/) });
+    //   this.setState({ W: this.filterMatches(contacts.data, /^W/) });
+    //   this.setState({ X: this.filterMatches(contacts.data, /^X/) });
+    //   this.setState({ Y: this.filterMatches(contacts.data, /^Y/) });
+    //   this.setState({ Z: this.filterMatches(contacts.data, /^Z/) });
+    // } else {
+    //   this.setState({ isLoading: true });
+    // }
   };
 
   filterMatches = (words, regexp) => {
     return words.filter(word => {
       return regexp.test(word.name);
     });
+  };
+
+  filterNumbers = async value => {
+    let tempArra = [];
+    value.map(x => {
+      if (x.phoneNumbers) {
+        tempArra.push(x.phoneNumbers[0].digits);
+      }
+    });
+    console.log("Contacts list ", tempArra);
+    try {
+      fetch(`${url}/users/get-by-contact`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + this.props.navigation.state.params.token
+        },
+        body: JSON.stringify({
+          contacts: tempArra
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("volet contacts :", data);
+          if (data.success === true) {
+            this.setState({ voletContacts: data.users });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /**
@@ -119,9 +163,19 @@ export class SendPayment extends Component {
     // });
   };
 
-  onActionSelectNumber = contact => {
-    console.log("SendPayment text", contact);
-    this.setState({ contact });
+  onActionSelectNumber = contactList => {
+    this.setState({ selectedContact: contactList });
+    this.setState({ contact: contactList.phoneNumbers[0].digits });
+  };
+
+  onActionPaymentAmount = () => {
+    if (this.state.contact !== "") {
+      this.props.navigation.navigate("PaymentAmount", {
+        selectedContact: this.state.selectedContact
+      });
+    } else {
+      alert("Please enter a number");
+    }
   };
 
   render() {
@@ -160,13 +214,6 @@ export class SendPayment extends Component {
               a payment
             </Text>
           </View>
-          {/* </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        > */}
           <View
             style={{
               flexDirection: "row",
@@ -194,7 +241,7 @@ export class SendPayment extends Component {
             />
             <TouchableOpacity
               style={{}}
-              onPress={() => this.props.navigation.navigate("PaymentAmount")}
+              onPress={() => this.props.navigation.navigate("ShowQRCode")}
             >
               <Image
                 source={require("../../assets/qrcode.png")}
@@ -228,7 +275,7 @@ export class SendPayment extends Component {
         >
           <View style={{ width: width / 1.1, justifyContent: "flex-start" }}>
             {this.state.isLoading === true ? (
-              <View style={{justifyContent:"center", alignItems:"center"}}>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <ActivityIndicator size="large" color="#5B86E5" />
               </View>
             ) : (
@@ -376,6 +423,27 @@ export class SendPayment extends Component {
             )}
           </View>
         </ScrollView>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 50,
+            width: width
+          }}
+        >
+          <LinearGradient
+            colors={["#36D1DC", "#5B86E5"]}
+            style={styles.buttonStyle}
+          >
+            <TouchableOpacity
+              onPress={() => this.onActionPaymentAmount()}
+              style={styles.buttonStyle}
+            >
+              <Text style={styles.loginText}>Done</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
       </SafeAreaView>
     );
   }
@@ -392,5 +460,17 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

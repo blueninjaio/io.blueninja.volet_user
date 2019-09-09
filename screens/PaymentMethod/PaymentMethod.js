@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Alert,
   TextInput,
-  Platform
+  Platform,
+  SafeAreaView
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
@@ -71,12 +72,11 @@ export class PaymentMethod extends Component {
   login = response => {
     if (response === true) {
       //   this.props.logMeIn();
-      this.props.navigation.navigate("TransferSummary",{
-        amount:this.props.navigation.state.params.amount,
-        reason:this.props.navigation.state.params.reason,
+      this.props.navigation.navigate("TransferSummary", {
+        amount: this.props.navigation.state.params.amount,
+        reason: this.props.navigation.state.params.reason,
         transferUser: this.props.navigation.state.params.transferUser,
-        transferContact: this.props.navigation.state.params
-          .transferContact
+        transferContact: this.props.navigation.state.params.transferContact
       });
     }
   };
@@ -108,63 +108,105 @@ export class PaymentMethod extends Component {
   };
   render() {
     return (
-      <View style={styles.container}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 15
+          }}
+        >
           <View
             style={{
-              width: width / 1.5,
               justifyContent: "center",
-              alignItems: "flex-start"
+              alignItems: "flex-start",
+              paddingTop: 20,
+              width: width / 1.3
             }}
           >
-            <Text>Payment Method</Text>
-            <Text>
+            <Text
+              style={{
+                padding: 10,
+                color: "#5B86E5",
+                fontSize: width * 0.06,
+                fontWeight: "500"
+              }}
+            >
+              Payment Method
+            </Text>
+            <Text
+              style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
+            >
               How would you like to transfer your money to yout friends
             </Text>
           </View>
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => this.login(true)}
           style={{
-            justifyContent: "center",
-            alignItems:"center"
+            flexDirection: "row",
+            paddingTop: 10,
+            paddingBottom: 10,
+            marginTop: 25,
+            width: width,
+            backgroundColor: "rgb(255,255,255)",
+            borderColor: "#ddd",
+            shadowColor: "#000",
+            shadowOffset: { width: 2, height: 2 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 1
           }}
         >
-          <TouchableOpacity
-            style={{
-              alignItems: "center",
-              marginBottom: 10,
-              flexDirection: "row",
-              width: width / 1.4
-            }}
-            onPress={() => this.touchID()}
-          >
-            <Icon name="creditcard" type="AntDesign" />
-            <Text style={{ marginLeft: 15 }}>Volet</Text>
-          </TouchableOpacity>
-          <View
-            style={{
-              alignItems: "center",
-              marginBottom: 10,
-              flexDirection: "row",
-              width: width / 1.4
-            }}
-          >
-            <Icon name="creditcard" type="AntDesign" />
-            <Text style={{ marginLeft: 15 }}>Online Transfer</Text>
+          <Icon
+            name="creditcard"
+            type="AntDesign"
+            style={{ marginLeft: 20, color: "#5B86E5" }}
+          />
+          <View style={{ paddingLeft: 20, alignItems: "center" }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: "rgb(152,152,152)"
+              }}
+            >
+              Volet
+            </Text>
           </View>
-          <View
-            style={{
-              alignItems: "center",
-              marginBottom: 10,
-              flexDirection: "row",
-              width: width / 1.4
-            }}
-          >
-            <Icon name="creditcard" type="AntDesign" />
-            <Text style={{ marginLeft: 15 }}>Cerdit card</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            paddingTop: 10,
+            paddingBottom: 10,
+            marginTop: 25,
+            width: width,
+            backgroundColor: "rgb(255,255,255)",
+            borderColor: "#ddd",
+            shadowColor: "#000",
+            shadowOffset: { width: 3, height: 5 },
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 1
+          }}
+        >
+          <Icon
+            name="creditcard"
+            type="AntDesign"
+            style={{ marginLeft: 20, color: "#5B86E5" }}
+          />
+          <View style={{ paddingLeft: 20 }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: "rgb(152,152,152)"
+              }}
+            >
+              Online Banking
+            </Text>
           </View>
-        </View>
-      </View>
+        </TouchableOpacity>
+      </SafeAreaView>
     );
   }
 }

@@ -78,7 +78,7 @@ export class FeedBack extends Component {
   |--------------------------------------------------
   */
   addFeedback = () => {
-    fetch(`${url}/api/feedbacks`, {
+    fetch(`${url}/feedbacks`, {
       method: "POST",
       mode: "cors",
       headers: {

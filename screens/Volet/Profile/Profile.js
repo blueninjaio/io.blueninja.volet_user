@@ -24,7 +24,7 @@ export class Profile extends React.Component {
     this.state = {
       balance: 0,
       contact: "",
-      userType: "",
+      userType: "User",
       username: ""
     };
   }
@@ -39,7 +39,7 @@ export class Profile extends React.Component {
   };
 
   getUserAgentStatus = ID => {
-    fetch(`${url}/api/users/id`, {
+    fetch(`${url}/users/id`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -53,7 +53,7 @@ export class Profile extends React.Component {
       .then(data => {
         console.log("user :", data);
         if (data.success === true) {
-          this.setState({ userType: data.user.user_type });
+          // this.setState({ userType: data.user.user_type });
         }
       })
       .catch(error => {
@@ -68,14 +68,14 @@ export class Profile extends React.Component {
 
   getUserID = async () => {
     try {
-      let id = await AsyncStorage.getItem("ID");
+      let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
       let contact = await AsyncStorage.getItem("contact");
 
-      if (id !== null) {
-        this.getVolet(id);
-        this.getUserAgentStatus(id);
-        this.setState({ id });
+      if (token !== null) {
+        this.getVolet(token);
+        // this.getUserAgentStatus(token);
+        this.setState({ token });
         this.setState({ username });
         this.setState({ contact });
       }
@@ -89,32 +89,35 @@ export class Profile extends React.Component {
     }
   };
 
-  getVolet = ID => {
-    fetch(`${url}/api/volet/id`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        persona_id: ID
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Voucher :", data);
-        if (data.success === true) {
-          this.setState({ balance: data.total });
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
         }
       })
-      .catch(error => {
-        Alert.alert(
-          "Error connecting to server Volet",
-          `${error}`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
-      });
+        .then(res => res.json())
+        .then(data => {
+          console.log("Users :", data);
+          if (data.success === true) {
+            this.setState({ balance: data.user.credits });
+            this.setState({ savings: data.user.monthly_savings });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -154,7 +157,7 @@ export class Profile extends React.Component {
                 />
               )}
             </View>
-            <Text style={{ paddingTop: 10 }}>+{this.state.contact}</Text>
+            <Text style={{ paddingTop: 10 }}>{this.state.contact}</Text>
           </View>
           <View style={styles.voletContainer}>
             <LinearGradient

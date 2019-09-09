@@ -32,7 +32,7 @@ export class Shops extends Component {
   };
 
   addBusiness = () => {
-    fetch(`${url}/api/business_category`, {
+    fetch(`${url}/business_category`, {
       method: "GET",
       mode: "cors",
       headers: {

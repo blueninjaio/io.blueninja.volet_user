@@ -24,7 +24,7 @@ export class VoletBalance extends Component {
       voucherCode: "",
       username: "",
       id: "",
-      balance: ""
+      balance: 0
     };
   }
 
@@ -52,11 +52,10 @@ export class VoletBalance extends Component {
 
   getUserID = async () => {
     try {
-      let id = await AsyncStorage.getItem("ID");
+      let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
-      if (id !== null) {
-        this.getVolet(id);
-        this.setState({ id });
+      if (token !== null) {
+        this.getVolet(token);
         this.setState({ username });
       }
     } catch (error) {
@@ -69,45 +68,51 @@ export class VoletBalance extends Component {
     }
   };
 
-  getVolet = ID => {
-    fetch(`${url}/api/volet/id`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        persona_id: ID
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Voucher :", data);
-        if (data.success === true) {
-          this.setState({ balance: data.total });
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
         }
       })
-      .catch(error => {
-        Alert.alert(
-          "Error connecting to server Volet",
-          `${error}`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
-      });
+        .then(res => res.json())
+        .then(data => {
+          console.log("Users :", data);
+          if (data.success === true) {
+            this.setState({ balance: data.user.credits });
+            this.setState({ savings: data.user.monthly_savings });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   redeemVoucher = () => {
-    fetch(`${url}/api/vouchers/redeem`, {
+    fetch(`${url}/vouchers/redeem`, {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + this.state.token
       },
       body: JSON.stringify({
-        name: this.state.voucherCode,
-        user: this.state.username,
-        user_id: this.state.id
+        code: this.state.voucherCode
+        // user: this.state.username,
+        // user_id: this.state.id
       })
     })
       .then(res => res.json())
@@ -162,7 +167,7 @@ export class VoletBalance extends Component {
           }}
         >
           <Text style={{ fontWeight: "bold", fontSize: 20, color: "#5B86E5" }}>
-            MYR{this.state.balance}
+            MYR {this.state.balance}
           </Text>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -246,7 +251,7 @@ export class VoletBalance extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.savingsCardTwo}>
+              {/* <TouchableOpacity style={styles.savingsCardTwo}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -271,7 +276,7 @@ export class VoletBalance extends Component {
                     Credit / Debit Card
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           ) : (
             <View>

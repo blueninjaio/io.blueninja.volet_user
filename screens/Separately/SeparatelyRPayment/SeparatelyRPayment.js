@@ -15,13 +15,15 @@ import {
 import { Icon, Thumbnail } from "native-base";
 import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
+import { Input } from "react-native-elements";
 
 export class SeparatelyRPayment extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      contact: ""
+      contact: "",
+      price: 0
     };
   }
   componentDidMount() {}
@@ -87,45 +89,51 @@ export class SeparatelyRPayment extends Component {
               Item Description
             </Text>
             <TextInput
-              disabled={true}
               style={{
-                width: width / 1.2,
+                width: width / 1.3,
                 marginBottom: 15,
                 marginTop: 10,
                 height: 20,
                 color: "rgb(74,74,74)",
                 borderBottomWidth: 1,
                 borderBottomColor: "#5B86E5",
-                fontSize: 13
+                fontSize: 13,
+                alignSelf: "center",
+
               }}
               type="text"
-              placeholder="Your Email"
+              placeholder="Description"
               placeholderTextColor="rgb(74,74,74)"
+              onChangeText={description => this.setState({ description })}
+
             />
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 30
-            }}
-          >
-            <TextInput
-              disabled={true}
-              style={{
-                width: width / 1.2,
-                marginBottom: 15,
-                marginTop: 10,
-                height: 20,
-                color: "rgb(74,74,74)",
+            <Input
+              inputStyle={{
+                // flex: 1,
+                color: "black",
+                fontSize: 18
+              }}
+              inputContainerStyle={{
                 borderBottomWidth: 1,
                 borderBottomColor: "#5B86E5",
-                fontSize: 13
+                width: width / 1.3,
+
               }}
-              type="text"
-              placeholder="MYR"
+              onChangeText={price => this.setState({ price })}
+              value={this.state.price}
+              keyboardType="numeric"
               placeholderTextColor="rgb(74,74,74)"
+              leftIcon={
+                <Text
+                  style={{ fontSize: 18, color: "#5B86E5", paddingRight: 8 }}
+                >
+                  MYR
+                </Text>
+              }
             />
+            <View>
+              
+            </View>
           </View>
         </View>
 
@@ -194,7 +202,7 @@ export class SeparatelyRPayment extends Component {
               onPress={() => this.props.navigation.navigate("ReasonRPayment")}
               style={styles.buttonStyle}
             >
-              <Text style={styles.loginText}>DONE</Text>
+              <Text style={styles.loginText}>Done</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>
@@ -224,5 +232,34 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "500",
     fontSize: 16
+  },
+  listItemButtonSwitch: {
+    padding: 2,
+    borderRadius: 10,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 15,
+    marginLeft: 5,
+    marginRight: 5,
+    width: width / 1.4,
+    alignSelf: "center"
+  },
+  show: {
+    justifyContent: "flex-start",
+    width: width / 1.8,
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  listItemText: {
+    fontSize: 15,
+    color: "#979797",
+    marginLeft: 20
+  },
+
+  listItemTextFontBig: {
+    fontSize: 18,
+    color: "black",
+    marginLeft: 20
   }
 });

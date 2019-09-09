@@ -31,7 +31,7 @@ export class ConfirmNewPassword extends Component {
     if (this.state.password !== this.state.Cpassword) {
       alert(`Please enter a valid password.`);
     } else {
-      fetch(`${url}/api/users/reset-password`, {
+      fetch(`${url}/users/reset-password`, {
         method: "POST",
         mode: "cors",
         headers: {

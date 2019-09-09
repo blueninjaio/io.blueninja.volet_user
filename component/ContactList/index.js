@@ -19,8 +19,7 @@ export class ContactList extends Component {
   }
 
   onPressContact = value => {
-    console.log("Value contact list", value);
-    if (value !== "") {
+    if (value.phoneNumbers[0].digits !== "") {
       this.props.onActionSelectNumber(value);
     } else {
       alert("Invalid Number");
@@ -28,7 +27,6 @@ export class ContactList extends Component {
   };
 
   render() {
-    console.log(this.props.contacts);
     return (
       <View style={{ padding: 10 }}>
         <Text
@@ -51,13 +49,22 @@ export class ContactList extends Component {
                   paddingBottom: 5,
                   width: width / 1.3
                 }}
-                onPress={() => this.onPressContact(x.phoneNumbers[0].number)}
+                onPress={() => this.onPressContact(x)}
               >
                 <LinearGradient
                   colors={["#36D1DC", "#5B86E5"]}
-                  style={{ borderRadius: 30, width: 50, justifyContent:"center", alignItems:'center' }}
+                  style={{
+                    borderRadius: 30,
+                    width: 40,
+                    height: 40,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
                 >
-                  <Text style={{color:"white", fontSize:18}}>{this.props.alpha}</Text>
+                  <Text style={{ color: "white", fontSize: 18 }}>
+                    {x.firstName.substring(0, 1)}
+                    {x.lastName.substring(0, 1)}
+                  </Text>
                 </LinearGradient>
                 <View style={{ justifyContent: "center", marginLeft: 20 }}>
                   <Text
@@ -79,7 +86,7 @@ export class ContactList extends Component {
                         fontSize: 17
                       }}
                     >
-                      {x.phoneNumbers[0].number}
+                      {x.phoneNumbers[0].digits}
                     </Text>
                   ) : null}
                 </View>

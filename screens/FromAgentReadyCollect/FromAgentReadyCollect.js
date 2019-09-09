@@ -36,19 +36,19 @@ export default class FromAgentReadyCollect extends Component {
     |--------------------------------------------------
     */
   componentDidMount = () => {
-    this.getUserID();
+    // this.getUserID();
     this.getPermissionAsync();
   };
 
   getUserID = async () => {
     try {
       let id = await AsyncStorage.getItem("ID");
-      let userType = await AsyncStorage.getItem("userType");
+      // let userType = await AsyncStorage.getItem("userType");
       if (id !== null) {
-        console.log("User type", userType);
-        console.log("QR Code value", id + "_" + userType);
+        // console.log("User type", userType);
+        // console.log("QR Code value", id + "_" + userType);
         this.setState({ id });
-        this.setState({ userType });
+        // this.setState({ userType });
       }
     } catch (error) {
       Alert.alert(
@@ -85,7 +85,7 @@ export default class FromAgentReadyCollect extends Component {
   getUserDetails = userID => {
     let ID = userID.split("_")[0];
     console.log("Splits ID", ID);
-    fetch(`${url}/api/users/id`, {
+    fetch(`${url}/users/id`, {
       method: "POST",
       mode: "cors",
       headers: {

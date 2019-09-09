@@ -41,18 +41,18 @@ export class TAC extends Component {
   onActionTacCode = tacCode => {
     this.setState({ tacCode });
     if (tacCode.length === 6) {
-    //   if (this.props.navigation.state.params.requestMethod === "SignUp")
-    //   this.props.navigation.navigate("SignUpInfo", {
-    //     contact: this.props.navigation.state.params.contact,
-    //     // token: data.token
-    //   })
-    //   else{
-    //     this.props.navigation.navigate("ForgetPassword", {
-    //       contact: this.props.navigation.state.params.contact,
-    //       // token: data.token
-    //     })
-    //   }
-      fetch(`${url}/api/check-tac`, {
+      //   if (this.props.navigation.state.params.requestMethod === "SignUp")
+      //   this.props.navigation.navigate("SignUpInfo", {
+      //     contact: this.props.navigation.state.params.contact,
+      //     // token: data.token
+      //   })
+      //   else{
+      //     this.props.navigation.navigate("ForgetPassword", {
+      //       contact: this.props.navigation.state.params.contact,
+      //       // token: data.token
+      //     })
+      //   }
+      fetch(`${url}/tac/check`, {
         method: "POST",
         mode: "cors",
         headers: {
@@ -68,16 +68,18 @@ export class TAC extends Component {
           console.log("Valid Tac", data);
           if (data.success === true) {
             if (this.props.navigation.state.params.requestMethod === "SignUp")
-            this.props.navigation.navigate("SignUpInfo", {
-              contact: this.props.navigation.state.params.contact,
-              token: this.props.navigation.state.params.token
-            })
+              this.props.navigation.navigate("SignUpInfo", {
+                contact: this.props.navigation.state.params.contact,
+                // token: this.props.navigation.state.params.token
+                token: data.token
+              });
             else {
               this.props.navigation.navigate("ForgetPassword", {
                 contact: this.props.navigation.state.params.contact,
-                token: this.props.navigation.state.params.token,
+                // token: this.props.navigation.state.params.token,
+                token: data.token,
                 email: data.email
-              })
+              });
             }
           } else {
             this.setState({ isInvalid: true });
@@ -102,7 +104,7 @@ export class TAC extends Component {
   |--------------------------------------------------
   */
   sendTacCode = () => {
-    fetch(`${url}/api/check-tac`, {
+    fetch(`${url}/tac/check`, {
       method: "POST",
       mode: "cors",
       headers: {

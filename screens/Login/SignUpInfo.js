@@ -58,21 +58,20 @@ export class SignUpInfo extends Component {
     } else if (this.state.password !== this.state.CPassword) {
       alert("Password is not matching");
     } else {
-      fetch(`${url}/api/users/`, {
+      fetch(`${url}/users`, {
         method: "POST",
         mode: "cors",
         headers: {
-          "Content-Type": "application/json; charset=utf-8"
+          "Content-Type": "application/json; charset=utf-8",
+          "x-tac-token": this.props.navigation.state.params.token
         },
         body: JSON.stringify({
           facebook_id: this.state.facebook_id,
           google_id: this.state.google_id,
-          contact: this.props.navigation.state.params.contact,
           f_name: this.state.firstName,
           l_name: this.state.lastName,
           email: this.state.email,
-          password: this.state.password,
-          token: this.props.navigation.state.params.token
+          password: this.state.password
         })
       })
         .then(res => res.json())
@@ -105,14 +104,14 @@ export class SignUpInfo extends Component {
   |--------------------------------------------------
   */
   reduxLogin = () => {
-    fetch(`${url}/api/users/login`, {
+    fetch(`${url}/users/login`, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json; charset=utf-8"
       },
       body: JSON.stringify({
-        email: this.state.email,
+        login_input: this.state.email,
         password: this.state.password
       })
     })
@@ -120,7 +119,7 @@ export class SignUpInfo extends Component {
       .then(data => {
         if (data.success) {
           this._storeData(data.token, data.user).then(() => {
-            this.registerForPushNotificationsAsync();
+            // this.registerForPushNotificationsAsync();
             if (Platform.OS === "android") {
               this.showAndroidAlert();
             } else {
@@ -156,7 +155,6 @@ export class SignUpInfo extends Component {
       await AsyncStorage.setItem("email", userDetails.email);
       await AsyncStorage.setItem("ID", userDetails._id);
       await AsyncStorage.setItem("contact", userDetails.contact);
-      await AsyncStorage.setItem("userType", userDetails.user_type);
 
       // console.log('Saved')
     } catch (error) {
@@ -188,7 +186,7 @@ export class SignUpInfo extends Component {
 
     let token = await Notifications.getExpoPushTokenAsync();
 
-    return fetch(`${url}/api/users/updatePush`, {
+    return fetch(`${url}/users/updatePush`, {
       method: "POST",
       headers: {
         Accept: "application/json",

@@ -34,7 +34,7 @@ export class ShopList extends Component {
   };
 
   getCategoryDetails = () => {
-    fetch(`${url}/api/category/business`, {
+    fetch(`${url}/category/business`, {
       method: "POST",
       mode: "cors",
       headers: {

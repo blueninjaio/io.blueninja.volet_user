@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Alert
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
@@ -21,7 +22,7 @@ export class ResetPassword extends Component {
   }
 
   forgetpassword = () => {
-    fetch(`${url}/api/tac/`, {
+    fetch(`${url}/tac/contact`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -29,7 +30,6 @@ export class ResetPassword extends Component {
       },
       body: JSON.stringify({
         contact: this.state.contact,
-        type: 1
       })
     })
       .then(res => res.json())
@@ -39,7 +39,6 @@ export class ResetPassword extends Component {
           this.props.navigation.navigate("TAC", {
             contact: "+60"+this.state.contact,
             requestMethod: "ResetPassword",
-            token:data.token
           });
         } else {
           alert(data.message);

@@ -22,7 +22,7 @@ export class FAQ extends Component {
   };
 
   getFAQ = () => {
-    fetch(`${url}/api/static/`, {
+    fetch(`${url}/static/`, {
       method: "GET",
       mode: "cors",
       headers: {

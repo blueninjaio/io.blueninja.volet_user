@@ -39,7 +39,8 @@ export default class App extends React.Component {
       balance: 0,
       animation: "easeInEaseOut",
       hasCameraPermission: null,
-      lastScannedUrl: null
+      lastScannedUrl: null,
+      savings: 0
     };
   }
   /**
@@ -54,11 +55,10 @@ export default class App extends React.Component {
 
   getUserID = async () => {
     try {
-      let id = await AsyncStorage.getItem("ID");
+      let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
-      if (id !== null) {
-        this.getVolet(id);
-        this.setState({ id });
+      if (token !== null) {
+        this.getVolet(token);
         this.setState({ username });
       }
     } catch (error) {
@@ -71,32 +71,35 @@ export default class App extends React.Component {
     }
   };
 
-  getVolet = ID => {
-    fetch(`${url}/api/volet/id`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        persona_id: ID
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Voucher :", data);
-        if (data.success === true) {
-          this.setState({ balance: data.total });
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
         }
       })
-      .catch(error => {
-        Alert.alert(
-          "Error connecting to server Volet",
-          `${error}`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
-      });
+        .then(res => res.json())
+        .then(data => {
+          console.log("Users :", data);
+          if (data.success === true) {
+            this.setState({ balance: data.user.credits });
+            this.setState({ savings: data.user.monthly_savings });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /**
@@ -148,11 +151,13 @@ export default class App extends React.Component {
                 />
               </Body>
               <Right style={styles.headerOneRight}>
-                <Image
-                  source={require("../../../assets/bell.png")}
-                  resizeMode="contain"
-                  style={{ width: 22, height: 22 }}
-                />
+                <TouchableOpacity>
+                  <Image
+                    source={require("../../../assets/bell.png")}
+                    resizeMode="contain"
+                    style={{ width: 22, height: 22 }}
+                  />
+                </TouchableOpacity>
               </Right>
             </Header>
             <View style={styles.welcomeUser}>
@@ -164,7 +169,7 @@ export default class App extends React.Component {
                   opacity: 0.7
                 }}
               >
-                Welcome back,{" "}
+                Welcome back,
               </Text>
               <Text
                 style={{
@@ -209,21 +214,25 @@ export default class App extends React.Component {
                   Balance available today
                 </Text>
                 <Text style={{ color: "green", paddingBottom: 5 }}>
-                  RM 10.00
+                  RM {this.state.savings}
                 </Text>
                 <LinearGradient
                   colors={["#36D1DC", "#5B86E5"]}
                   style={styles.savingsBar}
                 />
                 <Text style={{ color: "grey", opacity: 0.7, fontSize: 13 }}>
-                  Monthly Savings Plan: RM 20.00/day
+                  Monthly Savings Plan: RM {this.state.savings}/day
                 </Text>
               </Body>
             </View>
           </View>
           <View style={styles.payments}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SendPayment")}
+              onPress={() =>
+                this.props.navigation.navigate("SendPayment", {
+                  token: this.state.token
+                })
+              }
             >
               <Image
                 source={require("../../../assets/sendP.png")}
@@ -233,7 +242,11 @@ export default class App extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("RequestPayment")}
+              onPress={() =>
+                this.props.navigation.navigate("RequestPayment", {
+                  token: this.state.token
+                })
+              }
             >
               <Image
                 source={require("../../../assets/requestP.png")}

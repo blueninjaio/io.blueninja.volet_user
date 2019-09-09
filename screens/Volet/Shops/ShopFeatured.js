@@ -35,7 +35,7 @@ export class ShopFeatured extends Component {
   };
 
   getBusinessItem = () => {
-    fetch(`${url}/api/item/business`, {
+    fetch(`${url}/item/business`, {
       method: "POST",
       mode: "cors",
       headers: {

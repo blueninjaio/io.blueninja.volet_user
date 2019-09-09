@@ -10,7 +10,8 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Keyboard
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 import { LinearGradient } from "expo";
@@ -78,7 +79,7 @@ export class ReasonRPayment extends Component {
               alignItems: "center",
               justifyContent: "space-between",
               marginTop: 30,
-              width: width / 1.5
+              width: width / 1.3
             }}
           >
             <TextInput
@@ -94,7 +95,7 @@ export class ReasonRPayment extends Component {
               placeholder="Reason of my transfer"
               placeholderTextColor="rgb(215,215,215)"
             />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{}}
               //   onPress={() => this.props.navigation.navigate("PaymentAmount")}
             >
@@ -103,7 +104,7 @@ export class ReasonRPayment extends Component {
                 resizeMode="contain"
                 style={{ width: 20, height: 20 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <View>

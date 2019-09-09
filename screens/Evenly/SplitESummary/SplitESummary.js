@@ -22,16 +22,24 @@ export class SplitESummary extends Component {
     super(props);
 
     this.state = {
-      contact: ""
+      contact: "",
+      splitAmount: 0,
+      totalAmount: 0
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this._splitBills();
+  }
 
-  onActionImgPopUp = contact => {
-    Keyboard.addListener("keyboardDidShow");
-    if (contact !== null) {
-      this.setState({ contact });
-    }
+  _splitBills = () => {
+    let totalAmount = this.props.navigation.state.params.amount;
+    this.setState({ totalAmount });
+
+    let person = this.props.navigation.state.params.selectedContact.length;
+
+    let dividedAmount = totalAmount / person;
+    let splitAmount = parseFloat(dividedAmount).toFixed(2);
+    this.setState({ splitAmount });
   };
 
   render() {
@@ -84,87 +92,57 @@ export class SplitESummary extends Component {
               elevation: 1
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 28
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 15 }}>
-                <Text style={{ fontWeight: "bold" }}>MYR</Text>
-                <Text style={{ paddingTop: 5 }}>10.00</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 28
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 15 }}>
-                <Text style={{ fontWeight: "bold" }}>MYR</Text>
-                <Text style={{ paddingTop: 5 }}>10.00</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 28
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 15 }}>
-                <Text style={{ fontWeight: "bold" }}>MYR</Text>
-                <Text style={{ paddingTop: 5 }}>10.00</Text>
-              </View>
-            </View>
+            {this.props.navigation.state.params.selectedContact.length >= 1
+              ? this.props.navigation.state.params.selectedContact.map(
+                  (x, i) => (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        marginBottom: 28
+                        // width:width/1.2
+                      }}
+                      key={i}
+                    >
+                      <View style={{ flexDirection: "row", width: width / 2 }}>
+                        <LinearGradient
+                          colors={["#36D1DC", "#5B86E5"]}
+                          style={{
+                            borderRadius: 30,
+                            width: 40,
+                            height: 40,
+                            justifyContent: "center",
+                            alignItems: "center"
+                          }}
+                        >
+                          <Text style={{ color: "white", fontSize: 18 }}>
+                            {x.firstName.substring(0, 1)}
+                            {x.lastName.substring(0, 1)}
+                          </Text>
+                        </LinearGradient>
+                        <View style={{ paddingLeft: 20, paddingRight: 25 }}>
+                          <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                            {x.name}
+                          </Text>
+                          <Text
+                            style={{ color: "rgb(144,144,144)", paddingTop: 5 }}
+                          >
+                            {x.phoneNumbers[0].digits}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={{ paddingLeft: 15 }}>
+                        <Text style={{ fontWeight: "bold" }}>MYR</Text>
+                        <Text style={{ paddingTop: 5 }}>
+                          {this.state.splitAmount}
+                        </Text>
+                      </View>
+                    </View>
+                  )
+                )
+              : null}
+
             <View
               style={{
                 flexDirection: "row",
@@ -173,13 +151,15 @@ export class SplitESummary extends Component {
             >
               <Text style={{ color: "rgb(144,144,144)" }}>Total Request</Text>
               <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                MYR 20.00
+                MYR {this.state.totalAmount}
               </Text>
             </View>
             <Text style={{ color: "rgb(144,144,144)", marginTop: 30 }}>
               Reasons of Transfer
             </Text>
-            <Text style={{ marginTop: 20 }}>Lorem ipsum bla blabla bla</Text>
+            <Text style={{ marginTop: 20 }}>
+              {this.props.navigation.state.params.reason}
+            </Text>
           </View>
         </View>
 

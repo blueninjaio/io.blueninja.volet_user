@@ -12,6 +12,7 @@ export const { width, height } = Dimensions.get("window");
 
 export class SplitRPayment extends Component {
   render() {
+    console.log(this.props.navigation.state.params.selectedContact)
     return (
       <SafeAreaView style={styles.container}>
         <View
@@ -45,7 +46,11 @@ export class SplitRPayment extends Component {
           <View>
             <TouchableOpacity
               style={styles.listItemButtonSwitch}
-              onPress={() => this.props.navigation.navigate("EvenlyRPayment")}
+              onPress={() =>
+                this.props.navigation.navigate("EvenlyRPayment", {
+                  selectedContact: this.props.navigation.state.params.selectedContact
+                })
+              }
             >
               <View style={styles.show}>
                 <Image
@@ -61,7 +66,10 @@ export class SplitRPayment extends Component {
             <TouchableOpacity
               style={styles.listItemButtonSwitch}
               onPress={() =>
-                this.props.navigation.navigate("SeparatelyRPayment")
+                this.props.navigation.navigate("SeparatelyRPayment", {
+                  selectedContact: this.props.navigation.state.params.selectedContact
+
+                })
               }
             >
               <View style={styles.show}>
