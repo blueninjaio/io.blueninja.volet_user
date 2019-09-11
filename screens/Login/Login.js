@@ -328,23 +328,12 @@ export class Login extends Component {
                 width: width
               }}
             >
-              {/* <LinearGradient
-                colors={["#36D1DC", "#5B86E5"]}
-                style={styles.buttonStyle}
-              >
-                <TouchableOpacity
-                  onPress={() => this.registerForPushNotificationsAsync()}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={styles.loginText}>Log In</Text>
-                </TouchableOpacity>
-              </LinearGradient> */}
               <LinearGradient
                 colors={["#36D1DC", "#5B86E5"]}
                 style={styles.buttonStyle}
               >
                 <TouchableOpacity
-                  onPress={() => this.props.logMeIn()}
+                  onPress={() => this.registerForPushNotificationsAsync()}
                   style={styles.buttonStyle}
                 >
                   <Text style={styles.loginText}>Log In</Text>
