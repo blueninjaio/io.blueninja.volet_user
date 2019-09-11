@@ -171,7 +171,11 @@ export class SendPayment extends Component {
   onActionPaymentAmount = () => {
     if (this.state.contact !== "") {
       this.props.navigation.navigate("PaymentAmount", {
-        selectedContact: this.state.selectedContact
+        transferUser: this.state.selectedContact.name,
+        transferContact: this.state.selectedContact.phoneNumbers[0].digits,
+        firstName: this.state.selectedContact.firstName,
+        lastName: this.state.selectedContact.lastName
+
       });
     } else {
       alert("Please enter a number");

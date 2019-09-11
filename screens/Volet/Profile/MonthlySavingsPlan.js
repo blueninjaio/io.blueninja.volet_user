@@ -10,10 +10,66 @@ import {
 import { Switch } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
 import { LinearGradient } from "expo";
+import { Input } from "react-native-elements";
 
 const { width } = Dimensions.get("window");
 
 export default class MonthlySavingsPlan extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isActive: false,
+      price: ""
+    };
+  }
+
+  onActionSwitch = () => {
+    this.setState({ isActive: !this.state.isActive });
+  };
+
+  onActionSavePlan = () => {
+    fetch(`${url}/users/edit-savings`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        active: this.state.isActive,
+        amount: this.state.price
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Forgot password :", data);
+        if (data.success === true) {
+          Alert.alert(
+            "Success",
+            `${data.message}`,
+            [
+              {
+                text: "OK",
+                onPress: () => this.props.navigation.navigate("Profile")
+              }
+            ],
+            { cancelable: false }
+          );
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.log("Error saving plans", error);
+        Alert.alert(
+          "Error connecting to server",
+          `${error}`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -21,7 +77,11 @@ export default class MonthlySavingsPlan extends Component {
           <View style={styles.toggleSavingsTextContainer}>
             <Text>Activate / Deactivate Savings Plan</Text>
           </View>
-          <Switch value={true} style={styles.switchBtn} />
+          <Switch
+            style={styles.switchBtn}
+            value={this.state.isActive}
+            onValueChange={() => this.onActionSwitch()}
+          />
         </View>
         <View>
           <View style={styles.savingsCard}>
@@ -50,23 +110,40 @@ export default class MonthlySavingsPlan extends Component {
             <Text style={styles.cashInputText}>
               How much would you like to save each month
             </Text>
-            <TextInput
-              disabled={true}
+            <View
               style={{
+                justifyContent: "center",
+                alignItems: "flex-start",
                 width: width / 1.3,
-                marginBottom: 15,
-                marginTop: 40,
-                height: 20,
-                color: "rgb(74,74,74)",
-                borderBottomWidth: 1,
-                borderBottomColor: "#5B86E5",
-                fontSize: 25,
-                paddingBottom: 10
+                paddingTop: 30
               }}
-              type="text"
-              placeholder="MYR"
-              placeholderTextColor="rgb(74,74,74)"
-            />
+            >
+              <Input
+                inputStyle={{
+                  flex: 1,
+                  alignSelf: "center",
+                  color: "black",
+                  fontSize: 18
+                }}
+                inputContainerStyle={{
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#5B86E5"
+                }}
+                // onChangeText={price => this.checkVoletBalance(price)}
+                onChangeText={price => this.setState({ price })}
+                value={this.state.price}
+                sst
+                keyboardType="numeric"
+                placeholderTextColor="rgb(74,74,74)"
+                leftIcon={
+                  <Text
+                    style={{ fontSize: 18, color: "#5B86E5", paddingRight: 8 }}
+                  >
+                    MYR
+                  </Text>
+                }
+              />
+            </View>
           </View>
         </View>
         <View
@@ -82,7 +159,10 @@ export default class MonthlySavingsPlan extends Component {
             colors={["#36D1DC", "#5B86E5"]}
             style={styles.buttonStyle}
           >
-            <TouchableOpacity style={styles.buttonStyle}>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={() => this.onActionSavePlan()}
+            >
               <Text style={styles.loginText}>Save</Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -165,7 +245,7 @@ const styles = StyleSheet.create({
   },
   cashInputText: {
     color: "#5B86E5",
-    fontSize: 24
+    fontSize: 20
   },
   buttonStyle: {
     paddingTop: 5,

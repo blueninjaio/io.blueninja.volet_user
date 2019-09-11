@@ -1,7 +1,7 @@
 //Production
 // let dev = ''
 // let prod = ''
-// let url = ''http://165.22.245.137
+// let url = 'http://192.168.1.2:8080/api'
 
 //Dev
 let dev = 'http://192.168.1.2:8080/'

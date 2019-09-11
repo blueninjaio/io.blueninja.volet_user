@@ -41,16 +41,7 @@ export class PaymentAmount extends Component {
 */
   componentDidMount = () => {
     this.getUserID();
-    // console.log("Transfer User Details", this.props.navigation.state.params.userDetails)
-    // this.setState({
-    //   transferUser:
-    //     this.props.navigation.state.params.userDetails.f_name +
-    //     " " +
-    //     this.props.navigation.state.params.userDetails.l_name
-    // });
-    // this.setState({
-    //   transferContact: this.props.navigation.state.params.userDetails.contact
-    // });
+    console.log("Last name", this.props.navigation.state.params.lastName)
   };
 
   getUserID = async () => {
@@ -102,22 +93,6 @@ export class PaymentAmount extends Component {
       console.log(error);
     }
   };
-
-  // checkVoletBalance = price => {
-  //   console.log("volet balance", balance);
-  //   const { balance } = this.state;
-
-  //   if (price > balance || price > balance) {
-  //     this.setState({ errorMessage: "Not Suffcient" });
-  //     this.setState({ price });
-  //   } else if (price === balance || balance === 0) {
-  //     this.setState({ errorMessage: "Insuffcient" });
-  //     this.setState({ price });
-  //   } else {
-  //     this.setState({ errorMessage: null });
-  //     this.setState({ price });
-  //   }
-  // };
 
   render() {
     return (
@@ -184,7 +159,27 @@ export class PaymentAmount extends Component {
                     width: width / 1.3
                   }}
                 >
-                  <Thumbnail small style={{ backgroundColor: "grey" }} />
+                  <LinearGradient
+                    colors={["#36D1DC", "#5B86E5"]}
+                    style={{
+                      borderRadius: 30,
+                      width: 40,
+                      height: 40,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Text style={{ color: "white", fontSize: 18 }}>
+                      {this.props.navigation.state.params.firstName.substring(
+                        0,
+                        1
+                      )}
+                      {this.props.navigation.state.params.lastName.substring(
+                        0,
+                        1
+                      )}
+                    </Text>
+                  </LinearGradient>
                   <View style={{ justifyContent: "center", paddingLeft: 10 }}>
                     <Text
                       style={{
@@ -195,7 +190,7 @@ export class PaymentAmount extends Component {
                         fontWeight: "600"
                       }}
                     >
-                      {this.props.navigation.state.params.selectedContact.name}
+                      {this.props.navigation.state.params.transferUser}
                     </Text>
                     <Text
                       style={{
@@ -203,16 +198,9 @@ export class PaymentAmount extends Component {
                         fontSize: 17
                       }}
                     >
-                      {
-                        this.props.navigation.state.params.selectedContact
-                          .phoneNumbers[0].digits
-                      }
+                      {this.props.navigation.state.params.transferContact}
                     </Text>
                   </View>
-                </View>
-                <View style={{ justifyContent: "center", paddingLeft: 10 }}>
-                  <Text>{this.state.transferUser}</Text>
-                  <Text>{this.state.transferContact}</Text>
                 </View>
               </View>
               <View
@@ -309,10 +297,14 @@ export class PaymentAmount extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("TransferReason", {
                     transferUser: this.props.navigation.state.params
-                      .selectedContact.name,
+                      .transferUser,
                     transferContact: this.props.navigation.state.params
-                      .selectedContact.phoneNumbers[0].digits,
-                    amount: this.state.price
+                      .transferContact,
+                    amount: this.state.price,
+                    firstName: this.props.navigation.state.params.firstName
+                      .substring,
+                    lastName: this.props.navigation.state.params.lastName
+                      .substring
                   })
                 }
                 style={styles.buttonStyle}
@@ -336,10 +328,14 @@ export class PaymentAmount extends Component {
                 onPress={() =>
                   this.props.navigation.navigate("TransferReason", {
                     transferUser: this.props.navigation.state.params
-                      .selectedContact.name,
+                      .transferUser,
                     transferContact: this.props.navigation.state.params
-                      .selectedContact.phoneNumbers[0].digits,
-                    amount: this.state.price
+                      .transferContact,
+                    amount: this.state.price,
+                    firstName: this.props.navigation.state.params.firstName
+                      .substring,
+                    lastName: this.props.navigation.state.params.lastName
+                      .substring
                   })
                 }
                 style={styles.buttonStyle}

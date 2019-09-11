@@ -24,8 +24,10 @@ export class Profile extends React.Component {
     this.state = {
       balance: 0,
       contact: "",
-      userType: "User",
-      username: ""
+      userType: "",
+      username: "",
+      isActive: true,
+      token: ""
     };
   }
 
@@ -66,11 +68,47 @@ export class Profile extends React.Component {
       });
   };
 
+  onActionVisibility = async () => {
+    try {
+      fetch(`${url}/users/agents/visibility`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + this.state.token
+        }
+        // body: JSON.stringify({
+        //   _id: ID
+        // })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("show visibility :", data);
+          if (data.success === true) {
+            this.setState({ isActive: data.visible });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to Volet server",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   getUserID = async () => {
     try {
       let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
       let contact = await AsyncStorage.getItem("contact");
+      let userType = await AsyncStorage.getItem("userType");
 
       if (token !== null) {
         this.getVolet(token);
@@ -78,6 +116,7 @@ export class Profile extends React.Component {
         this.setState({ token });
         this.setState({ username });
         this.setState({ contact });
+        this.setState({ userType });
       }
     } catch (error) {
       Alert.alert(
@@ -164,7 +203,7 @@ export class Profile extends React.Component {
               colors={["#36D1DC", "#5B86E5"]}
               style={styles.voletBalance}
             >
-              <Text style={{ color: "grey", opacity: 0.7 }}>
+              <Text style={{ color: "rgb(214, 214, 214)", opacity: 0.7 }}>
                 Your Volet Balance
               </Text>
               <Text style={{ color: "white", fontSize: 18 }}>
@@ -188,7 +227,10 @@ export class Profile extends React.Component {
                     Show / Hide Visibility
                   </Text>
                 </View>
-                <Switch value={true} />
+                <Switch
+                  value={this.state.isActive}
+                  onValueChange={() => this.onActionVisibility()}
+                />
               </TouchableOpacity>
             </View>
             <TouchableOpacity
@@ -248,7 +290,7 @@ export class Profile extends React.Component {
                 <Text style={styles.listItemText}>Transaction History</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => this.props.navigation.navigate("DeepWorks")}
               style={styles.listItemButton}
             >
@@ -260,7 +302,7 @@ export class Profile extends React.Component {
                 />
                 <Text style={styles.listItemText}>Payment Method</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() =>
                 this.props.navigation.navigate("Setting", {

@@ -24,7 +24,8 @@ export class VoletBalance extends Component {
       voucherCode: "",
       username: "",
       id: "",
-      balance: 0
+      balance: 0,
+      isCreditModal: false
     };
   }
 
@@ -39,6 +40,10 @@ export class VoletBalance extends Component {
 
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
+
+  toggleCredit = () => {
+    this.setState({ isCreditModal: !this.state.isCreditModal });
   };
 
   /**
@@ -251,7 +256,10 @@ export class VoletBalance extends Component {
                   </Text>
                 </View>
               </TouchableOpacity>
-              {/* <TouchableOpacity style={styles.savingsCardTwo}>
+              <TouchableOpacity
+                style={styles.savingsCardTwo}
+                onPress={() => this.toggleCredit()}
+              >
                 <View
                   style={{
                     flexDirection: "row",
@@ -276,7 +284,7 @@ export class VoletBalance extends Component {
                     Credit / Debit Card
                   </Text>
                 </View>
-              </TouchableOpacity> */}
+              </TouchableOpacity>
             </View>
           ) : (
             <View>
@@ -340,6 +348,51 @@ export class VoletBalance extends Component {
             </View>
           )}
         </View>
+        <Modal
+          transparent={true}
+          //   backdropColor="black"
+          // visible={this.state.isModalVisible}
+          style={styles.modalContent}
+          animationIn="slideInDown"
+          animationOut="slideOutUp"
+          isVisible={this.state.isCreditModal}
+          // deviceWidth={10}
+          // deviceHeight={250}
+          backdropColor="black"
+          // backdropOpacity={0.2}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Left />
+            <Body>
+              <Title style={{ color: "#5B86E5" }}>Credit / Debits</Title>
+            </Body>
+            <Right>
+              <TouchableHighlight
+                onPress={() => {
+                  this.toggleCredit();
+                }}
+              >
+                <Icon style={{ color: "#5B86E5" }} name="close" />
+              </TouchableHighlight>
+            </Right>
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "space",
+              marginTop: 50
+            }}
+          ></View>
+          <View style={{ position: "absolute", bottom: 50 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.redeemVoucher();
+              }}
+            >
+              <Icon name="check" type="Entypo" />
+            </TouchableOpacity>
+          </View>
+        </Modal>
         <Modal
           transparent={true}
           //   backdropColor="black"

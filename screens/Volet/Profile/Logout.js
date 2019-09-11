@@ -11,6 +11,7 @@ import {
 export const { width, height } = Dimensions.get("window");
 import { connect } from "react-redux";
 import { dev, prod, url } from "../../../config/index";
+import { LinearGradient } from "expo";
 
 export class Logout extends Component {
   constructor(props) {
@@ -112,19 +113,40 @@ export class Logout extends Component {
           }}
         >
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text>We are sad to see you go</Text>
-            <Text>Are you sure you want to log out</Text>
+            <Text style={{ fontSize: 16, color: "black" }}>
+              We are sad to see you go
+            </Text>
+            <Text style={{ fontSize: 16, color: "black" }}>
+              Are you sure you want to log out
+            </Text>
           </View>
           <View>
-            <TouchableOpacity
-              style={{ padding: 20, backgroundColor: "grey" }}
-              onPress={() => this.UserSignedOut()}
-            >
-              <Text>Yes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ padding: 20, backgroundColor: "grey" }}>
-              <Text>No</Text>
-            </TouchableOpacity>
+            <View style={{marginBottom: 15}}>
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
+                <TouchableOpacity
+                  onPress={() => this.UserSignedOut()}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.loginText}>Yes</Text>
+                </TouchableOpacity>
+              </LinearGradient>
+            </View>
+            <View>
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("Home")}
+                  style={styles.buttonStyle}
+                >
+                  <Text style={styles.loginText}>No</Text>
+                </TouchableOpacity>
+              </LinearGradient>
+            </View>
           </View>
         </View>
       </View>
@@ -159,5 +181,17 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

@@ -22,14 +22,14 @@ export class Setting extends Component {
             desc={"English"}
             extraProps={this.state.isTrue}
             icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
+            // navigation={this.props.navigation}
           />
           <ListButton
             title={"Currency"}
-            desc={"English"}
+            desc={"MYR"}
             extraProps={this.state.isTrue}
             icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
+            // navigation={this.props.navigation}
           />
           <ListButton
             title={"About Volet"}

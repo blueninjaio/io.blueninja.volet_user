@@ -10,7 +10,7 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Keyboard,
+  Keyboard
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 import { LinearGradient } from "expo";
@@ -117,17 +117,25 @@ export class TransferSummary extends Component {
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 marginBottom: 28
               }}
             >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={{
+                  borderRadius: 30,
+                  width: 40,
+                  height: 40,
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
-              />
+              >
+                <Text style={{ color: "white", fontSize: 18 }}>
+                  {this.props.navigation.state.params.firstName.substring(0, 1)}
+                  {this.props.navigation.state.params.lastName.substring(0, 1)}
+                </Text>
+              </LinearGradient>
               <View style={{ paddingLeft: 20, paddingRight: 25 }}>
                 <Text style={{ fontSize: 14, fontWeight: "bold" }}>
                   {this.props.navigation.state.params.transferUser}

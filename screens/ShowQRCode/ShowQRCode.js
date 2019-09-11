@@ -27,7 +27,8 @@ export class ShowQRCode extends Component {
       id: "",
       username: "",
       userType: "",
-      selectedValue: "Scan QR"
+      selectedValue: "Scan QR",
+      token: ""
     };
   }
   /**
@@ -43,12 +44,12 @@ export class ShowQRCode extends Component {
   getUserID = async () => {
     try {
       let id = await AsyncStorage.getItem("ID");
-      // let userType = await AsyncStorage.getItem("userType");
+      let userType = await AsyncStorage.getItem("userType");
+      let token = await AsyncStorage.getItem("token");
       if (id !== null) {
-        // console.log("User type", userType);
-        // console.log("QR Code value", id + "_" + userType);
         this.setState({ id });
-        // this.setState({ userType });
+        this.setState({ userType });
+        this.setState({ token });
       }
     } catch (error) {
       Alert.alert(
@@ -78,50 +79,34 @@ export class ShowQRCode extends Component {
       LayoutAnimation.spring();
       console.log("Bar code", result);
       this.setState({ lastScannedUrl: result.data });
-      // this.getUserDetails(result.data);
+      this.getUserDetails(result.data);
     }
   };
 
   getUserDetails = userID => {
     let ID = userID.split("_")[0];
-    console.log("Splits ID", ID);
-    fetch(`${url}/users/id`, {
-      method: "POST",
+    fetch(`${url}/users/${ID}`, {
+      method: "GET",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      },
-      body: JSON.stringify({
-        _id: ID
-      })
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + this.state.token
+      }
     })
       .then(res => res.json())
       .then(data => {
         console.log("User Details :", data);
         if (data.success === true) {
-          Alert.alert(
-            "QR Code",
-            `${userID}`,
-            [
-              {
-                text: "OK",
-                onPress: () =>
-                  this.props.navigation.navigate("PaymentAmount", {
-                    userDetails: data.user
-                  })
-              }
-            ],
-            { cancelable: false }
-          );
+          this.props.navigation.navigate("PaymentAmount", {
+            transferUser: data.user.f_name + " " + data.user.l_name,
+            transferContact: data.user.contact,
+            firstName: data.user.f_name,
+            lastName: data.user.l_name
+          });
         }
       })
       .catch(error => {
-        Alert.alert(
-          "Error connecting to server Volet",
-          `${error}`,
-          [{ text: "OK", onPress: () => null }],
-          { cancelable: false }
-        );
+        alert(error);
       });
   };
 
@@ -172,8 +157,6 @@ export class ShowQRCode extends Component {
                 }}
               >
                 <QRCode value={id + "_" + userType} size={250} />
-                {/* <QRCode value={id} size={250} /> */}
-
               </View>
             </View>
             <View
@@ -227,15 +210,15 @@ export class ShowQRCode extends Component {
                     fontSize: width * 0.034
                   }}
                 >
-                 Scan a Volet OR Code to send payment or collect money from agent
+                  Scan a Volet OR Code to send payment or collect money from
+                  agent
                 </Text>
               </View>
               <View
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  height: height *0.5
-
+                  height: height * 0.5
                 }}
               >
                 {this.state.hasCameraPermission === null ? (

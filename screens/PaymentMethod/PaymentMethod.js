@@ -76,7 +76,9 @@ export class PaymentMethod extends Component {
         amount: this.props.navigation.state.params.amount,
         reason: this.props.navigation.state.params.reason,
         transferUser: this.props.navigation.state.params.transferUser,
-        transferContact: this.props.navigation.state.params.transferContact
+        transferContact: this.props.navigation.state.params.transferContact,
+        firstName: this.props.navigation.state.params.firstName.substring,
+        lastName: this.props.navigation.state.params.lastName.substring
       });
     }
   };
