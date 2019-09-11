@@ -128,8 +128,7 @@ export class ResetPassword extends Component {
                   .temporaryPassword,
                 email: this.props.navigation.state.params.email,
                 contact: this.state.contact,
-              goBack: this.props.navigation.state.params.goBack
-
+                goBack: this.props.navigation.state.params.goBack
               })
             }
             style={{ padding: 20 }}
@@ -143,8 +142,7 @@ export class ResetPassword extends Component {
                   .temporaryPassword,
                 email: this.props.navigation.state.params.email,
                 contact: this.state.contact,
-              goBack: this.props.navigation.state.params.goBack
-
+                goBack: this.props.navigation.state.params.goBack
               })
             }
             style={{ padding: 20 }}

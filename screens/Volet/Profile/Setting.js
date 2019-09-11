@@ -16,32 +16,32 @@ export class Setting extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView style={{ paddingTop: 16 }}>
           <ListButton
             title={"Language"}
             desc={"English"}
             extraProps={this.state.isTrue}
-            icon={require("../../../assets/glasses.png")}
+            icon={require("../../../assets/global.png")}
             // navigation={this.props.navigation}
           />
           <ListButton
             title={"Currency"}
             desc={"MYR"}
             extraProps={this.state.isTrue}
-            icon={require("../../../assets/glasses.png")}
+            icon={require("../../../assets/server.png")}
             // navigation={this.props.navigation}
           />
           <ListButton
             title={"About Volet"}
             extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
+            icon={require("../../../assets/info.png")}
             navigation={this.props.navigation}
             page={"AboutVolet"}
           />
           <ListButton
             title={"Security"}
             extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
+            icon={require("../../../assets/lock.png")}
             navigation={this.props.navigation}
             page={"Security"}
           />
@@ -49,7 +49,7 @@ export class Setting extends Component {
             <ListButton
               title={"Convert To Agent"}
               extraProps={this.state.isFalse}
-              icon={require("../../../assets/glasses.png")}
+              icon={require("../../../assets/users.png")}
               navigation={this.props.navigation}
               page={"ConvertAgent"}
             />
@@ -58,7 +58,7 @@ export class Setting extends Component {
           <ListButton
             title={"Logout"}
             extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
+            icon={require("../../../assets/power.png")}
             page={"Logout"}
             navigation={this.props.navigation}
           />
