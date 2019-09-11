@@ -70,37 +70,37 @@ export class SendPayment extends Component {
     console.log("Contacts", contacts.data);
     this.filterNumbers(contacts.data);
 
-    // if (contacts !== "") {
-    //   this.setState({ isLoading: false });
-    //   this.setState({ A: this.filterMatches(contacts.data, /^A/) });
-    //   this.setState({ B: this.filterMatches(contacts.data, /^B/) });
-    //   this.setState({ C: this.filterMatches(contacts.data, /^C/) });
-    //   this.setState({ D: this.filterMatches(contacts.data, /^D/) });
-    //   this.setState({ E: this.filterMatches(contacts.data, /^E/) });
-    //   this.setState({ F: this.filterMatches(contacts.data, /^F/) });
-    //   this.setState({ G: this.filterMatches(contacts.data, /^G/) });
-    //   this.setState({ H: this.filterMatches(contacts.data, /^H/) });
-    //   this.setState({ I: this.filterMatches(contacts.data, /^I/) });
-    //   this.setState({ J: this.filterMatches(contacts.data, /^J/) });
-    //   this.setState({ K: this.filterMatches(contacts.data, /^K/) });
-    //   this.setState({ L: this.filterMatches(contacts.data, /^L/) });
-    //   this.setState({ M: this.filterMatches(contacts.data, /^M/) });
-    //   this.setState({ N: this.filterMatches(contacts.data, /^N/) });
-    //   this.setState({ O: this.filterMatches(contacts.data, /^O/) });
-    //   this.setState({ P: this.filterMatches(contacts.data, /^P/) });
-    //   this.setState({ Q: this.filterMatches(contacts.data, /^Q/) });
-    //   this.setState({ R: this.filterMatches(contacts.data, /^R/) });
-    //   this.setState({ S: this.filterMatches(contacts.data, /^S/) });
-    //   this.setState({ T: this.filterMatches(contacts.data, /^T/) });
-    //   this.setState({ U: this.filterMatches(contacts.data, /^U/) });
-    //   this.setState({ V: this.filterMatches(contacts.data, /^V/) });
-    //   this.setState({ W: this.filterMatches(contacts.data, /^W/) });
-    //   this.setState({ X: this.filterMatches(contacts.data, /^X/) });
-    //   this.setState({ Y: this.filterMatches(contacts.data, /^Y/) });
-    //   this.setState({ Z: this.filterMatches(contacts.data, /^Z/) });
-    // } else {
-    //   this.setState({ isLoading: true });
-    // }
+    if (contacts !== "") {
+      this.setState({ isLoading: false });
+      this.setState({ A: this.filterMatches(contacts.data, /^A/) });
+      this.setState({ B: this.filterMatches(contacts.data, /^B/) });
+      this.setState({ C: this.filterMatches(contacts.data, /^C/) });
+      this.setState({ D: this.filterMatches(contacts.data, /^D/) });
+      this.setState({ E: this.filterMatches(contacts.data, /^E/) });
+      this.setState({ F: this.filterMatches(contacts.data, /^F/) });
+      this.setState({ G: this.filterMatches(contacts.data, /^G/) });
+      this.setState({ H: this.filterMatches(contacts.data, /^H/) });
+      this.setState({ I: this.filterMatches(contacts.data, /^I/) });
+      this.setState({ J: this.filterMatches(contacts.data, /^J/) });
+      this.setState({ K: this.filterMatches(contacts.data, /^K/) });
+      this.setState({ L: this.filterMatches(contacts.data, /^L/) });
+      this.setState({ M: this.filterMatches(contacts.data, /^M/) });
+      this.setState({ N: this.filterMatches(contacts.data, /^N/) });
+      this.setState({ O: this.filterMatches(contacts.data, /^O/) });
+      this.setState({ P: this.filterMatches(contacts.data, /^P/) });
+      this.setState({ Q: this.filterMatches(contacts.data, /^Q/) });
+      this.setState({ R: this.filterMatches(contacts.data, /^R/) });
+      this.setState({ S: this.filterMatches(contacts.data, /^S/) });
+      this.setState({ T: this.filterMatches(contacts.data, /^T/) });
+      this.setState({ U: this.filterMatches(contacts.data, /^U/) });
+      this.setState({ V: this.filterMatches(contacts.data, /^V/) });
+      this.setState({ W: this.filterMatches(contacts.data, /^W/) });
+      this.setState({ X: this.filterMatches(contacts.data, /^X/) });
+      this.setState({ Y: this.filterMatches(contacts.data, /^Y/) });
+      this.setState({ Z: this.filterMatches(contacts.data, /^Z/) });
+    } else {
+      this.setState({ isLoading: true });
+    }
   };
 
   filterMatches = (words, regexp) => {
@@ -175,7 +175,6 @@ export class SendPayment extends Component {
         transferContact: this.state.selectedContact.phoneNumbers[0].digits,
         firstName: this.state.selectedContact.firstName,
         lastName: this.state.selectedContact.lastName
-
       });
     } else {
       alert("Please enter a number");
