@@ -16,16 +16,16 @@ export class Security extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView>
-        <ListButton
+        <ScrollView style={{ paddingTop: 16 }}>
+          <ListButton
             title={"Reset Password"}
             extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
+            icon={require("../../../assets/rPwd.png")}
             navigation={this.props.navigation}
             page={"OldPassword"}
             goBack="Security"
-            />
-          <ListButton
+          />
+          {/* <ListButton
             title={"Reset Pin"}
             extraProps={this.state.isFalse}
             icon={require("../../../assets/glasses.png")}
@@ -33,7 +33,7 @@ export class Security extends Component {
             page={"ResetPin"}
             goBack="Security"
 
-          />
+          /> */}
         </ScrollView>
       </View>
     );
