@@ -233,63 +233,70 @@ export class Profile extends React.Component {
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("VoletBalance")}
-              style={styles.listItemButton}
-            >
-              <View style={styles.show}>
-                <Image
-                  source={require("../../../assets/pen.png")}
-                  resizeMode="contain"
-                  style={{ width: 40, height: 40 }}
-                />
-                <Text style={styles.listItemText}>Manage Volet Balance</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("PersonalDetails")}
-              style={styles.listItemButton}
-            >
-              <View style={styles.show}>
-                <Image
-                  source={require("../../../assets/profile.png")}
-                  resizeMode="contain"
-                  style={{ width: 40, height: 40 }}
-                />
-                <Text style={styles.listItemText}>Personal Details</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate("MonthlySavingsPlan")
-              }
-              style={styles.listItemButton}
-            >
-              <View style={styles.show}>
-                <Image
-                  source={require("../../../assets/piggy.png")}
-                  resizeMode="contain"
-                  style={{ width: 40, height: 40 }}
-                />
-                <Text style={styles.listItemText}>Monthly Savings Plan</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("DeepWorks")}
-              style={styles.listItemButton}
-            >
-              <View style={styles.show}>
-                <Image
-                  source={require("../../../assets/transaction.png")}
-                  resizeMode="contain"
-                  style={{ width: 40, height: 40 }}
-                />
-                <Text style={styles.listItemText}>Transaction History</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.shadowSet}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("VoletBalance")}
+                style={styles.listItemButton}
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/pen.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text style={styles.listItemText}>Manage Volet Balance</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.shadowSet}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("PersonalDetails")
+                }
+                style={styles.listItemButton}
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/profile.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text style={styles.listItemText}>Personal Details</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.shadowSet}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("MonthlySavingsPlan")
+                }
+                style={styles.listItemButton}
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/piggy.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text style={styles.listItemText}>Monthly Savings Plan</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.shadowSet}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("DeepWorks")}
+                style={styles.listItemButton}
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/transaction.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text style={styles.listItemText}>Transaction History</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             {/* <TouchableOpacity
               onPress={() => this.props.navigation.navigate("DeepWorks")}
               style={styles.listItemButton}
@@ -303,23 +310,25 @@ export class Profile extends React.Component {
                 <Text style={styles.listItemText}>Payment Method</Text>
               </View>
             </TouchableOpacity> */}
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate("Setting", {
-                  userType: this.state.userType
-                })
-              }
-              style={styles.listItemButton}
-            >
-              <View style={styles.show}>
-                <Image
-                  source={require("../../../assets/config.png")}
-                  resizeMode="contain"
-                  style={{ width: 40, height: 40 }}
-                />
-                <Text style={styles.listItemText}>Settings</Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.shadowSet}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate("Setting", {
+                    userType: this.state.userType
+                  })
+                }
+                style={styles.listItemButton}
+              >
+                <View style={styles.show}>
+                  <Image
+                    source={require("../../../assets/config.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <Text style={styles.listItemText}>Settings</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -377,44 +386,33 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
     marginLeft: 5,
-    marginRight: 5,
-    // borderWidth: 1,
-    // borderColor: "#979797",
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#ddd",
-    // borderBottomWidth: 0,
-    shadowColor: "#000",
-    shadowOffset: { width: 3, height: 5 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 1
+    marginRight: 5
   },
   listItemButton: {
     padding: 10,
-    // borderRadius: 10,
     justifyContent: "flex-start",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
     marginLeft: 5,
-    marginRight: 5,
-    // borderWidth: 1,
-    // borderColor: "#979797",
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#ddd",
-    shadowColor: "#000",
-    shadowOffset: { width: 3, height: 5 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 1
+    marginRight: 5
   },
   listItemText: {
     fontSize: 15,
     color: "#979797",
     marginLeft: 20
+  },
+  shadowSet: {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    borderColor: "#dbdbdb",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 15
   }
 });
