@@ -52,6 +52,7 @@ import TransferToBAccWithdrawReceipt from "../screens/TransferToBAccWithdrawRece
 import FromAgentWithdrawal from "../screens/FromAgentWithdrawal";
 import FromAgentCollection from "../screens/FromAgentCollection";
 import FromAgentReadyCollect from "../screens/FromAgentReadyCollect";
+import OpenWebView from "../screens/OpenWebView";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -251,7 +252,7 @@ const StackNavigator = createStackNavigator(
           <TouchableOpacity onPress={() => navigation.goBack(null)}>
             <Text style={styles.cancelBut}>Cancel</Text>
           </TouchableOpacity>
-        ),
+        )
       })
     },
     EvenlyRPayment: {
@@ -489,6 +490,13 @@ const StackNavigator = createStackNavigator(
         headerStyle: {
           backgroundColor: "white"
         }
+      })
+    },
+    OpenWebView: {
+      screen: OpenWebView,
+      navigationOptions: ({ navigation }) => ({
+        mode: "card",
+        header: null
       })
     }
   },

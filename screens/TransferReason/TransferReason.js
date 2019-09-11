@@ -249,7 +249,9 @@ export class TransferReason extends Component {
                   transferUser: this.props.navigation.state.params.transferUser,
                   transferContact: this.props.navigation.state.params
                     .transferContact,
-                  selectedValue: this.state.selectedValue
+                  selectedValue: this.state.selectedValue,
+                  firstName: this.props.navigation.state.params.firstName,
+                  lastName: this.props.navigation.state.params.lastName,
                 })
               }
             >
@@ -266,7 +268,10 @@ export class TransferReason extends Component {
                 transferUser: this.props.navigation.state.params.transferUser,
                 transferContact: this.props.navigation.state.params
                   .transferContact,
-                selectedValue: this.state.selectedValue
+                selectedValue: this.state.selectedValue,
+                firstName: this.props.navigation.state.params.firstName,
+                lastName: this.props.navigation.state.params.lastName,
+
               })
             }
           >

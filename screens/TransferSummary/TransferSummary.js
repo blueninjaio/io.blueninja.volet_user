@@ -32,11 +32,11 @@ export class TransferSummary extends Component {
         method: "GET",
         mode: "cors",
         headers: {
-          "Content-Type": "application/json; charset=utf-8"
+          "Content-Type": "application/json; charset=utf-8",
           // Authorization: "Bearer " + token
         },
         body: JSON.stringify({
-          to: this.state._id,
+          // to: this.state._id,
           reason: this.props.navigation.state.params.reason,
           reason: this.props.navigation.state.params.amount,
           description: this.props.navigation.state.params.selectedValue
@@ -164,7 +164,7 @@ export class TransferSummary extends Component {
             >
               <Text style={{ color: "rgb(144,144,144)" }}>Payment Method</Text>
               <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                {/* MYR{this.props.navigation.state.params.amount} */}
+                {this.props.navigation.state.params.paymentMethod}
               </Text>
             </View>
             <Text style={{ color: "rgb(144,144,144)", marginTop: 30 }}>

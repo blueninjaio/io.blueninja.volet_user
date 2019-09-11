@@ -37,7 +37,7 @@ export class Login extends Component {
   | Login Implementing Redux
   |--------------------------------------------------
   */
-  reduxLogin = token => {
+  reduxLogin = () => {
     if (this.state.email.length < 5 || !this.state.email.includes("@"))
       alert(`Please enter a valid email address.`);
     else if (this.state.password.length < 6) alert(`Please enter a password.`);
@@ -51,7 +51,7 @@ export class Login extends Component {
         body: JSON.stringify({
           login_input: this.state.email,
           password: this.state.password,
-          push_token: token
+          push_token: this.state.token
         })
       })
         .then(response => response.json())
@@ -105,6 +105,7 @@ export class Login extends Component {
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
     );
+    console.log("push notification", existingStatus)
 
     let finalStatus = existingStatus;
 
@@ -117,8 +118,9 @@ export class Login extends Component {
       return;
     }
 
+    
     let token = await Notifications.getExpoPushTokenAsync();
-
+    console.log("Push notication", token)
     return this.reduxLogin(token);
 
     // fetch(`${url}/users/updatePush`, {
@@ -333,7 +335,7 @@ export class Login extends Component {
                 style={styles.buttonStyle}
               >
                 <TouchableOpacity
-                  onPress={() => this.registerForPushNotificationsAsync()}
+                  onPress={() => this.reduxLogin()}
                   style={styles.buttonStyle}
                 >
                   <Text style={styles.loginText}>Log In</Text>

@@ -42,7 +42,8 @@ export default class App extends React.Component {
       animation: "easeInEaseOut",
       hasCameraPermission: null,
       lastScannedUrl: null,
-      savings: 0
+      savings: 0,
+      token:""
     };
   }
   /**

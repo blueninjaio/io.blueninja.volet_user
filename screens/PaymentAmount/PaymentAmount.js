@@ -301,10 +301,8 @@ export class PaymentAmount extends Component {
                     transferContact: this.props.navigation.state.params
                       .transferContact,
                     amount: this.state.price,
-                    firstName: this.props.navigation.state.params.firstName
-                      .substring,
+                    firstName: this.props.navigation.state.params.firstName,
                     lastName: this.props.navigation.state.params.lastName
-                      .substring
                   })
                 }
                 style={styles.buttonStyle}
@@ -332,10 +330,8 @@ export class PaymentAmount extends Component {
                     transferContact: this.props.navigation.state.params
                       .transferContact,
                     amount: this.state.price,
-                    firstName: this.props.navigation.state.params.firstName
-                      .substring,
+                    firstName: this.props.navigation.state.params.firstName,
                     lastName: this.props.navigation.state.params.lastName
-                      .substring
                   })
                 }
                 style={styles.buttonStyle}

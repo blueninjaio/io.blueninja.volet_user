@@ -117,6 +117,7 @@ export class SendPayment extends Component {
       }
     });
     console.log("Contacts list ", tempArra);
+    console.log("token", this.props.navigation.state.params.token)
     try {
       fetch(`${url}/users/get-by-contact`, {
         method: "POST",

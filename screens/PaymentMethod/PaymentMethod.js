@@ -69,18 +69,19 @@ export class PaymentMethod extends Component {
     this.login(result.success);
   };
 
-  login = response => {
-    if (response === true) {
+  login = method => {
+    // if (response === true) {
       //   this.props.logMeIn();
       this.props.navigation.navigate("TransferSummary", {
         amount: this.props.navigation.state.params.amount,
         reason: this.props.navigation.state.params.reason,
         transferUser: this.props.navigation.state.params.transferUser,
         transferContact: this.props.navigation.state.params.transferContact,
-        firstName: this.props.navigation.state.params.firstName.substring,
-        lastName: this.props.navigation.state.params.lastName.substring
+        firstName: this.props.navigation.state.params.firstName,
+        lastName: this.props.navigation.state.params.lastName,
+        paymentMethod: method
       });
-    }
+    // }
   };
 
   /**
@@ -144,7 +145,7 @@ export class PaymentMethod extends Component {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => this.login(true)}
+          onPress={() => this.login("Volet")}
           style={{
             flexDirection: "row",
             paddingTop: 10,
@@ -177,6 +178,7 @@ export class PaymentMethod extends Component {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => this.login("Online Banking")}
           style={{
             flexDirection: "row",
             paddingTop: 10,

@@ -8,7 +8,8 @@ import {
   TouchableHighlight,
   TextInput,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  Linking
 } from "react-native";
 import { Icon, Left, Right, Body, Title } from "native-base";
 export const { width, height } = Dimensions.get("window");
@@ -25,7 +26,10 @@ export class VoletBalance extends Component {
       username: "",
       id: "",
       balance: 0,
-      isCreditModal: false
+      isCreditModal: false,
+      addCash: false,
+      price: "",
+      token: ""
     };
   }
 
@@ -62,6 +66,7 @@ export class VoletBalance extends Component {
       if (token !== null) {
         this.getVolet(token);
         this.setState({ username });
+        this.setState({ token });
       }
     } catch (error) {
       Alert.alert(
@@ -155,6 +160,50 @@ export class VoletBalance extends Component {
           { cancelable: false }
         );
       });
+  };
+
+  onActionAddVoletCash = async amount => {
+    console.log("Add Cash");
+    try {
+      fetch(`${url}/volet/top-up`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + this.state.token
+        },
+        body: JSON.stringify({
+          amount: amount,
+          redirect_url: "http://localhost"
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Payment :", data);
+          if (data.success === true) {
+            this.setState({ isCreditModal: !this.state.isCreditModal });
+            this.props.navigation.navigate("OpenWebView", {
+              payment: data.message.url,
+              redirectCallback: async (params) => {
+                console.log('params', params);
+                await this.props.navigation.navigate("VoletBalance")
+              }
+            });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -376,6 +425,93 @@ export class VoletBalance extends Component {
               </TouchableHighlight>
             </Right>
           </View>
+
+          <Text style={{ color: "grey" }}>Top Up Amount</Text>
+          {this.state.addCash ? (
+            <View>
+              <View
+                style={{
+                  width: width / 1.3,
+                  flexDirection: "row",
+                  justifyContent: "center"
+                }}
+              >
+                <Input
+                  inputStyle={{
+                    flex: 1,
+                    alignSelf: "center",
+                    color: "black",
+                    fontSize: 18,
+                    paddingLeft: 8
+                  }}
+                  inputContainerStyle={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#5B86E5"
+                  }}
+                  // onChangeText={price => this.checkVoletBalance(price)}
+                  onChangeText={price => this.setState({ price })}
+                  value={this.state.price}
+                  sst
+                  keyboardType="numeric"
+                  placeholderTextColor="rgb(74,74,74)"
+                  leftIcon={<Text style={{ fontSize: 18 }}>MYR</Text>}
+                />
+              </View>
+              <View style={{ position: "absolute", bottom: 50 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.onActionAddVoletCash(this.state.price);
+                  }}
+                >
+                  <Icon name="check" type="Entypo" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <View>
+              <View
+                style={{
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  flexDirection: "row"
+                }}
+              >
+                <TouchableOpacity
+                  style={{ padding: 10, backgroundColor: "pink" }}
+                  onPress={() => this.onActionAddVoletCash("20")}
+                >
+                  <Text>20</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ padding: 10 }}
+                  onPress={() => this.onActionAddVoletCash("50")}
+                >
+                  <Text>50</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  flexDirection: "row"
+                }}
+              >
+                <TouchableOpacity
+                  style={{ padding: 10 }}
+                  onPress={() => this.onActionAddVoletCash("100")}
+                >
+                  <Text>100</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ padding: 10 }}
+                  onPress={() => this.setState({ addCash: true })}
+                >
+                  <Text>Other</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
           <View
             style={{
               justifyContent: "center",
@@ -383,15 +519,6 @@ export class VoletBalance extends Component {
               marginTop: 50
             }}
           ></View>
-          <View style={{ position: "absolute", bottom: 50 }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.redeemVoucher();
-              }}
-            >
-              <Icon name="check" type="Entypo" />
-            </TouchableOpacity>
-          </View>
         </Modal>
         <Modal
           transparent={true}
