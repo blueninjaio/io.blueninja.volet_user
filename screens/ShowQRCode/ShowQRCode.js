@@ -101,7 +101,8 @@ export class ShowQRCode extends Component {
             transferUser: data.user.f_name + " " + data.user.l_name,
             transferContact: data.user.contact,
             firstName: data.user.f_name,
-            lastName: data.user.l_name
+            lastName: data.user.l_name,
+            transferUserID: ID
           });
         }
       })

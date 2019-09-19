@@ -41,7 +41,6 @@ export class PaymentAmount extends Component {
 */
   componentDidMount = () => {
     this.getUserID();
-    console.log("Last name", this.props.navigation.state.params.lastName)
   };
 
   getUserID = async () => {
@@ -50,7 +49,6 @@ export class PaymentAmount extends Component {
       let username = await AsyncStorage.getItem("firstname");
       if (token !== null) {
         this.getVolet(token);
-        // this.setState({ id });
         this.setState({ username });
       }
     } catch (error) {
@@ -222,7 +220,6 @@ export class PaymentAmount extends Component {
                     borderBottomWidth: 1,
                     borderBottomColor: "#5B86E5"
                   }}
-                  // onChangeText={price => this.checkVoletBalance(price)}
                   onChangeText={price => this.setState({ price })}
                   value={this.state.price}
                   sst
@@ -302,7 +299,9 @@ export class PaymentAmount extends Component {
                       .transferContact,
                     amount: this.state.price,
                     firstName: this.props.navigation.state.params.firstName,
-                    lastName: this.props.navigation.state.params.lastName
+                    lastName: this.props.navigation.state.params.lastName,
+                    transferUserID: this.props.navigation.state.params
+                      .transferUserID
                   })
                 }
                 style={styles.buttonStyle}
@@ -331,7 +330,9 @@ export class PaymentAmount extends Component {
                       .transferContact,
                     amount: this.state.price,
                     firstName: this.props.navigation.state.params.firstName,
-                    lastName: this.props.navigation.state.params.lastName
+                    lastName: this.props.navigation.state.params.lastName,
+                    transferUserID: this.props.navigation.state.params
+                      .transferUserID
                   })
                 }
                 style={styles.buttonStyle}

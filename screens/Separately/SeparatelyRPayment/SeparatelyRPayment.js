@@ -16,6 +16,7 @@ import { Icon, Thumbnail } from "native-base";
 import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
 import { Input } from "react-native-elements";
+import RequestPayment from "../../../component/AmountRequestSeperately";
 
 export class SeparatelyRPayment extends Component {
   constructor(props) {
@@ -23,10 +24,14 @@ export class SeparatelyRPayment extends Component {
 
     this.state = {
       contact: "",
-      price: 0
+      price: 0,
+      entries: [{
+        selectedUsers: [],
+      }], 
+      totalUsers: this.props.navigation.state.params.selectedContact,
     };
   }
-  componentDidMount() {}
+
 
   onActionImgPopUp = contact => {
     Keyboard.addListener("keyboardDidShow");
@@ -35,6 +40,64 @@ export class SeparatelyRPayment extends Component {
     }
   };
 
+  onAddEntry = () => {
+    if (this.state.totalUsers.length === 0) {
+      return;
+    }
+    let { entries} = this.state
+    if (entries[entries.length - 1].selectedUsers.length === 0) {
+      return;
+    }
+    entries.push({
+      selectedUsers: []
+    });
+    this.setState({
+      entries
+    });
+  }
+
+  onActionSelectUser = (e, user) => {
+    let { entries, totalUsers } = this.state;
+
+    let index = entries.indexOf(e);
+    let { selectedUsers } = entries[index]
+
+    if (!selectedUsers.find(selected => selected._id === user._id)) {
+      user.selected = true;
+      selectedUsers.push(user);
+      totalUsers = totalUsers.filter(e => e._id !== user._id)
+    } else {
+      entries[index].selectedUsers = selectedUsers.filter(e => e._id !== user._id)
+      totalUsers.push(user)
+    }
+
+    if (totalUsers.length === 0) {
+      entries = entries.filter(entry => entry.selectedUsers.length !== 0);
+    }
+
+    this.setState({
+      entries,
+      totalUsers,
+    })
+  }
+
+  updateInfo = (e, description, price) => {
+    let { entries } = this.state;
+
+    let index = entries.indexOf(e);
+    let entry = entries[index]
+    entry.description = description
+    entry.price = price
+
+    this.setState({
+      entries,
+    })
+  }
+
+  onSubmit = () => {
+    this.state.entries.map(item => console.log(item))
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -42,16 +105,16 @@ export class SeparatelyRPayment extends Component {
           style={{
             justifyContent: "center",
             alignItems: "center",
-            borderBottomWidth: 1,
-            borderColor: "#ddd",
-            shadowColor: "#000",
-            shadowOffset: { width: 4, height: 6 },
-            shadowOpacity: 0.3,
-            shadowRadius: 4,
-            elevation: 1,
-            marginBottom: 10,
-            paddingBottom: 30,
-            backgroundColor: "white"
+            // borderBottomWidth: 1,
+            // borderColor: "#ddd",
+            // shadowColor: "#000",
+            // shadowOffset: { width: 2, height: 2 },
+            // shadowOpacity: 0.3,
+            // shadowRadius: 4,
+            // elevation: 1,
+            // marginBottom: 10,
+            // paddingBottom: 30,
+            // backgroundColor: "white"
           }}
         >
           <View
@@ -78,63 +141,40 @@ export class SeparatelyRPayment extends Component {
               How much are you requesting from your friend seperately
             </Text>
           </View>
-          <View
+        </View>
+        
+        {
+          this.state.entries.map(e => (
+            <RequestPayment
+              totalUser={this.state.totalUsers}
+              selectedUsers={e.selectedUsers}
+              onActionSelectUser={(user) => this.onActionSelectUser(e, user)}
+              updateInfo={(description, price) => this.updateInfo(e, description, price)}
+            />
+          ))
+        }
+
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <TouchableOpacity
             style={{
-              justifyContent: "center",
-              alignItems: "flex-start",
-              paddingTop: 30
+              width: width / 1.2,
+              flexDirection: "row",
+              justifyContent: "flex-end"
             }}
+            onPress={this.onAddEntry}
           >
-            <Text style={{ color: "black", fontWeight: "500" }}>
-              Item Description
-            </Text>
-            <TextInput
-              style={{
-                width: width / 1.3,
-                marginBottom: 15,
-                marginTop: 10,
-                height: 20,
-                color: "rgb(74,74,74)",
-                borderBottomWidth: 1,
-                borderBottomColor: "#5B86E5",
-                fontSize: 13,
-                alignSelf: "center",
-
-              }}
-              type="text"
-              placeholder="Description"
-              placeholderTextColor="rgb(74,74,74)"
-              onChangeText={description => this.setState({ description })}
-
+            <Icon
+              name="ios-add-circle-outline"
+              type="Ionicons"
+              style={{ color: "red", fontSize: 15, marginRight: 5 }}
             />
-            <Input
-              inputStyle={{
-                // flex: 1,
-                color: "black",
-                fontSize: 18
-              }}
-              inputContainerStyle={{
-                borderBottomWidth: 1,
-                borderBottomColor: "#5B86E5",
-                width: width / 1.3,
-
-              }}
-              onChangeText={price => this.setState({ price })}
-              value={this.state.price}
-              keyboardType="numeric"
-              placeholderTextColor="rgb(74,74,74)"
-              leftIcon={
-                <Text
-                  style={{ fontSize: 18, color: "#5B86E5", paddingRight: 8 }}
-                >
-                  MYR
-                </Text>
-              }
-            />
-            <View>
-              
-            </View>
-          </View>
+            <Text style={{ color: "red", fontWeight: "bold" }}>Add entry</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -148,7 +188,7 @@ export class SeparatelyRPayment extends Component {
               borderBottomWidth: 1,
               borderColor: "#ddd",
               shadowColor: "#000",
-              shadowOffset: { width: 4, height: 6 },
+              shadowOffset: { width: 2, height: 2 },
               shadowOpacity: 0.3,
               shadowRadius: 4,
               elevation: 1,
@@ -199,7 +239,8 @@ export class SeparatelyRPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("ReasonRPayment")}
+              // onPress={() => this.props.navigation.navigate("ReasonRPayment")}
+              onPress={() => this.onSubmit()}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>Done</Text>

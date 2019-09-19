@@ -7,7 +7,11 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  AsyncStorage,
+  Alert,
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
@@ -18,80 +22,155 @@ export class OldPassword extends Component {
     super(props);
 
     this.state = {
-      OldPassword: ""
+      password: "",
+      token: "",
+      contact: ""
     };
   }
 
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getUserID = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      let contact = await AsyncStorage.getItem("contact");
+      if (token !== null) {
+        // this.getVolet(token);
+        this.setState({ contact });
+        this.setState({ token });
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error connecting to server storage",
+        `${error}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
+
+  // getVolet = async token => {
+  //   try {
+  //     fetch(`${url}/users/me`, {
+  //       method: "GET",
+  //       mode: "cors",
+  //       headers: {
+  //         "Content-Type": "application/json; charset=utf-8",
+  //         Authorization: "Bearer " + token
+  //       }
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         console.log("Users :", data);
+  //         if (data.success === true) {
+  //           this.setState({ balance: data.user.credits });
+  //           this.setState({ savings: data.user.monthly_savings });
+  //         }
+  //       })
+  //       .catch(error => {
+  //         Alert.alert(
+  //           "Error connecting to server Volet",
+  //           `${error}`,
+  //           [{ text: "OK", onPress: () => null }],
+  //           { cancelable: false }
+  //         );
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  checkPassword = () => {
+    console.log("pasword", this.state.password)
+    if (this.state.password !== "") {
+      this.props.navigation.navigate("TAC", {
+        password: this.state.password,
+        contact: this.state.contact,
+        requestMethod: "Reset"
+        // goBack: this.props.navigation.state.params.goBack
+      });
+    } else {
+      alert("Please enter valid password");
+    }
+  };
+
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 20
-            }}
-          >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={styles.container}>
+          <View>
             <View
               style={{
                 justifyContent: "center",
-                alignItems: "flex-start",
-                paddingTop: 20,
-                width: width / 1.3
+                alignItems: "center",
+                marginTop: 20
               }}
             >
-              <Text
+              <View
                 style={{
-                  padding: 10,
-                  color: "#5B86E5",
-                  fontSize: width * 0.06,
-                  fontWeight: "500"
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  paddingTop: 20,
+                  width: width / 1.3
                 }}
               >
-                Reset Password
-              </Text>
-              <Text
-                style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
-              >
-                Please enter your mobile number and your temporary password to
-                receive a new TAC code and reset your
-              </Text>
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "#5B86E5",
+                    fontSize: width * 0.06,
+                    fontWeight: "500"
+                  }}
+                >
+                  Reset Password
+                </Text>
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "grey",
+                    fontSize: width * 0.034
+                  }}
+                >
+                  Please enter your mobile number and you will receive a new TAC
+                  code
+                </Text>
+              </View>
             </View>
-          </View>
 
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "flex-start",
-                paddingTop: 30
-              }}
-            >
-              <Text style={{ color: "black", fontWeight: "500" }}>
-                Mobile number
-              </Text>
-              <TextInput
-                disabled={true}
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <View
                 style={{
-                  width: width / 1.2,
-                  marginBottom: 15,
-                  marginTop: 10,
-                  height: 20,
-                  color: "rgb(74,74,74)",
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#5B86E5",
-                  fontSize: 13
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  paddingTop: 30
                 }}
-                // onChangeText={name => this.setState({ name })}
+              >
+                <Text style={{ color: "black", fontWeight: "500" }}>
+                  Password
+                </Text>
+                <TextInput
+                  disabled={true}
+                  style={{
+                    width: width / 1.3,
+                    marginBottom: 15,
+                    marginTop: 10,
+                    height: 20,
+                    color: "rgb(74,74,74)",
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#5B86E5",
+                    fontSize: 13
+                  }}
+                  onChangeText={password => this.setState({ password })}
+                  value={this.state.password}
+                  type="text"
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  placeholderTextColor="rgb(74,74,74)"
+                />
+              </View>
 
-                type="text"
-                placeholder="Your Full Name"
-                placeholderTextColor="rgb(74,74,74)"
-              />
-            </View>
-
-            {/* <TouchableOpacity
+              {/* <TouchableOpacity
               onPress={() =>
                 this.props.navigation.navigate("FPTac", {
                   OldPassword: this.state.OldPassword,
@@ -102,26 +181,30 @@ export class OldPassword extends Component {
             >
               <Text>Resend Code</Text>
             </TouchableOpacity> */}
+            </View>
           </View>
-        </View>
-        <View
-          style={{
-            position: "absolute",
-            bottom: 60,
-            width: width,
-            alignItems: "center"
-          }}
-        >
-          <LinearGradient
-            colors={["#36D1DC", "#5B86E5"]}
-            style={styles.buttonStyle}
+          <View
+            style={{
+              position: "absolute",
+              bottom: 60,
+              width: width,
+              alignItems: "center"
+            }}
           >
-            <TouchableOpacity style={styles.buttonStyle}>
-              <Text style={styles.loginText}>Next</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
-      </SafeAreaView>
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={styles.buttonStyle}
+            >
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => this.checkPassword()}
+              >
+                <Text style={styles.loginText}>Next</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
     );
   }
 }

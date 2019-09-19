@@ -17,14 +17,16 @@ export class Security extends Component {
     return (
       <View style={styles.container}>
         <ScrollView style={{ paddingTop: 16 }}>
-          <ListButton
-            title={"Reset Password"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/rPwd.png")}
-            navigation={this.props.navigation}
-            page={"OldPassword"}
-            goBack="Security"
-          />
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Reset Password"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/rPwd.png")}
+              navigation={this.props.navigation}
+              page={"OldPassword"}
+              goBack="Security"
+            />
+          </View>
           {/* <ListButton
             title={"Reset Pin"}
             extraProps={this.state.isFalse}
@@ -49,5 +51,18 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  shadowSet: {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    borderColor: "#dbdbdb",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 15
   }
 });

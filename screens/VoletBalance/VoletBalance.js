@@ -9,12 +9,16 @@ import {
   TextInput,
   Alert,
   AsyncStorage,
-  Linking
+  Linking,
+  Image
 } from "react-native";
 import { Icon, Left, Right, Body, Title } from "native-base";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
 import Modal from "react-native-modal";
+import { Input } from "react-native-elements";
+import { Contacts, Permissions, Constants, LinearGradient } from "expo";
+
 export class VoletBalance extends Component {
   constructor(props) {
     super(props);
@@ -184,9 +188,19 @@ export class VoletBalance extends Component {
             this.setState({ isCreditModal: !this.state.isCreditModal });
             this.props.navigation.navigate("OpenWebView", {
               payment: data.message.url,
-              redirectCallback: async (params) => {
-                console.log('params', params);
-                await this.props.navigation.navigate("VoletBalance")
+              redirectCallback: async params => {
+                console.log("params", params);
+                Alert.alert(
+                  "Success",
+                  `Payment Success`,
+                  [
+                    {
+                      text: "OK",
+                      onPress: () => this.props.navigation.navigate("Home")
+                    }
+                  ],
+                  { cancelable: false }
+                );
               }
             });
           } else {
@@ -411,11 +425,13 @@ export class VoletBalance extends Component {
           // backdropOpacity={0.2}
         >
           <View style={{ flexDirection: "row" }}>
-            <Left />
-            <Body>
-              <Title style={{ color: "#5B86E5" }}>Credit / Debits</Title>
+            <Left style={{ flex: 1 }} />
+            <Body style={{ flex: 1 }}>
+              <Title style={{ color: "#5B86E5", width: width / 1.5 }}>
+                Credit / Debits Card
+              </Title>
             </Body>
-            <Right>
+            <Right style={{ flex: 1 }}>
               <TouchableHighlight
                 onPress={() => {
                   this.toggleCredit();
@@ -426,14 +442,24 @@ export class VoletBalance extends Component {
             </Right>
           </View>
 
-          <Text style={{ color: "grey" }}>Top Up Amount</Text>
+          <Text
+            style={{
+              color: "grey",
+              fontSize: 18,
+              paddingTop: 10,
+              paddingBottom: 10
+            }}
+          >
+            Top Up Amount
+          </Text>
           {this.state.addCash ? (
-            <View>
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   width: width / 1.3,
                   flexDirection: "row",
-                  justifyContent: "center"
+                  justifyContent: "center",
+                  paddingTop: 20
                 }}
               >
                 <Input
@@ -451,74 +477,136 @@ export class VoletBalance extends Component {
                   // onChangeText={price => this.checkVoletBalance(price)}
                   onChangeText={price => this.setState({ price })}
                   value={this.state.price}
-                  sst
                   keyboardType="numeric"
                   placeholderTextColor="rgb(74,74,74)"
-                  leftIcon={<Text style={{ fontSize: 18 }}>MYR</Text>}
+                  leftIcon={
+                    <Text style={{ fontSize: 18, color: "#5B86E5" }}>MYR</Text>
+                  }
                 />
               </View>
-              <View style={{ position: "absolute", bottom: 50 }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  bottom: 50
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.onActionAddVoletCash(this.state.price);
                   }}
+                  style={{
+                    width: width / 1.2
+                  }}
                 >
-                  <Icon name="check" type="Entypo" />
+                  <LinearGradient
+                    colors={["#36D1DC", "#5B86E5"]}
+                    style={styles.buttonStyle}
+                  >
+                    <View style={styles.buttonStyle}>
+                      <Text style={styles.loginText}>Next</Text>
+                    </View>
+                  </LinearGradient>
                 </TouchableOpacity>
               </View>
             </View>
           ) : (
-            <View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
               <View
                 style={{
-                  justifyContent: "space-evenly",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  flexDirection: "row"
+                  flexDirection: "row",
+                  width: width / 1.3,
+                  paddingBottom: 15
                 }}
               >
-                <TouchableOpacity
-                  style={{ padding: 10, backgroundColor: "pink" }}
-                  onPress={() => this.onActionAddVoletCash("20")}
-                >
-                  <Text>20</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ padding: 10 }}
-                  onPress={() => this.onActionAddVoletCash("50")}
-                >
-                  <Text>50</Text>
-                </TouchableOpacity>
+                <View style={styles.shadowSet}>
+                  <TouchableOpacity
+                    style={{
+                      padding: 15,
+                      backgroundColor: "white",
+                      borderRadius: 60,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                    onPress={() => this.onActionAddVoletCash("20")}
+                  >
+                    <Image
+                      source={require("../../assets/RM20.png")}
+                      resizeMode="contain"
+                      style={{ width: width * 0.22, height: width * 0.22 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.shadowSet}>
+                  <TouchableOpacity
+                    style={{
+                      padding: 15,
+                      backgroundColor: "white",
+                      borderRadius: 60,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                    onPress={() => this.onActionAddVoletCash("50")}
+                  >
+                    <Image
+                      source={require("../../assets/RM50.png")}
+                      resizeMode="contain"
+                      style={{ width: width * 0.22, height: width * 0.22 }}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
               <View
                 style={{
-                  justifyContent: "space-evenly",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  flexDirection: "row"
+                  flexDirection: "row",
+                  width: width / 1.3,
+                  paddingBottom: 15
                 }}
               >
-                <TouchableOpacity
-                  style={{ padding: 10 }}
-                  onPress={() => this.onActionAddVoletCash("100")}
-                >
-                  <Text>100</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ padding: 10 }}
-                  onPress={() => this.setState({ addCash: true })}
-                >
-                  <Text>Other</Text>
-                </TouchableOpacity>
+                <View style={styles.shadowSet}>
+                  <TouchableOpacity
+                    style={{
+                      padding: 15,
+                      backgroundColor: "white",
+                      borderRadius: 60,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                    onPress={() => this.onActionAddVoletCash("20")}
+                  >
+                    <Image
+                      source={require("../../assets/RM50.png")}
+                      resizeMode="contain"
+                      style={{ width: width * 0.22, height: width * 0.22 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.shadowSet}>
+                  <TouchableOpacity
+                    style={{
+                      padding: 15,
+                      backgroundColor: "white",
+                      borderRadius: 60,
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                    onPress={() => this.setState({ addCash: true })}
+                  >
+                    <Image
+                      source={require("../../assets/RMother.png")}
+                      resizeMode="contain"
+                      style={{ width: width * 0.22, height: width * 0.22 }}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
-
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "space",
-              marginTop: 50
-            }}
-          ></View>
         </Modal>
         <Modal
           transparent={true}
@@ -632,5 +720,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 1
+  },
+  shadowSet: {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 60,
+    borderColor: "#dbdbdb",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 15
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
   }
 });

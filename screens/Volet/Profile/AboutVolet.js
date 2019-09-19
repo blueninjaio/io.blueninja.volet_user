@@ -17,34 +17,42 @@ export class AboutVolet extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <ListButton
-            title={"FAQ"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-            page={"FAQ"}
-          />
-          <ListButton
-            title={"Contact Support"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-            page={"ContactSupport"}
-          />
-          <ListButton
-            title={"Feed & Ratings"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-            page={"Feedback"}
-          />
-          <ListButton
-            title={"Policies"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/glasses.png")}
-            navigation={this.props.navigation}
-            page={"Policies"}
-          />
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"FAQ"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/glasses.png")}
+              navigation={this.props.navigation}
+              page={"FAQ"}
+            />
+          </View>
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Contact Support"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/glasses.png")}
+              navigation={this.props.navigation}
+              page={"ContactSupport"}
+            />
+          </View>
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Feed & Ratings"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/glasses.png")}
+              navigation={this.props.navigation}
+              page={"Feedback"}
+            />
+          </View>
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Policies"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/glasses.png")}
+              navigation={this.props.navigation}
+              page={"Policies"}
+            />
+          </View>
         </ScrollView>
       </View>
     );
@@ -60,5 +68,18 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  shadowSet: {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    borderColor: "#dbdbdb",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 15
   }
 });

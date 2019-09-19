@@ -43,7 +43,8 @@ export default class App extends React.Component {
       hasCameraPermission: null,
       lastScannedUrl: null,
       savings: 0,
-      token:""
+      token: "",
+      userImage: ""
     };
   }
   /**
@@ -63,6 +64,7 @@ export default class App extends React.Component {
       if (token !== null) {
         this.getVolet(token);
         this.setState({ username });
+        this.setState({ token });
       }
     } catch (error) {
       Alert.alert(
@@ -86,10 +88,13 @@ export default class App extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log("Users :", data);
+          // console.log("Users :", data);
           if (data.success === true) {
             this.setState({ balance: data.user.credits });
             this.setState({ savings: data.user.monthly_savings });
+            if (data.user.photo_url) {
+              this.setState({ userImage: data.user.photo_url });
+            }
             this.UserType(data.user.user_type);
           }
         })
@@ -154,7 +159,11 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View
-          style={isOpen ? [{ backgroundColor: "transparent", opacity: 0.4, flex: 1 }] : [{flex: 1}]}
+          style={
+            isOpen
+              ? [{ backgroundColor: "transparent", opacity: 0.4, flex: 1 }]
+              : [{ flex: 1 }]
+          }
         >
           <NavigationEvents onWillFocus={payload => this.getUserID()} />
           <StatusBar />
@@ -206,13 +215,24 @@ export default class App extends React.Component {
               </View>
             </LinearGradient>
             <View style={styles.userVolet}>
-              <Thumbnail
-                large
-                source={{
-                  uri: `https://upload.wikimedia.org/wikipedia/en/0/0c/Give_Me_A_Try_single_cover.jpeg`
-                }}
-                style={{ backgroundColor: "grey", borderColor: "white" }}
-              />
+              {this.state.userImage ? (
+                <Thumbnail
+                  large
+                  source={{
+                    uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                  }}
+                  style={{ borderColor: "white" }}
+                />
+              ) : (
+                <Thumbnail
+                  large
+                  source={{
+                    uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                  }}
+                  style={{ borderColor: "white" }}
+                />
+              )}
+
               <View style={styles.voletBalance}>
                 <Text
                   style={{
@@ -347,6 +367,21 @@ export default class App extends React.Component {
                 </TouchableOpacity>
               </Right>
             </Header>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                padding: 15
+              }}
+            >
+              <Image
+                source={require("../../../assets/wallet.png")}
+                resizeMode="contain"
+                style={{ width: 20, height: 20 }}
+              />
+              <Text></Text>
+            </View>
           </View>
         ) : null}
       </View>
@@ -420,7 +455,7 @@ const styles = StyleSheet.create({
   },
   qrcode: {
     justifyContent: "center",
-    alignItems: "flex-end",
+    alignItems: "flex-end"
     // marginBottom: -5
   },
   savingsBar: {

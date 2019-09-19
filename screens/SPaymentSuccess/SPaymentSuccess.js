@@ -41,7 +41,7 @@ export class SPaymentSuccess extends Component {
                 fontWeight: "500"
               }}
             >
-              Payment Successfully Requested!
+              Payment Successfully {this.props.navigation.state.params.paymentType}!
             </Text>
           </View>
         </View>
@@ -63,7 +63,7 @@ export class SPaymentSuccess extends Component {
               onPress={() => this.props.navigation.navigate("Home")}
               style={styles.buttonStyle}
             >
-              <Text style={styles.loginText}>DONE</Text>
+              <Text style={styles.loginText}>Done</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View>

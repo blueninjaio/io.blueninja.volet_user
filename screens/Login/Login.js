@@ -28,7 +28,8 @@ export class Login extends Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      notificationToken: ""
     };
   }
 
@@ -37,7 +38,13 @@ export class Login extends Component {
   | Login Implementing Redux
   |--------------------------------------------------
   */
+
+  componentDidMount() {
+    this.registerForPushNotificationsAsync();
+  }
+
   reduxLogin = () => {
+    console.log("Token", this.state.notificationToken)
     if (this.state.email.length < 5 || !this.state.email.includes("@"))
       alert(`Please enter a valid email address.`);
     else if (this.state.password.length < 6) alert(`Please enter a password.`);
@@ -51,7 +58,7 @@ export class Login extends Component {
         body: JSON.stringify({
           login_input: this.state.email,
           password: this.state.password,
-          push_token: this.state.token
+          push_token: this.state.notificationToken
         })
       })
         .then(response => response.json())
@@ -59,7 +66,6 @@ export class Login extends Component {
           if (data.success === true) {
             console.log("Login", data);
             this._storeData(data.token, data.user).then(() => {
-              // this.registerForPushNotificationsAsync();
               this.props.logMeIn();
             });
           } else alert(data.message);
@@ -105,7 +111,7 @@ export class Login extends Component {
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
     );
-    console.log("push notification", existingStatus)
+    console.log("push notification", existingStatus);
 
     let finalStatus = existingStatus;
 
@@ -115,13 +121,13 @@ export class Login extends Component {
     }
 
     if (finalStatus !== "granted") {
-      return;
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
     }
 
-    
+    // let token = await Expo.Notifications.getExpoPushTokenAsync();
     let token = await Notifications.getExpoPushTokenAsync();
-    console.log("Push notication", token)
-    return this.reduxLogin(token);
+    return this.setState({ notificationToken: token });
 
     // fetch(`${url}/users/updatePush`, {
     //   method: "POST",
@@ -330,23 +336,12 @@ export class Login extends Component {
                 width: width
               }}
             >
-              {/* <LinearGradient
-                colors={["#36D1DC", "#5B86E5"]}
-                style={styles.buttonStyle}
-              >
-                <TouchableOpacity
-                  onPress={() => this.reduxLogin()}
-                  style={styles.buttonStyle}
-                >
-                  <Text style={styles.loginText}>Log In</Text>
-                </TouchableOpacity>
-              </LinearGradient> */}
               <LinearGradient
                 colors={["#36D1DC", "#5B86E5"]}
                 style={styles.buttonStyle}
               >
                 <TouchableOpacity
-                  onPress={() => this.props.logMeIn()}
+                  onPress={() => this.reduxLogin()}
                   style={styles.buttonStyle}
                 >
                   <Text style={styles.loginText}>Log In</Text>

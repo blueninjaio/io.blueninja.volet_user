@@ -18,6 +18,8 @@ import { Icon, Thumbnail } from "native-base";
 import { LinearGradient, Contacts, Permissions } from "expo";
 export const { width, height } = Dimensions.get("window");
 import ContactList from "../../../component/ContactList";
+import OnVoletContactList from "../../../component/OnVoletContactList";
+import { dev, prod, url } from "../../../config";
 
 // import { dev, prod, url } from "../../../config";
 
@@ -54,7 +56,8 @@ export class RequestPayment extends Component {
       Y: [],
       Z: [],
       isLoading: false,
-      selectedContact: []
+      selectedContact: [],
+      voletContacts: ""
     };
   }
 
@@ -68,6 +71,8 @@ export class RequestPayment extends Component {
     const contacts = await Expo.Contacts.getContactsAsync({
       fields: [Expo.Contacts.PHONE_NUMBERS]
     });
+
+    this.filterNumbers(contacts.data);
 
     if (contacts !== "") {
       this.setState({ isLoading: false });
@@ -108,6 +113,45 @@ export class RequestPayment extends Component {
     });
   };
 
+  filterNumbers = async value => {
+    let tempArra = [];
+    value.map(x => {
+      if (x.phoneNumbers) {
+        tempArra.push(x.phoneNumbers[0].digits);
+      }
+    });
+    try {
+      fetch(`${url}/users/get-by-contact`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + this.props.navigation.state.params.token
+        },
+        body: JSON.stringify({
+          contacts: tempArra
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("volet contacts :", data);
+          if (data.success === true) {
+            this.setState({ voletContacts: data.users });
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   /**
   |--------------------------------------------------
   | Implementing Permission Requst for Contacts
@@ -118,17 +162,25 @@ export class RequestPayment extends Component {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
   };
 
-  onActionSelectNumber = contactList => {
+  onActionSelectNumber = contact => {
+    // console.log("Selected contact", contactList)
     let selectedContact = this.state.selectedContact;
-    selectedContact.push(contactList);
-    this.setState({ contact: contactList.phoneNumbers[0].digits });
-    this.setState({ selectedContact });
+    if (contact._id) {
+      if (!selectedContact.find((selected) => selected._id === contact._id)) selectedContact.push(contact);
+      this.setState({ contact });
+      this.setState({ selectedContact });
+    }
+    else {
+      alert("This Contact is not on Volet");
+
+    }
+    // this.setState({ contact: contactList.phoneNumbers[0].digits });
   };
 
   onActionRemoveContact = value => {
     let selectedContact = [];
     selectedContact = this.state.selectedContact.filter(
-      x => value.name !== x.name
+      x => value._id !== x._id
     );
     console.log("Selected Contact remove", selectedContact);
     this.setState({ selectedContact });
@@ -145,7 +197,6 @@ export class RequestPayment extends Component {
   };
 
   render() {
-    console.log("Selected", this.state.selectedContact);
     return (
       <SafeAreaView style={styles.container}>
         <View
@@ -192,7 +243,7 @@ export class RequestPayment extends Component {
               ? this.state.selectedContact.map((x, i) => (
                   <TouchableOpacity
                     onPress={() => this.onActionRemoveContact(x)}
-                    style={{ paddingRight:5, paddingLeft: 5 }}
+                    style={{ paddingRight: 5, paddingLeft: 5 }}
                     key={i}
                   >
                     <LinearGradient
@@ -206,8 +257,8 @@ export class RequestPayment extends Component {
                       }}
                     >
                       <Text style={{ color: "white", fontSize: 18 }}>
-                        {x.firstName.substring(0, 1)}
-                        {x.lastName.substring(0, 1)}
+                        {x.f_name.substring(0, 1)}
+                        {x.l_name.substring(0, 1)}
                       </Text>
                     </LinearGradient>
                     <Icon
@@ -290,6 +341,22 @@ export class RequestPayment extends Component {
               </View>
             ) : (
               <View style={{ paddingLeft: 5 }}>
+                <View style={{ paddingTop: 5, paddingBottom: 5 }}>
+                  <Text
+                    style={{
+                      borderBottomColor: "black",
+                      borderBottomWidth: 1,
+                      fontSize: 18,
+                      color: "#5B86E5"
+                    }}
+                  >
+                    Contact List On Volet
+                  </Text>
+                </View>
+                <OnVoletContactList
+                  contacts={this.state.voletContacts}
+                  onActionSelectNumber={this.onActionSelectNumber}
+                />
                 <View style={{ paddingTop: 5, paddingBottom: 5 }}>
                   <Text
                     style={{
@@ -447,9 +514,11 @@ export class RequestPayment extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SplitRPayment", {
-                selectedContact: this.state.selectedContact
-              })}
+              onPress={() =>
+                this.props.navigation.navigate("SplitRPayment", {
+                  selectedContact: this.state.selectedContact
+                })
+              }
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>Done</Text>

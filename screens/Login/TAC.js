@@ -41,17 +41,6 @@ export class TAC extends Component {
   onActionTacCode = tacCode => {
     this.setState({ tacCode });
     if (tacCode.length === 6) {
-      //   if (this.props.navigation.state.params.requestMethod === "SignUp")
-      //   this.props.navigation.navigate("SignUpInfo", {
-      //     contact: this.props.navigation.state.params.contact,
-      //     // token: data.token
-      //   })
-      //   else{
-      //     this.props.navigation.navigate("ForgetPassword", {
-      //       contact: this.props.navigation.state.params.contact,
-      //       // token: data.token
-      //     })
-      //   }
       fetch(`${url}/tac/check`, {
         method: "POST",
         mode: "cors",
@@ -73,6 +62,14 @@ export class TAC extends Component {
                 // token: this.props.navigation.state.params.token
                 token: data.token
               });
+            else if (this.props.navigation.state.params.requestMethod === "Reset"){
+              this.props.navigation.navigate("ResetPassword", {
+                contact: this.props.navigation.state.params.contact,
+                // token: this.props.navigation.state.params.token,
+                token: data.token,
+                email: data.email
+              });
+            }
             else {
               this.props.navigation.navigate("ForgetPassword", {
                 contact: this.props.navigation.state.params.contact,
@@ -164,7 +161,7 @@ export class TAC extends Component {
             <Text
               style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
             >
-              We've sent the code to +60
+              We've sent the code to
               {this.props.navigation.state.params.contact}
             </Text>
           </View>

@@ -27,7 +27,8 @@ export class Profile extends React.Component {
       userType: "",
       username: "",
       isActive: true,
-      token: ""
+      token: "",
+      userImage: ""
     };
   }
 
@@ -108,7 +109,6 @@ export class Profile extends React.Component {
       let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
       let contact = await AsyncStorage.getItem("contact");
-      let userType = await AsyncStorage.getItem("userType");
 
       if (token !== null) {
         this.getVolet(token);
@@ -116,7 +116,6 @@ export class Profile extends React.Component {
         this.setState({ token });
         this.setState({ username });
         this.setState({ contact });
-        this.setState({ userType });
       }
     } catch (error) {
       Alert.alert(
@@ -144,6 +143,10 @@ export class Profile extends React.Component {
           if (data.success === true) {
             this.setState({ balance: data.user.credits });
             this.setState({ savings: data.user.monthly_savings });
+            this.setState({ userType: data.user.account_type });
+            if (data.user.photo_url) {
+              this.setState({ userImage: data.user.photo_url });
+            }
           }
         })
         .catch(error => {
@@ -169,19 +172,36 @@ export class Profile extends React.Component {
             <Text style={{ color: "white", fontSize: 18 }}>User Profile</Text>
           </LinearGradient>
           <View style={styles.userDetails}>
-            <Image
-              resizeMode="contain"
-              source={{
-                uri: `https://upload.wikimedia.org/wikipedia/en/0/0c/Give_Me_A_Try_single_cover.jpeg`
-              }}
-              style={{
-                backgroundColor: "grey",
-                borderColor: "white",
-                width: 120,
-                height: 120,
-                borderRadius: 60
-              }}
-            />
+            {this.state.userImage ? (
+              <Image
+                resizeMode="contain"
+                source={{
+                  uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                }}
+                style={{
+                  backgroundColor: "grey",
+                  borderColor: "white",
+                  width: 120,
+                  height: 120,
+                  borderRadius: 60
+                }}
+              />
+            ) : (
+              <Image
+                resizeMode="contain"
+                source={{
+                  uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                }}
+                style={{
+                  backgroundColor: "grey",
+                  borderColor: "white",
+                  width: 120,
+                  height: 120,
+                  borderRadius: 60
+                }}
+              />
+            )}
+
             <View style={styles.userImage}>
               <Text
                 style={{ fontWeight: "bold", fontSize: 17, marginLeft: 10 }}
@@ -409,7 +429,7 @@ const styles = StyleSheet.create({
     borderColor: "#dbdbdb",
     backgroundColor: "white",
     shadowColor: "#000",
-    shadowOffset: { width: 3, height: 5 },
+    shadowOffset: { width: 3, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 1,

@@ -5,12 +5,18 @@ import {
   StyleSheet,
   Dimensions,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
+  AsyncStorage,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView
 } from "react-native";
 import { Switch } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
 import { LinearGradient } from "expo";
 import { Input } from "react-native-elements";
+import { dev, prod, url } from "../../../config/index";
 
 const { width } = Dimensions.get("window");
 
@@ -20,9 +26,29 @@ export default class MonthlySavingsPlan extends Component {
 
     this.state = {
       isActive: false,
-      price: ""
+      price: "",
+      savings: 0,
+      balance: 0
     };
   }
+
+  /**
+  |--------------------------------------------------
+  | Implementation of retrieving user info from AsyncStorage
+  |--------------------------------------------------
+  */
+  componentDidMount = async () => {
+    //get user id and set state to _id
+    try {
+      let token = await AsyncStorage.getItem("token");
+      if (token !== null) {
+        this.getVolet(token);
+        this.setState({ token });
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   onActionSwitch = () => {
     this.setState({ isActive: !this.state.isActive });
@@ -33,7 +59,8 @@ export default class MonthlySavingsPlan extends Component {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + this.state.token
       },
       body: JSON.stringify({
         active: this.state.isActive,
@@ -42,7 +69,7 @@ export default class MonthlySavingsPlan extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log("Forgot password :", data);
+        console.log("Save plan:", data);
         if (data.success === true) {
           Alert.alert(
             "Success",
@@ -70,104 +97,145 @@ export default class MonthlySavingsPlan extends Component {
       });
   };
 
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Users :", data);
+          if (data.success === true) {
+            this.setState({ balance: data.user.credits });
+            this.setState({ savings: data.user.monthly_savings });
+            if (data.user.photo_url) {
+              this.setState({ userImage: data.user.photo_url });
+            }
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.toggleSavingsContainer}>
-          <View style={styles.toggleSavingsTextContainer}>
-            <Text>Activate / Deactivate Savings Plan</Text>
-          </View>
-          <Switch
-            style={styles.switchBtn}
-            value={this.state.isActive}
-            onValueChange={() => this.onActionSwitch()}
-          />
-        </View>
-        <View>
-          <View style={styles.savingsCard}>
-            <Text style={{ color: "grey", opacity: 0.9, paddingBottom: 5 }}>
-              Balance available today
-            </Text>
-            <Text
-              style={{
-                color: "rgb(126,221,127)",
-                paddingBottom: 5,
-                fontSize: 20,
-                fontWeight: "bold"
-              }}
-            >
-              RM 10.00
-            </Text>
-            <LinearGradient
-              colors={["#36D1DC", "#5B86E5"]}
-              style={styles.savingsBar}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.toggleSavingsContainer}>
+            <View style={styles.toggleSavingsTextContainer}>
+              <Text>Activate / Deactivate Savings Plan</Text>
+            </View>
+            <Switch
+              style={styles.switchBtn}
+              value={this.state.isActive}
+              onValueChange={() => this.onActionSwitch()}
             />
-            <Text style={{ color: "grey", opacity: 0.7, fontSize: 13 }}>
-              Monthly Savings Plan: RM 20.00/day
-            </Text>
           </View>
-          <View style={styles.cashInputContainer}>
-            <Text style={styles.cashInputText}>
-              How much would you like to save each month
-            </Text>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "flex-start",
-                width: width / 1.3,
-                paddingTop: 30
-              }}
-            >
-              <Input
-                inputStyle={{
-                  flex: 1,
-                  alignSelf: "center",
-                  color: "black",
-                  fontSize: 18
+          <View>
+            <View style={styles.savingsCard}>
+              <Text style={{ color: "grey", opacity: 0.9, paddingBottom: 5 }}>
+                Balance available today
+              </Text>
+              <Text
+                style={{
+                  color: "rgb(126,221,127)",
+                  paddingBottom: 5,
+                  fontSize: 20,
+                  fontWeight: "bold"
                 }}
-                inputContainerStyle={{
-                  borderBottomWidth: 1,
-                  borderBottomColor: "#5B86E5"
-                }}
-                // onChangeText={price => this.checkVoletBalance(price)}
-                onChangeText={price => this.setState({ price })}
-                value={this.state.price}
-                sst
-                keyboardType="numeric"
-                placeholderTextColor="rgb(74,74,74)"
-                leftIcon={
-                  <Text
-                    style={{ fontSize: 18, color: "#5B86E5", paddingRight: 8 }}
-                  >
-                    MYR
-                  </Text>
-                }
+              >
+                RM{this.state.balance}
+              </Text>
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.savingsBar}
               />
+              <Text style={{ color: "grey", opacity: 0.7, fontSize: 13 }}>
+                Monthly Savings Plan: RM {this.state.savings}
+                /day
+              </Text>
+            </View>
+            <View style={styles.cashInputContainer}>
+              <Text style={styles.cashInputText}>
+                How much would you like to save each month
+              </Text>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  width: width / 1.3,
+                  paddingTop: 30
+                }}
+              >
+                <Input
+                  inputStyle={{
+                    flex: 1,
+                    alignSelf: "center",
+                    color: "black",
+                    fontSize: 18
+                  }}
+                  inputContainerStyle={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: "#5B86E5"
+                  }}
+                  // onChangeText={price => this.checkVoletBalance(price)}
+                  onChangeText={price => this.setState({ price })}
+                  value={this.state.price}
+                  sst
+                  keyboardType="numeric"
+                  placeholderTextColor="rgb(74,74,74)"
+                  leftIcon={
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "#5B86E5",
+                        paddingRight: 8
+                      }}
+                    >
+                      MYR
+                    </Text>
+                  }
+                />
+              </View>
             </View>
           </View>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            bottom: 50,
-            width: width
-          }}
-        >
-          <LinearGradient
-            colors={["#36D1DC", "#5B86E5"]}
-            style={styles.buttonStyle}
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              bottom: 50,
+              width: width
+            }}
           >
-            <TouchableOpacity
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
               style={styles.buttonStyle}
-              onPress={() => this.onActionSavePlan()}
             >
-              <Text style={styles.loginText}>Save</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
-      </SafeAreaView>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => this.onActionSavePlan()}
+              >
+                <Text style={styles.loginText}>Save</Text>
+              </TouchableOpacity>
+            </LinearGradient>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
     );
   }
 }

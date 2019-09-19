@@ -17,51 +17,66 @@ export class Setting extends Component {
     return (
       <View style={styles.container}>
         <ScrollView style={{ paddingTop: 16 }}>
-          <ListButton
-            title={"Language"}
-            desc={"English"}
-            extraProps={this.state.isTrue}
-            icon={require("../../../assets/global.png")}
-            // navigation={this.props.navigation}
-          />
-          <ListButton
-            title={"Currency"}
-            desc={"MYR"}
-            extraProps={this.state.isTrue}
-            icon={require("../../../assets/server.png")}
-            // navigation={this.props.navigation}
-          />
-          <ListButton
-            title={"About Volet"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/info.png")}
-            navigation={this.props.navigation}
-            page={"AboutVolet"}
-          />
-          <ListButton
-            title={"Security"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/lock.png")}
-            navigation={this.props.navigation}
-            page={"Security"}
-          />
-          {this.props.navigation.state.params.userType === "User" ? (
+          <View style={styles.shadowSet}>
             <ListButton
-              title={"Convert To Agent"}
-              extraProps={this.state.isFalse}
-              icon={require("../../../assets/users.png")}
+              title={"Language"}
+              desc={"English"}
+              extraProps={this.state.isTrue}
+              icon={require("../../../assets/global.png")}
               navigation={this.props.navigation}
-              page={"ConvertAgent"}
-            />
-          ) : null}
+              page={""}
 
-          <ListButton
-            title={"Logout"}
-            extraProps={this.state.isFalse}
-            icon={require("../../../assets/power.png")}
-            page={"Logout"}
-            navigation={this.props.navigation}
-          />
+            />
+          </View>
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Currency"}
+              desc={"MYR"}
+              extraProps={this.state.isTrue}
+              icon={require("../../../assets/server.png")}
+              navigation={this.props.navigation}
+              page={""}
+
+            />
+          </View>
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"About Volet"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/info.png")}
+              navigation={this.props.navigation}
+              page={"AboutVolet"}
+            />
+          </View>
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Security"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/lock.png")}
+              navigation={this.props.navigation}
+              page={"Security"}
+            />
+          </View>
+          {this.props.navigation.state.params.userType === "User" ? (
+            <View style={styles.shadowSet}>
+              <ListButton
+                title={"Convert To Agent"}
+                extraProps={this.state.isFalse}
+                icon={require("../../../assets/users.png")}
+                navigation={this.props.navigation}
+                page={"ConvertAgent"}
+              />
+            </View>
+          ) : null}
+          <View style={styles.shadowSet}>
+            <ListButton
+              title={"Logout"}
+              extraProps={this.state.isFalse}
+              icon={require("../../../assets/power.png")}
+              page={"Logout"}
+              navigation={this.props.navigation}
+            />
+          </View>
         </ScrollView>
       </View>
     );
@@ -77,5 +92,18 @@ const styles = StyleSheet.create({
   text: {
     color: "#979797",
     fontSize: 20
+  },
+  shadowSet: {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    borderColor: "#dbdbdb",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 15
   }
 });

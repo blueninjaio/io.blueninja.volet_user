@@ -197,7 +197,9 @@ export class SplitRSummary extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SPaymentSuccess")}
+              onPress={() => this.props.navigation.navigate("SPaymentSuccess",{
+                paymentType:"Requested"
+              })}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>Request</Text>

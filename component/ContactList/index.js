@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert
 } from "react-native";
-import { Icon, Thumbnail } from "native-base";
+import { Icon, Thumbnail, Spinner } from "native-base";
 export const { width, height } = Dimensions.get("window");
 import { LinearGradient } from "expo";
 
@@ -62,8 +62,11 @@ export class ContactList extends Component {
                   }}
                 >
                   <Text style={{ color: "white", fontSize: 18 }}>
-                    {x.firstName.substring(0, 1)}
-                    {x.lastName.substring(0, 1)}
+                    {x.firstName
+                      ? x.firstName.substring(0, 1)
+                      : x.name.substring(0, 1)}
+
+                    {x.lastName ? x.lastName.substring(0, 1) : null}
                   </Text>
                 </LinearGradient>
                 <View style={{ justifyContent: "center", marginLeft: 20 }}>

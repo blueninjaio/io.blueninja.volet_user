@@ -10,43 +10,62 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 import { LinearGradient } from "expo";
 export const { width, height } = Dimensions.get("window");
-// import { dev, prod, url } from "../../../config";
+import { dev, prod, url } from "../../config/index";
 
 export class TransferSummary extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      contact: ""
+      contact: "",
+      token: ""
     };
   }
 
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getUserID = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      if (token !== null) {
+        this.setState({ token });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   onActionTransfer = async () => {
     try {
-      fetch(`${url}/users/send-volet-payment`, {
-        method: "GET",
+      fetch(`${url}/volet/payments/send`, {
+        method: "POST",
         mode: "cors",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          // Authorization: "Bearer " + token
+          Authorization: "Bearer " + this.state.token
         },
         body: JSON.stringify({
-          // to: this.state._id,
-          reason: this.props.navigation.state.params.reason,
-          reason: this.props.navigation.state.params.amount,
-          description: this.props.navigation.state.params.selectedValue
+          to: this.props.navigation.state.params.transferUserID,
+          reason: this.props.navigation.state.params.selectedValue,
+          amount: this.props.navigation.state.params.amount,
+          description: this.props.navigation.state.params.reason
         })
       })
         .then(res => res.json())
         .then(data => {
-          console.log("Users :", data);
+          console.log("Transfer :", data);
           if (data.success === true) {
-            this.props.navigation.navigate("SPaymentSuccess");
+            this.props.navigation.navigate("SPaymentSuccess",{
+              paymentType: "Sent"
+            });
           } else {
             alert(data.message);
           }

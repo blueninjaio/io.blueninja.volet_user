@@ -71,16 +71,17 @@ export class PaymentMethod extends Component {
 
   login = method => {
     // if (response === true) {
-      //   this.props.logMeIn();
-      this.props.navigation.navigate("TransferSummary", {
-        amount: this.props.navigation.state.params.amount,
-        reason: this.props.navigation.state.params.reason,
-        transferUser: this.props.navigation.state.params.transferUser,
-        transferContact: this.props.navigation.state.params.transferContact,
-        firstName: this.props.navigation.state.params.firstName,
-        lastName: this.props.navigation.state.params.lastName,
-        paymentMethod: method
-      });
+    //   this.props.logMeIn();
+    this.props.navigation.navigate("TransferSummary", {
+      amount: this.props.navigation.state.params.amount,
+      reason: this.props.navigation.state.params.reason,
+      transferUser: this.props.navigation.state.params.transferUser,
+      transferContact: this.props.navigation.state.params.transferContact,
+      firstName: this.props.navigation.state.params.firstName,
+      lastName: this.props.navigation.state.params.lastName,
+      paymentMethod: method,
+      transferUserID: this.props.navigation.state.params.transferUserID
+    });
     // }
   };
 
@@ -177,7 +178,7 @@ export class PaymentMethod extends Component {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => this.login("Online Banking")}
           style={{
             flexDirection: "row",
@@ -209,7 +210,7 @@ export class PaymentMethod extends Component {
               Online Banking
             </Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
     );
   }

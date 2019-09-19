@@ -53,6 +53,7 @@ import FromAgentWithdrawal from "../screens/FromAgentWithdrawal";
 import FromAgentCollection from "../screens/FromAgentCollection";
 import FromAgentReadyCollect from "../screens/FromAgentReadyCollect";
 import OpenWebView from "../screens/OpenWebView";
+import TAC from "../screens/Login/TAC"
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -498,7 +499,27 @@ const StackNavigator = createStackNavigator(
         mode: "card",
         header: null
       })
-    }
+    },
+    TAC: {
+      screen: TAC,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
+        title: 'Reset Password',
+        headerTintColor: 'black',
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        ),
+        headerStyle: {
+          // borderBottomWidth: 0,
+          // shadowColor: "transparent",
+          backgroundColor:"white"
+          // shadowOpacity: 0
+        }
+      })
+    },
   },
   {
     swipeEnabled: true

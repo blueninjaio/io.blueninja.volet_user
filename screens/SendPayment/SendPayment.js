@@ -17,6 +17,7 @@ import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
 import { Contacts, Permissions, Constants, LinearGradient } from "expo";
 import ContactList from "../../component/ContactList/index";
+import OnVoletContactList from "../../component/OnVoletContactList";
 import { dev, prod, url } from "../../config/index";
 
 export class SendPayment extends Component {
@@ -67,7 +68,7 @@ export class SendPayment extends Component {
       fields: [Expo.Contacts.PHONE_NUMBERS]
     });
 
-    console.log("Contacts", contacts.data);
+    // console.log("Contacts", contacts.data);
     this.filterNumbers(contacts.data);
 
     if (contacts !== "") {
@@ -116,8 +117,8 @@ export class SendPayment extends Component {
         tempArra.push(x.phoneNumbers[0].digits);
       }
     });
-    console.log("Contacts list ", tempArra);
-    console.log("token", this.props.navigation.state.params.token)
+    // console.log("Contacts list ", tempArra);
+    console.log("token", this.props.navigation.state.params.token);
     try {
       fetch(`${url}/users/get-by-contact`, {
         method: "POST",
@@ -166,19 +167,29 @@ export class SendPayment extends Component {
 
   onActionSelectNumber = contactList => {
     this.setState({ selectedContact: contactList });
-    this.setState({ contact: contactList.phoneNumbers[0].digits });
+    if (contactList.phoneNumbers) {
+      this.setState({ contact: contactList.phoneNumbers[0].digits });
+    } else {
+      this.setState({ contact: contactList.contact });
+      this.setState({ transferUserID: contactList._id });
+    }
   };
 
   onActionPaymentAmount = () => {
-    if (this.state.contact !== "") {
+    if (this.state.selectedContact._id) {
       this.props.navigation.navigate("PaymentAmount", {
-        transferUser: this.state.selectedContact.name,
-        transferContact: this.state.selectedContact.phoneNumbers[0].digits,
-        firstName: this.state.selectedContact.firstName,
-        lastName: this.state.selectedContact.lastName
+        transferUser:
+          this.state.selectedContact.f_name +
+          " " +
+          this.state.selectedContact.l_name,
+        transferUserID: this.state.selectedContact._id,
+        // transferContact: this.state.selectedContact.phoneNumbers[0].digits,
+        transferContact: this.state.selectedContact.contact,
+        firstName: this.state.selectedContact.f_name,
+        lastName: this.state.selectedContact.l_name
       });
     } else {
-      alert("Please enter a number");
+      alert("This Contact is not on Volet");
     }
   };
 
@@ -284,6 +295,22 @@ export class SendPayment extends Component {
               </View>
             ) : (
               <View style={{ paddingLeft: 5 }}>
+                <View style={{ paddingTop: 5, paddingBottom: 5 }}>
+                  <Text
+                    style={{
+                      borderBottomColor: "black",
+                      borderBottomWidth: 1,
+                      fontSize: 18,
+                      color: "#5B86E5"
+                    }}
+                  >
+                    Contact List On Volet
+                  </Text>
+                </View>
+                <OnVoletContactList
+                  contacts={this.state.voletContacts}
+                  onActionSelectNumber={this.onActionSelectNumber}
+                />
                 <View style={{ paddingTop: 5, paddingBottom: 5 }}>
                   <Text
                     style={{

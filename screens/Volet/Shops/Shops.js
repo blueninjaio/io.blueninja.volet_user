@@ -28,7 +28,7 @@ export class Shops extends Component {
   */
 
   componentDidMount = () => {
-    this.addBusiness();
+    // this.addBusiness();
   };
 
   addBusiness = () => {
