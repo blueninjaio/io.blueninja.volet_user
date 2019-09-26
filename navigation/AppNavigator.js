@@ -53,7 +53,8 @@ import FromAgentWithdrawal from "../screens/FromAgentWithdrawal";
 import FromAgentCollection from "../screens/FromAgentCollection";
 import FromAgentReadyCollect from "../screens/FromAgentReadyCollect";
 import OpenWebView from "../screens/OpenWebView";
-import TAC from "../screens/Login/TAC"
+import TAC from "../screens/Login/TAC";
+import TransactionHistory from "../screens/TransactionHistory";
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -504,9 +505,9 @@ const StackNavigator = createStackNavigator(
       screen: TAC,
       navigationOptions: ({ navigation }) => ({
         headerLeft: null,
-        title: 'Reset Password',
-        headerTintColor: 'black',
-        headerTitleStyle: { fontWeight: 'bold' },
+        title: "Reset Password",
+        headerTintColor: "black",
+        headerTitleStyle: { fontWeight: "bold" },
         headerRight: (
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
             <Text style={styles.cancelBut}>Cancel</Text>
@@ -515,11 +516,26 @@ const StackNavigator = createStackNavigator(
         headerStyle: {
           // borderBottomWidth: 0,
           // shadowColor: "transparent",
-          backgroundColor:"white"
+          backgroundColor: "white"
           // shadowOpacity: 0
         }
       })
     },
+    TransactionHistory: {
+      screen: TransactionHistory,
+      navigationOptions: ({ navigation }) => ({
+        // headerLeft: null,
+        title: "Transaction History",
+        headerTintColor: "black",
+        headerTitleStyle: { fontWeight: "bold" },
+        headerStyle: {
+          // borderBottomWidth: 0,
+          // shadowColor: "transparent",
+          backgroundColor: "white"
+          // shadowOpacity: 0
+        }
+      })
+    }
   },
   {
     swipeEnabled: true

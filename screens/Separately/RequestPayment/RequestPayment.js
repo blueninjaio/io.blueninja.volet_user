@@ -15,7 +15,10 @@ import {
   ActivityIndicator
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
-import { LinearGradient, Contacts, Permissions } from "expo";
+// import { LinearGradient, Contacts, Permissions } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+import * as Permissions from 'expo-permissions'
+import * as Contacts from 'expo-contacts';
 export const { width, height } = Dimensions.get("window");
 import ContactList from "../../../component/ContactList";
 import OnVoletContactList from "../../../component/OnVoletContactList";
@@ -68,10 +71,11 @@ export class RequestPayment extends Component {
   }
 
   showFirstContactAsync = async () => {
-    const contacts = await Expo.Contacts.getContactsAsync({
-      fields: [Expo.Contacts.PHONE_NUMBERS]
+    const contacts = await Contacts.getContactsAsync({
+      fields: [Contacts.PHONE_NUMBERS]
     });
 
+    console.log("Contacts: ", contacts)
     this.filterNumbers(contacts.data);
 
     if (contacts !== "") {
@@ -167,14 +171,13 @@ export class RequestPayment extends Component {
     let selectedContact = this.state.selectedContact;
     if (contact._id) {
       if (!selectedContact.find((selected) => selected._id === contact._id)) selectedContact.push(contact);
-      this.setState({ contact });
+      this.setState({ contact: contact.contact });
       this.setState({ selectedContact });
     }
     else {
       alert("This Contact is not on Volet");
 
     }
-    // this.setState({ contact: contactList.phoneNumbers[0].digits });
   };
 
   onActionRemoveContact = value => {
@@ -249,7 +252,7 @@ export class RequestPayment extends Component {
                     <LinearGradient
                       colors={["#36D1DC", "#5B86E5"]}
                       style={{
-                        borderRadius: 30,
+                        borderRadius: 20,
                         width: 40,
                         height: 40,
                         justifyContent: "center",

@@ -14,7 +14,9 @@ import {
   LayoutAnimation
 } from "react-native";
 import { dev, prod, url } from "../../config/index";
-import { BarCodeScanner, Permissions, LinearGradient } from "expo";
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { LinearGradient } from 'expo-linear-gradient'
+import * as Permissions from 'expo-permissions'
 
 import { NavigationEvents } from "react-navigation";
 import QRCode from "react-native-qrcode-svg";
@@ -27,7 +29,10 @@ export default class FromAgentReadyCollect extends Component {
       id: "",
       username: "",
       userType: "",
-      selectedValue: "Scan QR"
+      selectedValue: "Scan QR",
+      widthdrawAgent: this.props.navigation.state.params.widthdrawAgent,
+      distance: this.props.navigation.state.params.distance,
+      price: this.props.navigation.state.params.price,
     };
   }
   /**
@@ -85,34 +90,27 @@ export default class FromAgentReadyCollect extends Component {
   getUserDetails = userID => {
     let ID = userID.split("_")[0];
     console.log("Splits ID", ID);
-    fetch(`${url}/users/id`, {
+    fetch(`${url}/volet/withdraw/agent`, {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + this.props.navigation.state.params.token
+
       },
       body: JSON.stringify({
-        _id: ID
+        agent_id: ID,
+        amount: this.state.price
       })
     })
       .then(res => res.json())
       .then(data => {
-        console.log("User Details :", data);
-        if (data.success === true) {
-          Alert.alert(
-            "QR Code",
-            `${userID}`,
-            [
-              {
-                text: "OK",
-                onPress: () =>
-                  this.props.navigation.navigate("PaymentAmount", {
-                    userDetails: data.user
-                  })
-              }
-            ],
-            { cancelable: false }
-          );
+        console.log("User agent scan :", data);
+        if (data.success) {
+
+        }
+        else{
+          alert(data.message)
         }
       })
       .catch(error => {
@@ -178,7 +176,7 @@ export default class FromAgentReadyCollect extends Component {
               </Text>
             ) : (
               <BarCodeScanner
-                onBarCodeRead={this._handleBarCodeRead}
+              onBarCodeScanned={this._handleBarCodeRead}
                 style={{
                   // height: height / 2.5,
                   flex: 1,

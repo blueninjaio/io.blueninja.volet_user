@@ -13,7 +13,7 @@ import {
   Alert
 } from "react-native";
 import { Switch } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 import { url } from "../../../config/index";
 import { NavigationEvents } from "react-navigation";
 
@@ -144,8 +144,8 @@ export class Profile extends React.Component {
             this.setState({ balance: data.user.credits });
             this.setState({ savings: data.user.monthly_savings });
             this.setState({ userType: data.user.account_type });
-            if (data.user.photo_url) {
-              this.setState({ userImage: data.user.photo_url });
+            if (data.user.photo_base64) {
+              this.setState({ userImage: data.user.photo_base64});
             }
           }
         })
@@ -176,10 +176,10 @@ export class Profile extends React.Component {
               <Image
                 resizeMode="contain"
                 source={{
-                  uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                  uri: `${this.state.userImage}`
                 }}
                 style={{
-                  backgroundColor: "grey",
+                  // backgroundColor: "grey",
                   borderColor: "white",
                   width: 120,
                   height: 120,
@@ -271,7 +271,9 @@ export class Profile extends React.Component {
             <View style={styles.shadowSet}>
               <TouchableOpacity
                 onPress={() =>
-                  this.props.navigation.navigate("PersonalDetails")
+                  this.props.navigation.navigate("PersonalDetails",{
+                    userImage: this.state.userImage
+                  })
                 }
                 style={styles.listItemButton}
               >
@@ -304,7 +306,7 @@ export class Profile extends React.Component {
             </View>
             <View style={styles.shadowSet}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("DeepWorks")}
+                onPress={() => this.props.navigation.navigate("TransactionHistory")}
                 style={styles.listItemButton}
               >
                 <View style={styles.show}>

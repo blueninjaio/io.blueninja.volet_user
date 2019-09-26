@@ -10,10 +10,12 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Keyboard
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 export const { width, height } = Dimensions.get("window");
 // import { dev, prod, url } from "../../../config";
 import { Input } from "react-native-elements";
@@ -35,13 +37,15 @@ export class EvenlyRPayment extends Component {
 
   onActionRemoveContact = value => {
     let payContact = [];
-    payContact = this.state.payContact.filter(x => value.name !== x.name);
+    payContact = this.state.payContact.filter(x => value._id !== x._id);
     console.log("Selected Contact remove", payContact);
     this.setState({ payContact });
   };
 
   render() {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
       <SafeAreaView style={styles.container}>
         <View
           style={{
@@ -92,7 +96,7 @@ export class EvenlyRPayment extends Component {
                       <LinearGradient
                         colors={["#36D1DC", "#5B86E5"]}
                         style={{
-                          borderRadius: 30,
+                          borderRadius: 20,
                           width: 40,
                           height: 40,
                           justifyContent: "center",
@@ -100,18 +104,18 @@ export class EvenlyRPayment extends Component {
                         }}
                       >
                         <Text style={{ color: "white", fontSize: 18 }}>
-                          {x.firstName.substring(0, 1)}
-                          {x.lastName.substring(0, 1)}
+                          {x.f_name.substring(0, 1)}
+                          {x.l_name.substring(0, 1)}
                         </Text>
                       </LinearGradient>
                       <View style={{ paddingLeft: 20, paddingRight: 25 }}>
                         <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                          {x.name}
+                          {x.f_name}{" "}{x.l_name}
                         </Text>
                         <Text
                           style={{ color: "rgb(144,144,144)", paddingTop: 5 }}
                         >
-                          {x.phoneNumbers[0].digits}
+                          {x.contact}
                         </Text>
                       </View>
                     </View>
@@ -192,6 +196,7 @@ export class EvenlyRPayment extends Component {
           </LinearGradient>
         </View>
       </SafeAreaView>
+      </TouchableWithoutFeedback>
     );
   }
 }

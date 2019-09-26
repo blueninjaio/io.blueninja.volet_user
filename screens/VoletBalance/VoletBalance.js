@@ -14,10 +14,10 @@ import {
 } from "react-native";
 import { Icon, Left, Right, Body, Title } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import { dev, prod, url } from "../../config";
+import { dev, prod, url } from "../../config/index";
 import Modal from "react-native-modal";
 import { Input } from "react-native-elements";
-import { Contacts, Permissions, Constants, LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 
 export class VoletBalance extends Component {
   constructor(props) {
@@ -167,7 +167,6 @@ export class VoletBalance extends Component {
   };
 
   onActionAddVoletCash = async amount => {
-    console.log("Add Cash");
     try {
       fetch(`${url}/volet/top-up`, {
         method: "POST",
@@ -187,7 +186,7 @@ export class VoletBalance extends Component {
           if (data.success === true) {
             this.setState({ isCreditModal: !this.state.isCreditModal });
             this.props.navigation.navigate("OpenWebView", {
-              payment: data.message.url,
+              payment: data.bill.url,
               redirectCallback: async params => {
                 console.log("params", params);
                 Alert.alert(
@@ -306,7 +305,12 @@ export class VoletBalance extends Component {
                     // backgroundColor: "grey"
                   }}
                 >
-                  <Icon name="close" />
+                  <Image
+                    //   source={{uri: this.props.icon}}
+                    source={require("../../assets/wallet.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
 
                   <Text
                     style={{
@@ -335,7 +339,12 @@ export class VoletBalance extends Component {
                     // backgroundColor: "grey"
                   }}
                 >
-                  <Icon name="close" />
+                  <Image
+                    //   source={{uri: this.props.icon}}
+                    source={require("../../assets/credit.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
 
                   <Text
                     style={{
@@ -367,7 +376,13 @@ export class VoletBalance extends Component {
                     // backgroundColor: "grey"
                   }}
                 >
-                  <Icon name="close" />
+                  <Image
+                    //   source={{uri: this.props.icon}}
+                    source={require("../../assets/wallet.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+
                   <Text
                     style={{
                       color: "rgb(74, 74, 74)",
@@ -396,7 +411,13 @@ export class VoletBalance extends Component {
                     // backgroundColor: "grey"
                   }}
                 >
-                  <Icon name="close" />
+                  <Image
+                    //   source={{uri: this.props.icon}}
+                    source={require("../../assets/wallet.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+
                   <Text
                     style={{
                       color: "rgb(74, 74, 74)",
@@ -531,7 +552,7 @@ export class VoletBalance extends Component {
                       justifyContent: "center",
                       alignItems: "center"
                     }}
-                    onPress={() => this.onActionAddVoletCash("20")}
+                    onPress={() => this.onActionAddVoletCash("2000")}
                   >
                     <Image
                       source={require("../../assets/RM20.png")}
@@ -549,7 +570,7 @@ export class VoletBalance extends Component {
                       justifyContent: "center",
                       alignItems: "center"
                     }}
-                    onPress={() => this.onActionAddVoletCash("50")}
+                    onPress={() => this.onActionAddVoletCash("5000")}
                   >
                     <Image
                       source={require("../../assets/RM50.png")}
@@ -577,10 +598,10 @@ export class VoletBalance extends Component {
                       justifyContent: "center",
                       alignItems: "center"
                     }}
-                    onPress={() => this.onActionAddVoletCash("20")}
+                    onPress={() => this.onActionAddVoletCash("10000")}
                   >
                     <Image
-                      source={require("../../assets/RM50.png")}
+                      source={require("../../assets/RM100.png")}
                       resizeMode="contain"
                       style={{ width: width * 0.22, height: width * 0.22 }}
                     />
@@ -669,7 +690,10 @@ export class VoletBalance extends Component {
                 this.redeemVoucher();
               }}
             >
-              <Icon name="check" type="Entypo" />
+              <Image
+                source={require("../../assets/check.png")}
+                style={{ width: 45, height: 45, marginBottom: 30 }}
+              />
             </TouchableOpacity>
           </View>
         </Modal>

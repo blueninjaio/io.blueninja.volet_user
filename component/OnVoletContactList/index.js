@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 
 export class ContactList extends Component {
   constructor(props) {
@@ -55,7 +55,7 @@ export class ContactList extends Component {
                   <LinearGradient
                     colors={["#36D1DC", "#5B86E5"]}
                     style={{
-                      borderRadius: 30,
+                      borderRadius: 20,
                       width: 40,
                       height: 40,
                       justifyContent: "center",

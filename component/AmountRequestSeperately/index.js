@@ -18,7 +18,7 @@ export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
 import Modal from "react-native-modal";
 import { Input } from "react-native-elements";
-import { Contacts, Permissions, Constants, LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 
 export class index extends Component {
   constructor(props) {
@@ -29,14 +29,13 @@ export class index extends Component {
       price: "",
       arrayIndex: [1],
       isUserModal: false,
-      showSelectedUser: [],
+      showSelectedUser: []
     };
   }
 
   toggleAddUser = () => {
     this.setState({ isUserModal: !this.state.isUserModal });
   };
-
 
   render() {
     // console.log("Request payment array", this.state.arrayIndex);
@@ -83,10 +82,11 @@ export class index extends Component {
               }}
               type="text"
               placeholder="Description"
+              value={this.state.description}
               placeholderTextColor="rgb(74,74,74)"
-              onChangeText={(description) => {
-                this.props.updateInfo(description, this.state.price)
-                this.setState({ description })
+              onChangeText={description => {
+                this.props.updateInfo(description, this.state.price);
+                this.setState({ description });
               }}
             />
             <Input
@@ -100,10 +100,10 @@ export class index extends Component {
                 borderBottomColor: "#5B86E5",
                 width: width / 1.3
               }}
-              onChangeText={(price) => {
-                this.props.updateInfo(this.state.description, price)
-                this.setState({ price })
-              }}              
+              onChangeText={price => {
+                this.props.updateInfo(this.state.description, price);
+                this.setState({ price });
+              }}
               value={this.state.price}
               keyboardType="numeric"
               placeholderTextColor="rgb(74,74,74)"
@@ -123,9 +123,8 @@ export class index extends Component {
                 width: width / 1.5
               }}
             >
-              {this.props.selectedUsers.map((x, i) => (
-                x.selected?
-                <View style={styles.shadowSet}>
+              {this.props.selectedUsers.map((x, i) =>
+                x.selected ? (
                   <TouchableOpacity
                     style={{
                       padding: 7,
@@ -140,7 +139,7 @@ export class index extends Component {
                     <LinearGradient
                       colors={["#36D1DC", "#5B86E5"]}
                       style={{
-                        borderRadius: 30,
+                        borderRadius: 20,
                         width: 40,
                         height: 40,
                         justifyContent: "center",
@@ -154,38 +153,36 @@ export class index extends Component {
                       </Text>
                     </LinearGradient>
                   </TouchableOpacity>
-                </View>
-                :null
-              ))}
-              <TouchableOpacity
-                style={{
-                  padding: 7,
-                  backgroundColor: "white",
-                  borderRadius: 60,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={this.toggleAddUser}
-              >
-                <Image
-                  source={require("../../assets/addUser.png")}
-                  resizeMode="contain"
-                  style={{ width: 33, height: 33 }}
-                />
-              </TouchableOpacity>
+                ) : null
+              )}
+              <View style={styles.shadowSet}>
+                <TouchableOpacity
+                  style={{
+                    padding: 7,
+                    backgroundColor: "white",
+                    borderRadius: 60,
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                  onPress={this.toggleAddUser}
+                >
+                  <Image
+                    source={require("../../assets/addUser.png")}
+                    resizeMode="contain"
+                    style={{ width: 33, height: 33 }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
+
           <Modal
             transparent={true}
-            //   backdropColor="black"
             style={styles.modalContent}
             animationIn="slideInDown"
             animationOut="slideOutUp"
             isVisible={this.state.isUserModal}
-            // deviceWidth={10}
-            // deviceHeight={250}
             backdropColor="black"
-            // backdropOpacity={0.2}
           >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <View
@@ -200,8 +197,8 @@ export class index extends Component {
                 >
                   Who you want to share with?
                 </Text>
-                {this.props.totalUser.map((x, i) => (
-                  <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                  {this.props.totalUser.map((x, i) => (
                     <TouchableOpacity
                       style={{
                         width: width / 1.6,
@@ -218,14 +215,13 @@ export class index extends Component {
                           paddingTop: 5,
                           paddingBottom: 5,
                           width: width / 1.8,
-                          backgroundColor: "pink",
                           marginBottom: 10
                         }}
                       >
                         <LinearGradient
                           colors={["#36D1DC", "#5B86E5"]}
                           style={{
-                            borderRadius: 30,
+                            borderRadius: 20,
                             width: 40,
                             height: 40,
                             justifyContent: "center",
@@ -255,12 +251,33 @@ export class index extends Component {
                         </View>
                       </View>
                     </TouchableOpacity>
-                  </ScrollView>
-                ))}
+                  ))}
+                </ScrollView>
               </View>
-              <TouchableOpacity onPress={this.toggleAddUser}>
-                <Text>Add</Text>
-              </TouchableOpacity>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  // position: "absolute",
+                  // bottom: 50,
+                  marginTop: 20,
+                  marginBottom: 20,
+                  width: width
+                }}
+              >
+                <LinearGradient
+                  colors={["#36D1DC", "#5B86E5"]}
+                  style={styles.buttonStyle}
+                >
+                  <TouchableOpacity
+                    // onPress={() => this.onSubmit()}
+                    onPress={this.toggleAddUser}
+                    style={styles.buttonStyle}
+                  >
+                    <Text style={styles.loginText}>Close</Text>
+                  </TouchableOpacity>
+                </LinearGradient>
+              </View>
             </View>
           </Modal>
         </View>

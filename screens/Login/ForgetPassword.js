@@ -10,7 +10,7 @@ import {
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 
 export class ForgetPassword extends Component {
   constructor(props) {

@@ -10,10 +10,21 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Thumbnail } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 export const { width, height } = Dimensions.get("window");
 
 export default class FromAgentCollection extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      widthdrawAgent: this.props.navigation.state.params.widthdrawAgent,
+      distance: this.props.navigation.state.params.distance,
+      price: this.props.navigation.state.params.price,
+      token: this.props.navigation.state.params.token
+    };
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -40,12 +51,13 @@ export default class FromAgentCollection extends Component {
                 fontWeight: "500"
               }}
             >
-              How Much Would You Like To Withdraw
+              Your Withdrawal Is Ready To Collect
             </Text>
             <Text
               style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
             >
-              Enter the amount you would like to withdraw from your Volet
+              This is a confirmation page that your withdrawal is ready to
+              collect
             </Text>
           </View>
         </View>
@@ -58,12 +70,21 @@ export default class FromAgentCollection extends Component {
             alignSelf: "center"
           }}
         >
-          <Thumbnail
-            source={{
-              uri:
-                "https://media.gettyimages.com/photos/cristiano-ronaldo-of-real-madrid-celebrates-after-scoring-a-goal-the-picture-id481747786?s=612x612"
+          <LinearGradient
+            colors={["#36D1DC", "#5B86E5"]}
+            style={{
+              borderRadius: 20,
+              width: 50,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center"
             }}
-          />
+          >
+            <Text style={{ color: "white", fontSize: 18 }}>
+              {this.state.widthdrawAgent.f_name.substring(0, 1)}
+              {this.state.widthdrawAgent.l_name.substring(0, 1)}
+            </Text>
+          </LinearGradient>
           <Text
             style={{
               color: "rgb(44,44,44)",
@@ -72,37 +93,21 @@ export default class FromAgentCollection extends Component {
               fontWeight: "bold"
             }}
           >
-            Spongebob S.Pants
+            {this.state.widthdrawAgent.f_name}{" "}
+            {this.state.widthdrawAgent.l_name}
           </Text>
           <Text style={{ color: "rgb(160,160,160)", marginTop: 10 }}>
-            0.3km away
-          </Text>
-        </View>
-        <View
-          style={{
-            alignSelf: "center",
-            justifyContent: "center",
-            alignItems: "center",
-            paddingTop: 40,
-            paddingBottom: 40,
-            width: width / 1.3
-          }}
-        >
-          <Text style={{ color: "rgb(160,160,160)" }}>Current Balance</Text>
-          <Text
-            style={{
-              color: "rgb(44,44,44)",
-              marginTop: 10,
-              fontSize: 18,
-              fontWeight: "bold"
-            }}
-          >
-            MYR 20.00
+            {this.state.distance}km away
           </Text>
         </View>
         <TouchableOpacity
           onPress={() =>
-            this.props.navigation.navigate("FromAgentReadyCollect")
+            this.props.navigation.navigate("FromAgentReadyCollect",{
+              widthdrawAgent: this.state.widthdrawAgent,
+              distance: this.state.distance,
+              price: this.state.price,
+              token: this.state.token
+            })
           }
         >
           <View

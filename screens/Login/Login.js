@@ -20,7 +20,9 @@ import { connect } from "react-redux";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { Notifications, Permissions, LinearGradient } from "expo";
+import { Notifications } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
 
 export class Login extends Component {
   constructor(props) {
@@ -44,43 +46,38 @@ export class Login extends Component {
   }
 
   reduxLogin = () => {
-    console.log("Token", this.state.notificationToken)
-    if (this.state.email.length < 5 || !this.state.email.includes("@"))
-      alert(`Please enter a valid email address.`);
-    else if (this.state.password.length < 6) alert(`Please enter a password.`);
-    else {
-      fetch(`${url}/users/login`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify({
-          login_input: this.state.email,
-          password: this.state.password,
-          push_token: this.state.notificationToken
-        })
+    console.log("Token", this.state.notificationToken);
+    fetch(`${url}/users/login`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        login_input: this.state.email,
+        password: this.state.password,
+        push_token: this.state.notificationToken
       })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success === true) {
-            console.log("Login", data);
-            this._storeData(data.token, data.user).then(() => {
-              this.props.logMeIn();
-            });
-          } else alert(data.message);
-        })
-        .catch(err => {
-          console.log("Error for login:", err);
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Login", data);
+        if (data.success === true) {
+          this._storeData(data.token, data.user).then(() => {
+            this.props.logMeIn();
+          });
+        } else alert(data.message);
+      })
+      .catch(err => {
+        console.log("Error for login:", err);
 
-          Alert.alert(
-            "Error connecting to server",
-            `Please try again later`,
-            [{ text: "OK", onPress: () => null }],
-            { cancelable: false }
-          );
-        });
-    }
+        Alert.alert(
+          "Error connecting to server",
+          `Please try again later`,
+          [{ text: "OK", onPress: () => null }],
+          { cancelable: false }
+        );
+      });
   };
 
   /**

@@ -14,7 +14,8 @@ import {
   AsyncStorage
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config/index";
 

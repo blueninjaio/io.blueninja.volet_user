@@ -15,7 +15,10 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import { Contacts, Permissions, Constants, LinearGradient } from "expo";
+// import { Contacts, Permissions, Constants, LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+import * as Permissions from 'expo-permissions'
+import * as Contacts from 'expo-contacts';
 import ContactList from "../../component/ContactList/index";
 import OnVoletContactList from "../../component/OnVoletContactList";
 import { dev, prod, url } from "../../config/index";
@@ -64,8 +67,8 @@ export class SendPayment extends Component {
   }
 
   showFirstContactAsync = async () => {
-    const contacts = await Expo.Contacts.getContactsAsync({
-      fields: [Expo.Contacts.PHONE_NUMBERS]
+    const contacts = await Contacts.getContactsAsync({
+      fields: [Contacts.PHONE_NUMBERS]
     });
 
     // console.log("Contacts", contacts.data);

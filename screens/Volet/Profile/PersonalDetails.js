@@ -15,7 +15,11 @@ import {
 import { Icon, Thumbnail } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
-import { ImagePicker, Permissions, LinearGradient } from "expo";
+// import { ImagePicker, Permissions, LinearGradient } from "expo";
+import * as ImagePicker from "expo-image-picker";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
+
 import { dev, prod, url } from "../../../config";
 
 export class PersonalDetails extends Component {
@@ -38,6 +42,9 @@ export class PersonalDetails extends Component {
   |--------------------------------------------------
   */
   componentDidMount() {
+    if (this.props.navigation.state.params.userImage) {
+      this.setState({ imageUri: this.props.navigation.state.params.userImage });
+    }
     this.getPermissionAsync();
     this.getUserInfo();
   }
@@ -91,23 +98,26 @@ export class PersonalDetails extends Component {
   _onChoosePic = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      aspect: [4, 3]
+      aspect: [4, 3],
+      base64: true
     });
     console.log("Image link", result); // this logs correctly
     if (!result.cancelled) {
-      this.setState({ imageUri: result.uri });
-      // TODO: why isn't this showing up inside the Image on screen?
+      this.setState({ imageUri: result.base64 });
     }
   };
 
   // When "Take" is pressed, we show the user's camera so they
   // can take a photo to show inside the image view on screen.
-  _onTakePic = async () => {
-    const { cancelled, uri } = await Expo.ImagePicker.launchCameraAsync({});
-    if (!cancelled) {
-      this.setState({ imgUri: uri });
-    }
-  };
+  // _onTakePic = async () => {
+  //   const { cancelled, data } = await Expo.ImagePicker.launchCameraAsync({
+  //     base64: true
+  //   });
+  //   if (!cancelled) {
+  //     console.log("Data image", data)
+  //     // this.setState({ imgUri: uri });
+  //   }
+  // };
 
   editUserInfo = async () => {
     const {
@@ -120,42 +130,27 @@ export class PersonalDetails extends Component {
       token
     } = this.state;
 
-    let formData = new FormData();
-    formData.append("image", {
-      uri: imageUri,
-      name: "userImage.jpg",
-      type: "image/jpg"
-    });
-    formData.append("f_name", firstName);
-    formData.append("l_name", lastName);
-    formData.append("email", email);
-    formData.append("address", address);
-    formData.append("contact", contact);
-
     fetch(`${url}/users/edit`, {
       method: "POST",
       mode: "cors",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json; charset=utf-8",
         Authorization: "Bearer " + token
       },
-      body: formData
+      body: JSON.stringify({
+        image: `data:image/jpg;base64,${imageUri}`,
+        f_name: firstName,
+        l_name: lastName,
+        email: email,
+        address: address,
+        contact: contact
+      })
     })
       .then(res => res.json())
       .then(data => {
         if (data.success === true) {
-          Alert.alert(
-            "Success",
-            `${data.message}`,
-            [
-              {
-                text: "OK",
-                onPress: () => this.props.navigation.navigate("Home")
-              }
-            ],
-            { cancelable: false }
-          );
+          console.log("Success", data);
+          this.props.navigation.navigate("Profile");
         } else {
           alert(data.message);
         }
@@ -208,15 +203,19 @@ export class PersonalDetails extends Component {
                 }}
               >
                 {this.state.imageUri !== "" ? (
-                  <Thumbnail
-                    large
-                    style={{ backgroundColor: "grey" }}
-                    source={{ uri: `${this.state.imageUri}` }}
-                  />
+                  (console.log("Base 64", this.state.imageUri),
+                  (
+                    <Thumbnail
+                      large
+                      style={{ backgroundColor: "grey" }}
+                      source={{
+                        uri: `data:image/png;base64,${this.state.imageUri}`
+                      }}
+                    />
+                  ))
                 ) : (
                   <Thumbnail
                     large
-                    // style={{ backgroundColor: "grey" }}
                     source={{
                       uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
                     }}

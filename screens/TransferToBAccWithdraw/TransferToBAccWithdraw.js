@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity
 } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 export const { width, height } = Dimensions.get("window");
 
 export default class TransferToBAccWithdraw extends Component {

@@ -17,7 +17,7 @@ import {
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { Notifications, Permissions, LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 import { Input } from "react-native-elements";
 
 export class PaymentAmount extends Component {
@@ -160,7 +160,7 @@ export class PaymentAmount extends Component {
                   <LinearGradient
                     colors={["#36D1DC", "#5B86E5"]}
                     style={{
-                      borderRadius: 30,
+                      borderRadius: 20,
                       width: 40,
                       height: 40,
                       justifyContent: "center",

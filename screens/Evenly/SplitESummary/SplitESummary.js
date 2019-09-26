@@ -10,12 +10,13 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 export const { width, height } = Dimensions.get("window");
-// import { dev, prod, url } from "../../../config";
+import { dev, prod, url } from "../../../config";
 
 export class SplitESummary extends Component {
   constructor(props) {
@@ -24,22 +25,90 @@ export class SplitESummary extends Component {
     this.state = {
       contact: "",
       splitAmount: 0,
-      totalAmount: 0
+      totalAmount: this.props.navigation.state.params.amount,
+      token: "",
+      payments: [],
+      selectedContact: this.props.navigation.state.params.selectedContact,
+      reason: this.props.navigation.state.params.reason,
+      selectedValue: this.props.navigation.state.params.selectedValue,
+
     };
   }
   componentDidMount() {
     this._splitBills();
+    this.getUserID();
   }
 
   _splitBills = () => {
-    let totalAmount = this.props.navigation.state.params.amount;
-    this.setState({ totalAmount });
-
+    const {
+      payments,
+      selectedValue,
+      selectedContact,
+      totalAmount,
+      reason
+    } = this.state;
     let person = this.props.navigation.state.params.selectedContact.length;
-
-    let dividedAmount = totalAmount / person;
-    let splitAmount = parseFloat(dividedAmount).toFixed(2);
+    let splitAmount = parseFloat(totalAmount / person).toFixed(2);
     this.setState({ splitAmount });
+
+    selectedContact.forEach(x => {
+      payments.push({
+        description: reason,
+        reason: selectedValue,
+        price: splitAmount,
+        from: x._id
+      });
+    });
+    console.log("Split bills info", payments);
+    this.setState({ payments });
+  };
+
+  getUserID = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      if (token !== null) {
+        this.setState({ token });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  onActionTransfer = async () => {
+    try {
+      fetch(`${url}/volet/payments/request`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + this.state.token
+        },
+        body: JSON.stringify({
+          payments: this.state.payments
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Request Payment :", data);
+          if (data.success === true) {
+            this.props.navigation.navigate("SPaymentSuccess", {
+              paymentType: "Requested"
+            });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -108,7 +177,7 @@ export class SplitESummary extends Component {
                         <LinearGradient
                           colors={["#36D1DC", "#5B86E5"]}
                           style={{
-                            borderRadius: 30,
+                            borderRadius: 20,
                             width: 40,
                             height: 40,
                             justifyContent: "center",
@@ -116,18 +185,18 @@ export class SplitESummary extends Component {
                           }}
                         >
                           <Text style={{ color: "white", fontSize: 18 }}>
-                            {x.firstName.substring(0, 1)}
-                            {x.lastName.substring(0, 1)}
+                            {x.f_name.substring(0, 1)}
+                            {x.l_name.substring(0, 1)}
                           </Text>
                         </LinearGradient>
                         <View style={{ paddingLeft: 20, paddingRight: 25 }}>
                           <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                            {x.name}
+                            {x.f_name} {x.l_name}
                           </Text>
                           <Text
                             style={{ color: "rgb(144,144,144)", paddingTop: 5 }}
                           >
-                            {x.phoneNumbers[0].digits}
+                            {x.contact}
                           </Text>
                         </View>
                       </View>
@@ -177,9 +246,11 @@ export class SplitESummary extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SPaymentSuccess",{
-                paymentType:"Requested"
-              })}
+              onPress={() =>
+                this.props.navigation.navigate("SPaymentSuccess", {
+                  paymentType: "Requested"
+                })
+              }
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>Request</Text>

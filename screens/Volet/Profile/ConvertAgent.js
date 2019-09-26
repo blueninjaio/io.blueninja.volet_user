@@ -15,7 +15,7 @@ import StarRating from "react-native-star-rating";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../../config/index";
 import { CheckBox } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 
 export class ConvertAgent extends Component {
   constructor(props) {
@@ -91,18 +91,10 @@ export class ConvertAgent extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          if (data.success === true) {
-            Alert.alert(
-              "Success",
-              `${data.message}`,
-              [
-                {
-                  text: "OK",
-                  onPress: () => this.props.navigation.navigate("Profile")
-                }
-              ],
-              { cancelable: false }
-            );
+          if (data.success) {
+            console.log(data)
+            alert("Success");
+            this.props.navigation.navigate("Profile");
           } else {
             Alert.alert(
               "Failed",

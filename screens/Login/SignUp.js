@@ -12,7 +12,7 @@ import {
 import { Thumbnail } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 import { dev, prod, url } from "../../config";
 
 export class SignUp extends Component {

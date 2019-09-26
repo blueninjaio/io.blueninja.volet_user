@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 export const { width, height } = Dimensions.get("window");
 
 export default class TransferToBAccSuccess extends Component {
@@ -36,6 +36,9 @@ export default class TransferToBAccSuccess extends Component {
             MYR 20.00
           </Text>
           <Text style={{ marginTop: 25, fontWeight: "bold" }}>
+          {
+            
+          }
             Transaction Successful!
           </Text>
         </View>

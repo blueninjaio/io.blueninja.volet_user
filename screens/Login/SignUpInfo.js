@@ -79,12 +79,8 @@ export class SignUpInfo extends Component {
           if (data.success === true) {
             // this.props.navigation.navigate("Login");
             console.log("Sign Up info", data);
-            Alert.alert(
-              "Success",
-              `${data.message}`,
-              [{ text: "OK", onPress: () => this.reduxLogin() }],
-              { cancelable: false }
-            );
+            alert("Successfully Signed Up");
+            this.reduxLogin();
           }
         })
         .catch(error => {

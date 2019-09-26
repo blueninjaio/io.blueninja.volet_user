@@ -11,7 +11,8 @@ import {
 export const { width, height } = Dimensions.get("window");
 import { connect } from "react-redux";
 import { dev, prod, url } from "../../../config/index";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 
 export class Logout extends Component {
   constructor(props) {

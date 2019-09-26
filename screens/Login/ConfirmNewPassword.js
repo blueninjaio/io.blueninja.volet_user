@@ -6,11 +6,13 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 
 export class ConfirmNewPassword extends Component {
   constructor(props) {
@@ -93,6 +95,8 @@ export class ConfirmNewPassword extends Component {
 
   render() {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
       <View style={styles.container}>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <View
@@ -329,6 +333,7 @@ export class ConfirmNewPassword extends Component {
           </View>
         </View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

@@ -14,7 +14,8 @@ import {
 import StarRating from "react-native-star-rating";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../../config/index";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 
 export class FeedBack extends Component {
   constructor(props) {

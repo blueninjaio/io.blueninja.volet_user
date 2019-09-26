@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
-import { Notifications, Permissions, LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 
 export class ReasonEPayment extends Component {
   constructor(props) {

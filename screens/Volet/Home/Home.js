@@ -25,10 +25,11 @@ import {
   Title,
   Icon
 } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
+import * as Location from "expo-location";
 import SwipeUpDown from "react-native-swipe-up-down";
 import { dev, prod, url } from "../../../config/index";
-import { BarCodeScanner, Permissions } from "expo";
 import { NavigationEvents } from "react-navigation";
 
 export default class App extends React.Component {
@@ -57,12 +58,76 @@ export default class App extends React.Component {
     this.getPermissionAsync();
   };
 
+
+  _getLocationAsync = async token => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== "granted") {
+      this.setState({
+        locationResult: "Permission to access location was denied",
+        location
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Lowest
+    });
+    this.setState({ locationResult: JSON.stringify(location), location });
+    // let DMS = this.convertDMS(
+    //   location.coords.latitude,
+    //   location.coords.longitude
+    // );
+
+    let newLocation = location.coords.latitude + "," + location.coords.longitude
+
+    console.log("Location", newLocation);
+
+    setInterval(() => {
+      this.updateUserLocation(newLocation, token);
+    }, 1000 * 60);
+  };
+
+  updateUserLocation = async (location, token) => {
+    try {
+      fetch(`${url}/users/coordinates`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
+        },
+        body: JSON.stringify({
+          coordinates: location
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Location :", data);
+          if (data.success) {
+            console.log("Location success:", data);
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   getUserID = async () => {
     try {
       let token = await AsyncStorage.getItem("token");
       let username = await AsyncStorage.getItem("firstname");
       if (token !== null) {
         this.getVolet(token);
+        this._getLocationAsync(token);
         this.setState({ username });
         this.setState({ token });
       }
@@ -88,14 +153,13 @@ export default class App extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          // console.log("Users :", data);
+          console.log("Users :", data);
           if (data.success === true) {
             this.setState({ balance: data.user.credits });
             this.setState({ savings: data.user.monthly_savings });
-            if (data.user.photo_url) {
-              this.setState({ userImage: data.user.photo_url });
+            if (data.user.photo_base64) {
+              this.setState({ userImage: data.user.photo_base64 });
             }
-            this.UserType(data.user.user_type);
           }
         })
         .catch(error => {
@@ -106,14 +170,6 @@ export default class App extends React.Component {
             { cancelable: false }
           );
         });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  UserType = async userType => {
-    try {
-      await AsyncStorage.setItem("userType", userType);
     } catch (error) {
       console.log(error);
     }
@@ -219,7 +275,7 @@ export default class App extends React.Component {
                 <Thumbnail
                   large
                   source={{
-                    uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                    uri: `${this.state.userImage}`
                   }}
                   style={{ borderColor: "white" }}
                 />

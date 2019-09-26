@@ -10,7 +10,9 @@ import {
   Platform,
   Image
 } from "react-native";
-import { LocalAuthentication, Expo, Constants, LinearGradient } from "expo";
+// import { LocalAuthentication, Expo, Constants, LinearGradient } from "expo";
+import * as LocalAuthentication from 'expo-local-authentication';
+import { LinearGradient } from 'expo-linear-gradient'
 import { connect } from "react-redux";
 export const { width, height } = Dimensions.get("window");
 

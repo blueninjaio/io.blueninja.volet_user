@@ -14,8 +14,10 @@ import {
   LayoutAnimation
 } from "react-native";
 import { dev, prod, url } from "../../config/index";
-import { BarCodeScanner, Permissions, LinearGradient } from "expo";
-
+// import { BarCodeScanner, Permissions, LinearGradient } from "expo";
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { LinearGradient } from 'expo-linear-gradient'
+import * as Permissions from 'expo-permissions'
 import { NavigationEvents } from "react-navigation";
 import QRCode from "react-native-qrcode-svg";
 
@@ -75,6 +77,8 @@ export class ShowQRCode extends Component {
 
   _handleBarCodeRead = result => {
     //   text.split(".")[1].length > 2
+    console.log("Scanning")
+    console.log("Bar code 1", result);
     if (result.data !== this.state.lastScannedUrl) {
       LayoutAnimation.spring();
       console.log("Bar code", result);
@@ -230,7 +234,7 @@ export class ShowQRCode extends Component {
                   </Text>
                 ) : (
                   <BarCodeScanner
-                    onBarCodeRead={this._handleBarCodeRead}
+                  onBarCodeScanned={this._handleBarCodeRead}
                     style={{
                       // height: height / 2.5,
                       flex: 1,

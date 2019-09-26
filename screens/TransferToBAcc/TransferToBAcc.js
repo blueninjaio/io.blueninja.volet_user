@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 export const { width, height } = Dimensions.get("window");
 
 export default class TransferToBAcc extends Component {

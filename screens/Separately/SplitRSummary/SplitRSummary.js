@@ -10,27 +10,95 @@ import {
   TextInput,
   SafeAreaView,
   Image,
-  Keyboard
+  Keyboard,
+  AsyncStorage
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 import { LinearGradient } from "expo";
+import _ from "underscore";
 export const { width, height } = Dimensions.get("window");
-// import { dev, prod, url } from "../../../config";
+import { dev, prod, url } from "../../../config";
 
 export class SplitRSummary extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      contact: ""
+      contact: "",
+      payments: [],
+      totalEntries: this.props.navigation.state.params.totalEntries,
+      totalAmount: this.props.navigation.state.params.totalAmount,
+      serviceCharge: this.props.navigation.state.params.serviceCharge,
+      reason: this.props.navigation.state.params.reason
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.getUserID();
+    this.convertUserPayment();
+  }
 
-  onActionImgPopUp = contact => {
-    Keyboard.addListener("keyboardDidShow");
-    if (contact !== null) {
-      this.setState({ contact });
+  convertUserPayment = () => {
+    const { payments, totalEntries, selectedValue } = this.state;
+    totalEntries.forEach(x => {
+      let { description, price, selectedUsers } = x;
+      let pricePerUser = price / selectedUsers.length;
+      selectedUsers.forEach(user => {
+        payments.push({
+          description,
+          reason: selectedValue,
+          price: pricePerUser,
+          from: user._id
+        });
+      });
+    });
+    this.setState({ payments });
+  };
+
+  getUserID = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      if (token !== null) {
+        this.setState({ token });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  onActionTransfer = async () => {
+    try {
+      fetch(`${url}/volet/payments/request`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + this.state.token
+        },
+        body: JSON.stringify({
+          payments: this.state.payments
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Request Payment :", data);
+          if (data.success === true) {
+            this.props.navigation.navigate("SPaymentSuccess", {
+              paymentType: "Requested"
+            });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -84,87 +152,54 @@ export class SplitRSummary extends Component {
               elevation: 1
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 28
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
+            {this.props.navigation.state.params.totalEntries.map((x, i) => (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginBottom: 28
                 }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
+                key={i}
+              >
+                {x.selectedUsers.map((j, q) => (
+                  <View
+                    style={{ flexDirection: "row", width: width / 2 }}
+                    key={q}
+                  >
+                    <LinearGradient
+                      colors={["#36D1DC", "#5B86E5"]}
+                      style={{
+                        borderRadius: 20,
+                        width: 40,
+                        height: 40,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Text style={{ color: "white", fontSize: 18 }}>
+                        {j.f_name.substring(0, 1)}
+                        {j.l_name.substring(0, 1)}
+                      </Text>
+                    </LinearGradient>
+                    <View style={{ paddingLeft: 20, paddingRight: 25 }}>
+                      <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                        {j.f_name} {j.l_name}
+                      </Text>
+                      <Text
+                        style={{ color: "rgb(144,144,144)", paddingTop: 5 }}
+                      >
+                        {j.contact}
+                      </Text>
+                    </View>
+                    <View style={{ paddingLeft: 15 }}>
+                      <Text style={{ fontWeight: "bold" }}>MYR</Text>
+                      <Text style={{ paddingTop: 5 }}>{x.price}</Text>
+                    </View>
+                  </View>
+                ))}
               </View>
-              <View style={{ paddingLeft: 15 }}>
-                <Text style={{ fontWeight: "bold" }}>MYR</Text>
-                <Text style={{ paddingTop: 5 }}>10.00</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 28
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 15 }}>
-                <Text style={{ fontWeight: "bold" }}>MYR</Text>
-                <Text style={{ paddingTop: 5 }}>10.00</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                marginBottom: 28
-              }}
-            >
-              <Thumbnail
-                small
-                source={{
-                  uri:
-                    "https://content-static.upwork.com/uploads/2014/10/02123010/profilephoto_goodcrop.jpg"
-                }}
-              />
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  Ariel L.Mermaid
-                </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  +6012-2345789
-                </Text>
-              </View>
-              <View style={{ paddingLeft: 15 }}>
-                <Text style={{ fontWeight: "bold" }}>MYR</Text>
-                <Text style={{ paddingTop: 5 }}>10.00</Text>
-              </View>
-            </View>
+            ))}
+
             <View
               style={{
                 flexDirection: "row",
@@ -173,13 +208,15 @@ export class SplitRSummary extends Component {
             >
               <Text style={{ color: "rgb(144,144,144)" }}>Total Request</Text>
               <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                MYR 20.00
+                MYR {this.props.navigation.state.params.totalAmount}
               </Text>
             </View>
             <Text style={{ color: "rgb(144,144,144)", marginTop: 30 }}>
               Reasons of Transfer
             </Text>
-            <Text style={{ marginTop: 20 }}>Lorem ipsum bla blabla bla</Text>
+            <Text style={{ marginTop: 20 }}>
+              {this.props.navigation.state.params.reason}
+            </Text>
           </View>
         </View>
 
@@ -197,9 +234,12 @@ export class SplitRSummary extends Component {
             style={styles.buttonStyle}
           >
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("SPaymentSuccess",{
-                paymentType:"Requested"
-              })}
+              onPress={() => this.onActionTransfer()}
+              // onPress={() =>
+              //   this.props.navigation.navigate("SPaymentSuccess", {
+              //     paymentType: "Requested"
+              //   })
+              // }
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>Request</Text>
