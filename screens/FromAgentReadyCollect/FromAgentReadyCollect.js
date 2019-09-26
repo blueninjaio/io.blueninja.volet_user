@@ -14,9 +14,9 @@ import {
   LayoutAnimation
 } from "react-native";
 import { dev, prod, url } from "../../config/index";
-import { BarCodeScanner } from 'expo-barcode-scanner';
-import { LinearGradient } from 'expo-linear-gradient'
-import * as Permissions from 'expo-permissions'
+import { BarCodeScanner } from "expo-barcode-scanner";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
 
 import { NavigationEvents } from "react-navigation";
 import QRCode from "react-native-qrcode-svg";
@@ -32,7 +32,7 @@ export default class FromAgentReadyCollect extends Component {
       selectedValue: "Scan QR",
       widthdrawAgent: this.props.navigation.state.params.widthdrawAgent,
       distance: this.props.navigation.state.params.distance,
-      price: this.props.navigation.state.params.price,
+      price: this.props.navigation.state.params.price
     };
   }
   /**
@@ -96,7 +96,6 @@ export default class FromAgentReadyCollect extends Component {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
         Authorization: "Bearer " + this.props.navigation.state.params.token
-
       },
       body: JSON.stringify({
         agent_id: ID,
@@ -107,10 +106,11 @@ export default class FromAgentReadyCollect extends Component {
       .then(data => {
         console.log("User agent scan :", data);
         if (data.success) {
-
-        }
-        else{
-          alert(data.message)
+          this.props.navigation.navigate("TransferToBAccSuccess", {
+            requestStatus: "Success"
+          });
+        } else {
+          alert(data.message);
         }
       })
       .catch(error => {
@@ -176,7 +176,7 @@ export default class FromAgentReadyCollect extends Component {
               </Text>
             ) : (
               <BarCodeScanner
-              onBarCodeScanned={this._handleBarCodeRead}
+                onBarCodeScanned={this._handleBarCodeRead}
                 style={{
                   // height: height / 2.5,
                   flex: 1,
@@ -202,7 +202,9 @@ export default class FromAgentReadyCollect extends Component {
           >
             <TouchableOpacity
               onPress={() =>
-                this.props.navigation.navigate("TransferToBAccSuccess")
+                this.props.navigation.navigate("TransferToBAccSuccess", {
+                  requestStatus: "Failed"
+                })
               }
               style={styles.buttonStyle}
             >

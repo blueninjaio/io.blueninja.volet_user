@@ -85,13 +85,13 @@ export default class FromAgentWithdrawal extends Component {
   };
 
   checkBalance = () => {
-    // if (this.state.price === ""){
-    //   alert("Please enter an amount")
-    // }
-    // else if (this.state.price >= this.state.balance){
-    //   alert("Insufficient Volet Balance")
-    // }
-    // else{
+    if (this.state.price === ""){
+      alert("Please enter an amount")
+    }
+    else if (this.state.price >= this.state.balance){
+      alert("Insufficient Volet Balance")
+    }
+    else{
       this.props.navigation.navigate("FromAgentCollection", {
         widthdrawAgent: this.state.widthdrawAgent,
         balance: this.state.balance,
@@ -99,7 +99,7 @@ export default class FromAgentWithdrawal extends Component {
         price: this.state.price,
         token: this.state.token
       })
-    // }
+    }
   }
 
   render() {

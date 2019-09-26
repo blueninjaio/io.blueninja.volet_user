@@ -6,12 +6,76 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
+  AsyncStorage
 } from "react-native";
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from "expo-linear-gradient";
 export const { width, height } = Dimensions.get("window");
+import { dev, prod, url } from "../../config";
 
 export default class TransferToBAccSuccess extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       balance:""
+    }
+  }
+  
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getUserID = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      if (token !== null) {
+        this.getVolet(token);
+        this.setState({ token });
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error connecting to server storage",
+        `${error}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
+
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Users :", data);
+          if (data.success === true) {
+            this.setState({ balance: data.user.credits });
+            this.setState({ savings: data.user.monthly_savings });
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -36,9 +100,7 @@ export default class TransferToBAccSuccess extends Component {
             MYR 20.00
           </Text>
           <Text style={{ marginTop: 25, fontWeight: "bold" }}>
-          {
-            
-          }
+            {}
             Transaction Successful!
           </Text>
         </View>
