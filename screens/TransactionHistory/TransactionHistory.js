@@ -135,11 +135,12 @@ function TransactionHistory(props) {
                       <>
                       <View style={styles.shadowSet}>
                         <TouchableOpacity
-                          onPress={() =>
-                            this.props.navigation.navigate("Setting", {
-                              userType: userType
-                            })
-                          }
+                          // onPress={() =>
+                            
+                          //   this.props.navigation.navigate("Setting", {
+                          //     userType: userType
+                          //   })
+                          // }
                           style={styles.listItemButton}
                         >
                           <View style={styles.show}>
