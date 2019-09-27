@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Text,
   View,
@@ -10,326 +10,190 @@ import {
   Alert,
   AsyncStorage
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-export const { width, height } = Dimensions.get("window");
-import { dev, prod, url } from "../../config";
+import {LinearGradient} from "expo-linear-gradient";
 
-class TransactionHistory extends Component {
-  constructor(props) {
-    super(props);
+export const {width, height} = Dimensions.get("window");
+import {dev, prod, url} from "../../config";
+import {get} from "../../api/fetch";
 
-    this.state = {
-      selectedValue: "Sent"
-    };
-  }
+const Page = {
+  SENT: 0,
+  RECEIVED: 1,
+  REQUESTED: 2
+};
 
-  Onclick = value => {
-    this.setState({ selectedValue: value });
-  };
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: width / 1.2,
-              alignItems: "center",
-              padding: 15
-            }}
+function TransactionHistory(props) {
+  const [selectedPage, setSelectedPage] = React.useState(Page.SENT);
+  const [payments, setPayments] = React.useState([]);
+  //
+  React.useEffect(async () => {
+    let response = await get(`${url}/volet/payments`);
+    let user = response.user;
+    setPayments(response.payments.map(payment => {
+      let page = payment.completed ? payment.from._id === user._id ? Page.SENT : Page.RECEIVED : Page.REQUESTED;
+      const input = [];
+      if (page === Page.SENT) {
+        input.push({
+          style: styles.listItemText,
+          value: "Sent"
+        });
+        input.push({
+          style: styles.listItemTextGreen,
+          value: "MYR " + payment.amount
+        });
+        input.push({
+          style: styles.listItemText,
+          value: "to"
+        });
+        input.push({
+          style: styles.listItemTextBold,
+          value: payment.to.f_name + " " + payment.to.l_name
+        });
+      } else if (page === Page.RECEIVED) {
+        input.push({
+          style: styles.listItemText,
+          value: "Received"
+        });
+        input.push({
+          style: styles.listItemTextGreen,
+          value: "MYR " + payment.amount
+        });
+        input.push({
+          style: styles.listItemText,
+          value: "from"
+        });
+        input.push({
+          style: styles.listItemTextBold,
+          value: payment.from.f_name + " " + payment.from.l_name
+        });
+      } else if (page === Page.REQUESTED) {
+
+      }
+      return {
+        page: "",
+        input,
+        acronym: user.f_name.charAt(0) + user.l_name.charAt(0)
+      }
+    }));
+  });
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={{justifyContent: "center", alignItems: "center"}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: width / 1.2,
+            alignItems: "center",
+            padding: 15
+          }}
+        >
+          <TouchableOpacity
+            style={selectedPage === Page.SENT ? styles.selectedView : styles.unselectedView}
+            onPress={() => setSelectedPage(Page.SENT)}
           >
-            {this.state.selectedValue === "Sent" ? (
-              <TouchableOpacity
-                style={{
-                  padding: 10,
-                  borderBottomWidth: 1.5,
-                  borderColor: "#5B86E5",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={() => this.Onclick("Sent")}
-              >
-                <Image
-                  source={require("../../assets/requestSent.png")}
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ color: "rgb(74, 74, 74)" }}>Sent</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  padding: 10,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={() => this.Onclick("Sent")}
-              >
-                <Image
-                  source={require("../../assets/requestSent.png")}
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ color: "rgb(74, 74, 74)" }}>Sent</Text>
-              </TouchableOpacity>
-            )}
+            <Image
+              source={require("../../assets/requestSent.png")}
+              resizeMode="contain"
+              style={{width: 50, height: 50}}
+            />
+            <Text style={{color: "rgb(74, 74, 74)"}}>Sent</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={selectedPage === Page.RECEIVED ? styles.selectedView : styles.unselectedView}
+            onPress={() => setSelectedPage(Page.RECEIVED)}
+          >
+            <Image
+              source={require("../../assets/wallet.png")}
+              resizeMode="contain"
+              style={{width: 50, height: 50}}
+            />
+            <Text style={{color: "rgb(74, 74, 74)"}}>Received</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={selectedPage === Page.REQUESTED ? styles.selectedView : styles.unselectedView}
+            onPress={() => setSelectedPage(Page.REQUESTED)}
+          >
+            <Image
+              source={require("../../assets/requestReceive.png")}
+              resizeMode="contain"
+              style={{width: 50, height: 50}}
+            />
+            <Text style={{color: "rgb(74, 74, 74)"}}>Request</Text>
+          </TouchableOpacity>
+        </View>
 
-            {this.state.selectedValue === "Received" ? (
-              <TouchableOpacity
-                style={{
-                  padding: 10,
-                  borderBottomWidth: 1.5,
-                  borderColor: "#5B86E5",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={() => this.Onclick("Received")}
-              >
-                <Image
-                  source={require("../../assets/wallet.png")}
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ color: "rgb(74, 74, 74)" }}>Received</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  padding: 10,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={() => this.Onclick("Received")}
-              >
-                <Image
-                  source={require("../../assets/wallet.png")}
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ color: "rgb(74, 74, 74)" }}>Request</Text>
-              </TouchableOpacity>
-            )}
-            {this.state.selectedValue === "Request" ? (
-              <TouchableOpacity
-                style={{
-                  padding: 10,
-                  borderBottomWidth: 1.5,
-                  borderColor: "#5B86E5",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={() => this.Onclick("Request")}
-              >
-                <Image
-                  source={require("../../assets/requestReceive.png")}
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ color: "rgb(74, 74, 74)" }}>Request</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={{
-                  padding: 10,
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-                onPress={() => this.Onclick("Request")}
-              >
-                <Image
-                  source={require("../../assets/requestReceive.png")}
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                />
-                <Text style={{ color: "rgb(74, 74, 74)" }}>Request</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-
-          <View style={{ width: width / 1.3, alignItems: "center" }}>
-            {this.state.selectedValue === "Sent" ? (
-              <View style={styles.shadowSet}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("Setting", {
-                      userType: this.state.userType
-                    })
-                  }
-                  style={styles.listItemButton}
-                >
-                  <View style={styles.show}>
-                    <LinearGradient
-                      colors={["#36D1DC", "#5B86E5"]}
-                      style={{
-                        borderRadius: 20,
-                        width: 40,
-                        height: 40,
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <Text style={{ color: "white", fontSize: 18 }}>
-                        {/* {x.f_name.substring(0, 1)} */}
-                        KK
-                        {/* {x.l_name.substring(0, 1)} */}
-                      </Text>
-                    </LinearGradient>
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        marginLeft: 30
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: width / 2,
-                          flexDirection: "row",
-                          marginBottom: 8
-                        }}
-                      >
-                        <Text style={styles.listItemText}>Sent</Text>
-                        <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: width / 2,
-                          flexDirection: "row"
-                        }}
-                      >
-                        <Text style={styles.listItemText}>to</Text>
-                        <Text style={styles.listItemTextBold}>Person</Text>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : this.state.selectedValue === "Received" ? (
-              <View style={styles.shadowSet}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("Setting", {
-                      userType: this.state.userType
-                    })
-                  }
-                  style={styles.listItemButton}
-                >
-                  <View style={styles.show}>
-                    <LinearGradient
-                      colors={["#36D1DC", "#5B86E5"]}
-                      style={{
-                        borderRadius: 20,
-                        width: 40,
-                        height: 40,
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <Text style={{ color: "white", fontSize: 18 }}>
-                        {/* {x.f_name.substring(0, 1)} */}
-                        KK
-                        {/* {x.l_name.substring(0, 1)} */}
-                      </Text>
-                    </LinearGradient>
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        marginLeft: 30
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: width / 2,
-                          flexDirection: "row",
-                          marginBottom: 8
-                        }}
-                      >
-                        <Text style={styles.listItemText}>Received</Text>
-                        <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: width / 2,
-                          flexDirection: "row"
-                        }}
-                      >
-                        <Text style={styles.listItemText}>from</Text>
-                        <Text style={styles.listItemTextBold}>Person</Text>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View style={styles.shadowSet}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate("Setting", {
-                    userType: this.state.userType
-                  })
+        <View style={{width: width / 1.3, alignItems: "center"}}>
+          <View style={styles.shadowSet}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("Setting", {
+                  userType: userType
+                })
+              }
+              style={styles.listItemButton}
+            >
+              <View style={styles.show}>
+                {
+                  payments
+                    .filter(payment => payment.page === selectedPage)
+                    .map(payment => (
+                      <>
+                        <LinearGradient
+                          colors={["#36D1DC", "#5B86E5"]}
+                          style={{
+                            borderRadius: 20,
+                            width: 40,
+                            height: 40,
+                            justifyContent: "center",
+                            alignItems: "center"
+                          }}
+                        >
+                          <Text style={{color: "white", fontSize: 18}}>
+                            {payment.acronym}
+                          </Text>
+                        </LinearGradient>
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            marginLeft: 30
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: width / 2,
+                              flexDirection: "row",
+                              marginBottom: 8
+                            }}
+                          >
+                            <Text style={payment.input[0].style}>payment.input[0].value</Text>
+                            <Text style={payment.input[1].style}>payment.input[1].value</Text>
+                          </View>
+                          <View
+                            style={{
+                              width: width / 2,
+                              flexDirection: "row"
+                            }}
+                          >
+                            <Text style={payment.input[2].style}>payment.input[2].value</Text>
+                            <Text style={payment.input[3].style}>payment.input[3].value</Text>
+                          </View>
+                        </View>
+                      </>
+                    ))
                 }
-                style={styles.listItemButton}
-              >
-                <View style={styles.show}>
-                  <LinearGradient
-                    colors={["#36D1DC", "#5B86E5"]}
-                    style={{
-                      borderRadius: 20,
-                      width: 40,
-                      height: 40,
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
-                    <Text style={{ color: "white", fontSize: 18 }}>
-                      {/* {x.f_name.substring(0, 1)} */}
-                      KK
-                      {/* {x.l_name.substring(0, 1)} */}
-                    </Text>
-                  </LinearGradient>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      marginLeft: 30
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: width / 2,
-                        flexDirection: "row",
-                        marginBottom: 8
-                      }}
-                    >
-                      <Text style={styles.listItemTextBold}>Person</Text>
-                      <Text style={styles.listItemText}>requested</Text>
-
-                    </View>
-                    <View
-                      style={{
-                        width: width / 2,
-                        flexDirection: "row"
-                      }}
-                    >
-                      <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
-                      <Text style={styles.listItemTextBold}>from</Text>
-                    </View>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-            )}
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
-    );
-  }
+      </View>
+    </SafeAreaView>
+  );
 }
+
 export default TransactionHistory;
 
 const styles = StyleSheet.create({
@@ -419,10 +283,22 @@ const styles = StyleSheet.create({
     borderColor: "#dbdbdb",
     backgroundColor: "white",
     shadowColor: "#000",
-    shadowOffset: { width: 3, height: 2 },
+    shadowOffset: {width: 3, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 1,
     marginBottom: 15
+  },
+  selectedView: {
+    padding: 10,
+    borderBottomWidth: 1.5,
+    borderColor: "#5B86E5",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  unselectedView: {
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
