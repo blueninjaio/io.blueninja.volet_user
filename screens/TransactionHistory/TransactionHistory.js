@@ -30,7 +30,8 @@ function TransactionHistory(props) {
     get(`/volet/payments`).then(data => {
       let user = data.user;
       let payments = data.payments.map(payment => {
-        let page = payment.status === 'Complete' ? payment.from._id === user._id ? Page.SENT : Page.RECEIVED : Page.REQUESTED;
+        const isSent = payment.from._id === user._id;
+        let page = payment.status === 'Complete' ? isSent ? Page.SENT : Page.RECEIVED : Page.REQUESTED;
         const input = [];
         if (page === Page.SENT) {
           input.push({
@@ -67,7 +68,63 @@ function TransactionHistory(props) {
             value: payment.from.f_name + " " + payment.from.l_name
           });
         } else if (page === Page.REQUESTED) {
-  
+          if (payment.status === 'Requested') {
+            if (isSent) {
+              return undefined;//should never happen
+            }
+            input.push({
+              style: styles.listItemTextBold,
+              value: payment.from.f_name + " " + payment.from.l_name
+            });
+            input.push({
+              style: styles.listItemText,
+              value: "requested"
+            });
+            input.push({
+              style: styles.listItemText,
+              value: "to withdraw"
+            });
+            input.push({
+              style: styles.listItemTextGreen,
+              value: "MYR " + payment.amount
+            });
+          } else if (payment.status === 'Pending') {
+            if (isSent) {
+              input.push({
+                style: styles.listItemText,
+                value: "I requested"
+              });
+              input.push({
+                style: styles.listItemTextGreen,
+                value: "MYR " + payment.amount
+              });
+              input.push({
+                style: styles.listItemText,
+                value: "from"
+              });
+              input.push({
+                style: styles.listItemTextBold,
+                value: payment.to.f_name + " " + payment.to.l_name
+              });
+            } else {
+              input.push({
+                style: styles.listItemTextBold,
+                value: payment.from.f_name + " " + payment.from.l_name
+              });
+              input.push({
+                style: styles.listItemText,
+                value: "requested"
+              });
+              input.push({
+                style: styles.listItemTextGreen,
+                value: "MYR " + payment.amount
+              });
+              input.push({
+                style: styles.listItemText,
+                value: "from me"
+              });
+            }
+          }
         }
         return {
           page,
