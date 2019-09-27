@@ -34,7 +34,11 @@ import { dev, prod, url } from "../../../config/index";
 import { NavigationEvents } from "react-navigation";
 import Modal from "react-native-modal";
 
-
+const NotificationType = {
+  MESSAGE: 0,
+  VOUCHER: 1,
+  PAYMENT: 2
+};
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -49,7 +53,8 @@ export default class App extends React.Component {
       savings: 0,
       token: "",
       userImage: "",
-      isModalVisible: false
+      isModalVisible: false,
+      notifications: []
     };
   }
   /**
@@ -145,6 +150,110 @@ export default class App extends React.Component {
     }
   };
 
+  convertPayment = (payment) => {
+    const isSent = payment.from._id === user._id;
+    let page = payment.status === 'Complete' ? isSent ? Page.SENT : Page.RECEIVED : Page.REQUESTED;
+    const input = [];
+    if (page === Page.SENT) {
+      input.push({
+        style: styles.listItemText,
+        value: "Sent"
+      });
+      input.push({
+        style: styles.listItemTextGreen,
+        value: "MYR " + payment.amount
+      });
+      input.push({
+        style: styles.listItemText,
+        value: "to"
+      });
+      input.push({
+        style: styles.listItemTextBold,
+        value: payment.to.f_name + " " + payment.to.l_name
+      });
+    } else if (page === Page.RECEIVED) {
+      input.push({
+        style: styles.listItemText,
+        value: "Received"
+      });
+      input.push({
+        style: styles.listItemTextGreen,
+        value: "MYR " + payment.amount
+      });
+      input.push({
+        style: styles.listItemText,
+        value: "from"
+      });
+      input.push({
+        style: styles.listItemTextBold,
+        value: payment.from.f_name + " " + payment.from.l_name
+      });
+    } else if (page === Page.REQUESTED) {
+      if (payment.status === 'Requested') {
+        if (isSent) {
+          return undefined;//should never happen
+        }
+        input.push({
+          style: styles.listItemTextBold,
+          value: payment.from.f_name + " " + payment.from.l_name
+        });
+        input.push({
+          style: styles.listItemText,
+          value: "requested"
+        });
+        input.push({
+          style: styles.listItemText,
+          value: "to withdraw"
+        });
+        input.push({
+          style: styles.listItemTextGreen,
+          value: "MYR " + payment.amount
+        });
+      } else if (payment.status === 'Pending') {
+        if (isSent) {
+          input.push({
+            style: styles.listItemText,
+            value: "I requested"
+          });
+          input.push({
+            style: styles.listItemTextGreen,
+            value: "MYR " + payment.amount
+          });
+          input.push({
+            style: styles.listItemText,
+            value: "from"
+          });
+          input.push({
+            style: styles.listItemTextBold,
+            value: payment.to.f_name + " " + payment.to.l_name
+          });
+        } else {
+          input.push({
+            style: styles.listItemTextBold,
+            value: payment.from.f_name + " " + payment.from.l_name
+          });
+          input.push({
+            style: styles.listItemText,
+            value: "requested"
+          });
+          input.push({
+            style: styles.listItemTextGreen,
+            value: "MYR " + payment.amount
+          });
+          input.push({
+            style: styles.listItemText,
+            value: "from me"
+          });
+        }
+      }
+    }
+    return {
+      page,
+      input,
+      acronym: user.f_name.charAt(0) + user.l_name.charAt(0)
+    }
+  };
+
   getVolet = async token => {
     try {
       fetch(`${url}/users/me`, {
@@ -164,6 +273,28 @@ export default class App extends React.Component {
             if (data.user.photo_base64) {
               this.setState({ userImage: data.user.photo_base64 });
             }
+            let notifications = data.user.notifications.map(notification => {
+              if (notification.message) {
+                return {
+                  type: NotificationType.MESSAGE,
+                  message: notification.message
+                }
+              }
+              if (notification.voucher) {
+                return {
+                  type: NotificationType.VOUCHER,
+                  voucher: notification.voucher
+                }
+              }
+              if (notification.payment) {
+                return {
+                  type: NotificationType.PAYMENT,
+                  payment: notification.payment,
+                  ...this.convertPayment(notification.payment)
+                }
+              }
+            });
+            this.setState({ notifications });
           }
         })
         .catch(error => {
@@ -447,53 +578,64 @@ export default class App extends React.Component {
               <Text></Text>
             </View> */}
             <View style={{ flex: 1 }}>
-              <View style={styles.shadowSet}>
-                <TouchableOpacity
-                  onPress={() =>
-                    // this.props.navigation.navigate("TransactionDetails", {
-                    //   requestType: "Request"
-                    // })
-                    this.toggleModal()
+              {
+                this.state.notifications.map(notification => {
+                  if (notification.type === NotificationType.MESSAGE) {
+
+                  } else if (notification.type === NotificationType.VOUCHER) {
+
+                  } else if (notification.type === NotificationType.PAYMENT) {
+                    return (
+                      <View style={styles.shadowSet}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            // this.props.navigation.navigate("TransactionDetails", {
+                            //   requestType: "Request"
+                            // })
+                            this.toggleModal()
+                          }
+                          style={styles.listItemButton}
+                        >
+                          <View style={styles.show}>
+                            <Image
+                              source={require("../../../assets/wallet.png")}
+                              resizeMode="contain"
+                              style={{ width: 50, height: 50 }}
+                            />
+                            <View
+                              style={{
+                                flex: 1,
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                marginLeft: 30
+                              }}
+                            >
+                              <View
+                                style={{
+                                  width: width / 2,
+                                  flexDirection: "row",
+                                  marginBottom: 8
+                                }}
+                              >
+                                <Text style={notification.input[0].style}>{notification.input[0].value}</Text>
+                                <Text style={notification.input[1].style}>{notification.input[1].value}</Text>
+                              </View>
+                              <View
+                                style={{
+                                  width: width / 2,
+                                  flexDirection: "row"
+                                }}
+                              >
+                                <Text style={notification.input[2].style}>{notification.input[2].value}</Text>
+                                <Text style={notification.input[3].style}>{notification.input[3].value}</Text>
+                              </View>
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      </View>)
                   }
-                  style={styles.listItemButton}
-                >
-                  <View style={styles.show}>
-                    <Image
-                      source={require("../../../assets/wallet.png")}
-                      resizeMode="contain"
-                      style={{ width: 50, height: 50 }}
-                    />
-                    <View
-                      style={{
-                        flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        marginLeft: 30
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: width / 2,
-                          flexDirection: "row",
-                          marginBottom: 8
-                        }}
-                      >
-                        <Text style={styles.listItemTextBold}>Person</Text>
-                        <Text style={styles.listItemText}>requested</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: width / 2,
-                          flexDirection: "row"
-                        }}
-                      >
-                        <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
-                        <Text style={styles.listItemTextBold}>from</Text>
-                      </View>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
+                })
+              }
             </View>
           </View>
         ) : null}
