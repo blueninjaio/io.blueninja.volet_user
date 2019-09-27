@@ -150,7 +150,7 @@ export default class App extends React.Component {
     }
   };
 
-  convertPayment = (payment) => {
+  convertPayment = (user, payment) => {
     const isSent = payment.from._id === user._id;
     let page = payment.status === 'Complete' ? isSent ? Page.SENT : Page.RECEIVED : Page.REQUESTED;
     const input = [];
@@ -290,7 +290,7 @@ export default class App extends React.Component {
                 return {
                   type: NotificationType.PAYMENT,
                   payment: notification.payment,
-                  ...this.convertPayment(notification.payment)
+                  ...this.convertPayment(data.user, notification.payment)
                 }
               }
             });
