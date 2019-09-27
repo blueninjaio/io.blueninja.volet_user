@@ -55,6 +55,8 @@ import FromAgentReadyCollect from "../screens/FromAgentReadyCollect";
 import OpenWebView from "../screens/OpenWebView";
 import TAC from "../screens/Login/TAC";
 import TransactionHistory from "../screens/TransactionHistory";
+import TransactionDetails from "../screens/TransactionDetails";
+
 
 const tabbarVisible = navigation => {
   const { routes } = navigation.state;
@@ -783,7 +785,40 @@ const StackNavigator = createStackNavigator(
     TransactionHistory: {
       screen: TransactionHistory,
       navigationOptions: ({ navigation }) => ({
-        // headerLeft: null,
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding:15}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 13, height: 13,paddingLeft: 15, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
+        title: "Transaction History",
+        headerTintColor: "black",
+        headerTitleStyle: { fontWeight: "bold" },
+        headerStyle: {
+          // borderBottomWidth: 0,
+          // shadowColor: "transparent",
+          backgroundColor: "white"
+          // shadowOpacity: 0
+        }
+      })
+    },
+    TransactionDetails: {
+      screen: TransactionDetails,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding:15}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 13, height: 13,paddingLeft: 15, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         title: "Transaction History",
         headerTintColor: "black",
         headerTitleStyle: { fontWeight: "bold" },

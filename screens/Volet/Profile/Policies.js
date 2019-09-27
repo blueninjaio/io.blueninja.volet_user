@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Alert,
   SafeAreaView,
-  Dimensions
+  Dimensions,
+  AsyncStorage
 } from "react-native";
 import { dev, prod, url } from "../../../config";
 export const { width, height } = Dimensions.get("window");
@@ -26,21 +27,35 @@ export class Policies extends Component {
   |--------------------------------------------------
   */
 
-  componentDidMount = () => {
-    this.getPolicies();
-  };
+ getUserID = async () => {
+  try {
+    let token = await AsyncStorage.getItem("token");
+    if (token !== null) {
+      this.setState({ token });
+      this.getPolicies(token);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  getPolicies = () => {
+componentDidMount = () => {
+  this.getUserID();
+};
+
+  getPolicies = (token) => {
     fetch(`${url}/static/`, {
       method: "GET",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + token
+
       }
     })
       .then(res => res.json())
       .then(data => {
-        console.log("FAQ :", data);
+        console.log("Policies :", data);
         if (data.static.length >= 1) {
           this.setState({ policies: data.static });
         }
@@ -59,7 +74,7 @@ export class Policies extends Component {
       <SafeAreaView style={styles.container}>
         <View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            {/* {this.state.policies.map((x, i) => (
+            {this.state.policies.map((x, i) => (
               <View
                 key={i}
                 style={{
@@ -70,8 +85,8 @@ export class Policies extends Component {
               >
                 <Text>{x.policies}</Text>
               </View>
-            ))} */}
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
+            ))}
+            {/* <View style={{ justifyContent: "center", alignItems: "center" }}>
               <Text
                 style={{
                   padding: 10,
@@ -91,7 +106,7 @@ export class Policies extends Component {
                 office and told me that Barack Obama’s placeholder text is a
                 fraud.
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </SafeAreaView>

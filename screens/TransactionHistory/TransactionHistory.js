@@ -266,63 +266,62 @@ class TransactionHistory extends Component {
               </View>
             ) : (
               <View style={styles.shadowSet}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate("Setting", {
-                    userType: this.state.userType
-                  })
-                }
-                style={styles.listItemButton}
-              >
-                <View style={styles.show}>
-                  <LinearGradient
-                    colors={["#36D1DC", "#5B86E5"]}
-                    style={{
-                      borderRadius: 20,
-                      width: 40,
-                      height: 40,
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
-                    <Text style={{ color: "white", fontSize: 18 }}>
-                      {/* {x.f_name.substring(0, 1)} */}
-                      KK
-                      {/* {x.l_name.substring(0, 1)} */}
-                    </Text>
-                  </LinearGradient>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      marginLeft: 30
-                    }}
-                  >
-                    <View
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate("Setting", {
+                      userType: this.state.userType
+                    })
+                  }
+                  style={styles.listItemButton}
+                >
+                  <View style={styles.show}>
+                    <LinearGradient
+                      colors={["#36D1DC", "#5B86E5"]}
                       style={{
-                        width: width / 2,
-                        flexDirection: "row",
-                        marginBottom: 8
+                        borderRadius: 20,
+                        width: 40,
+                        height: 40,
+                        justifyContent: "center",
+                        alignItems: "center"
                       }}
                     >
-                      <Text style={styles.listItemTextBold}>Person</Text>
-                      <Text style={styles.listItemText}>requested</Text>
-
-                    </View>
+                      <Text style={{ color: "white", fontSize: 18 }}>
+                        {/* {x.f_name.substring(0, 1)} */}
+                        KK
+                        {/* {x.l_name.substring(0, 1)} */}
+                      </Text>
+                    </LinearGradient>
                     <View
                       style={{
-                        width: width / 2,
-                        flexDirection: "row"
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        marginLeft: 30
                       }}
                     >
-                      <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
-                      <Text style={styles.listItemTextBold}>from</Text>
+                      <View
+                        style={{
+                          width: width / 2,
+                          flexDirection: "row",
+                          marginBottom: 8
+                        }}
+                      >
+                        <Text style={styles.listItemTextBold}>Person</Text>
+                        <Text style={styles.listItemText}>requested</Text>
+                      </View>
+                      <View
+                        style={{
+                          width: width / 2,
+                          flexDirection: "row"
+                        }}
+                      >
+                        <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
+                        <Text style={styles.listItemTextBold}>from</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            </View>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
         </View>

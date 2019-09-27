@@ -14,8 +14,7 @@ import {
 import StarRating from "react-native-star-rating";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../../config/index";
-import { LinearGradient } from 'expo-linear-gradient'
-
+import { LinearGradient } from "expo-linear-gradient";
 
 export class FeedBack extends Component {
   constructor(props) {
@@ -27,7 +26,6 @@ export class FeedBack extends Component {
       feedback: "",
       email: "",
       contact: "",
-      _id: "",
       fullname: ""
     };
   }
@@ -40,16 +38,15 @@ export class FeedBack extends Component {
   componentDidMount = async () => {
     //get user id and set state to _id
     try {
-      let value = await AsyncStorage.getItem("ID");
+      let token = await AsyncStorage.getItem("token");
       let firstname = await AsyncStorage.getItem("firstname");
       let lastname = await AsyncStorage.getItem("lastname");
       let email = await AsyncStorage.getItem("email");
       let contact = await AsyncStorage.getItem("contact");
 
-      if (value !== null) {
+      if (toekn !== null) {
         let fullname = firstname + " " + lastname;
-
-        this.setState({ _id: value });
+        this.setState({ token });
         this.setState({ fullname });
         this.setState({ email });
         this.setState({ contact });
@@ -79,14 +76,14 @@ export class FeedBack extends Component {
   |--------------------------------------------------
   */
   addFeedback = () => {
-    fetch(`${url}/feedbacks`, {
+    fetch(`${url}/feedback`, {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + this.state.token
       },
       body: JSON.stringify({
-        user_id: this.state._id,
         rating: this.state.ratings,
         description: this.state.feedback
       })
@@ -94,17 +91,8 @@ export class FeedBack extends Component {
       .then(res => res.json())
       .then(data => {
         if (data.success === true) {
-          Alert.alert(
-            "Success",
-            `${data.message}`,
-            [
-              {
-                text: "OK",
-                onPress: () => this.props.navigation.navigate("Profile")
-              }
-            ],
-            { cancelable: false }
-          );
+          alert("Success");
+          this.props.navigation.navigate("Profile");
         } else {
           Alert.alert(
             "Failed",

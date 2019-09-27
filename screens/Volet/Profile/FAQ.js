@@ -1,32 +1,55 @@
 import React, { Component } from "react";
-import { Text, View, ScrollView, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  StyleSheet,
+  Alert,
+  SafeAreaView,
+  Dimensions,
+  AsyncStorage
+} from "react-native";
 import { dev, prod, url } from "../../../config";
 
 export class FAQ extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-             faq: []
-        }
-    }
-    
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      faq: [],
+      token
+    };
+  }
+
   /**
   |--------------------------------------------------
   | Implementation of Get Business Categories
   |--------------------------------------------------
   */
 
-  componentDidMount = () => {
-    this.getFAQ();
+  getUserID = async () => {
+    try {
+      let token = await AsyncStorage.getItem("token");
+      if (token !== null) {
+        this.setState({ token });
+        this.getFAQ(token);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  getFAQ = () => {
+  componentDidMount = () => {
+    this.getUserID();
+  };
+
+  getFAQ = token => {
     fetch(`${url}/static/`, {
       method: "GET",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        Authorization: "Bearer " + token
       }
     })
       .then(res => res.json())
@@ -47,16 +70,21 @@ export class FAQ extends Component {
   };
   render() {
     return (
-      <View style={styles.container}>   
-            <View style={{justifyContent:"center", alignItems:"center"}}>
-                {
-                    this.state.faq.map((x, i) => (
-                        <View key={i} style={{alignItems:"flex-start", justifyContent:"center", paddingBottom: 20}}>
-                            <Text>{x.faq}</Text>
-                        </View>
-                    ))
-                }
+      <View style={styles.container}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          {this.state.faq.map((x, i) => (
+            <View
+              key={i}
+              style={{
+                alignItems: "flex-start",
+                justifyContent: "center",
+                paddingBottom: 20
+              }}
+            >
+              <Text>{x.faq}</Text>
             </View>
+          ))}
+        </View>
       </View>
     );
   }
@@ -64,13 +92,12 @@ export class FAQ extends Component {
 
 export default FAQ;
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff"
-    },
-    text: {
-      color: "#979797",
-      fontSize: 20
-    }
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  text: {
+    color: "#979797",
+    fontSize: 20
+  }
+});

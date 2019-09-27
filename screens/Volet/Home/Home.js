@@ -12,7 +12,8 @@ import {
   Alert,
   AsyncStorage,
   LayoutAnimation,
-  SafeAreaView
+  SafeAreaView,
+  TouchableHighlight
 } from "react-native";
 import {
   Header,
@@ -31,6 +32,8 @@ import * as Location from "expo-location";
 import SwipeUpDown from "react-native-swipe-up-down";
 import { dev, prod, url } from "../../../config/index";
 import { NavigationEvents } from "react-navigation";
+import Modal from "react-native-modal";
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -45,7 +48,8 @@ export default class App extends React.Component {
       lastScannedUrl: null,
       savings: 0,
       token: "",
-      userImage: ""
+      userImage: "",
+      isModalVisible: false
     };
   }
   /**
@@ -57,7 +61,6 @@ export default class App extends React.Component {
     this.getUserID();
     this.getPermissionAsync();
   };
-
 
   _getLocationAsync = async token => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -77,7 +80,8 @@ export default class App extends React.Component {
     //   location.coords.longitude
     // );
 
-    let newLocation = location.coords.latitude + "," + location.coords.longitude
+    let newLocation =
+      location.coords.latitude + "," + location.coords.longitude;
 
     console.log("Location", newLocation);
 
@@ -177,6 +181,10 @@ export default class App extends React.Component {
 
   isToggleOpen = () => {
     this.setState({ isOpen: !this.state.isOpen });
+  };
+  toggleModal = () => {
+    this.setState({isOpen: false})
+    this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
   /**
@@ -409,7 +417,7 @@ export default class App extends React.Component {
             <Header style={styles.headerNotification}>
               <Left />
               <Body style={styles.headerOneBody}>
-                <Text style={{ color: "#5B86E5", fontSize: 17 }}>
+                <Text style={{ color: "#5B86E5", fontSize: 20 }}>
                   Notifications
                 </Text>
               </Body>
@@ -424,7 +432,7 @@ export default class App extends React.Component {
               </Right>
             </Header>
 
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 justifyContent: "center",
@@ -437,9 +445,155 @@ export default class App extends React.Component {
                 style={{ width: 20, height: 20 }}
               />
               <Text></Text>
+            </View> */}
+            <View style={{ flex: 1 }}>
+              <View style={styles.shadowSet}>
+                <TouchableOpacity
+                  onPress={() =>
+                    // this.props.navigation.navigate("TransactionDetails", {
+                    //   requestType: "Request"
+                    // })
+                    this.toggleModal()
+                  }
+                  style={styles.listItemButton}
+                >
+                  <View style={styles.show}>
+                    <Image
+                      source={require("../../../assets/wallet.png")}
+                      resizeMode="contain"
+                      style={{ width: 50, height: 50 }}
+                    />
+                    <View
+                      style={{
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        marginLeft: 30
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: width / 2,
+                          flexDirection: "row",
+                          marginBottom: 8
+                        }}
+                      >
+                        <Text style={styles.listItemTextBold}>Person</Text>
+                        <Text style={styles.listItemText}>requested</Text>
+                      </View>
+                      <View
+                        style={{
+                          width: width / 2,
+                          flexDirection: "row"
+                        }}
+                      >
+                        <Text style={styles.listItemTextGreen}>MYR 50.00</Text>
+                        <Text style={styles.listItemTextBold}>from</Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         ) : null}
+
+        <Modal
+          transparent={true}
+          style={styles.modalContent}
+          animationIn="slideInDown"
+          animationOut="slideOutUp"
+          isVisible={this.state.isModalVisible}
+          backdropColor="black"
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Left />
+            <Body>
+              <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
+            </Body>
+<Left/>
+          </View>
+          <LinearGradient
+            colors={["#36D1DC", "#5B86E5"]}
+            style={{
+              borderRadius: 30,
+              width: 70,
+              height: 70,
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 18 }}>
+              {/* {this.props.navigation.state.params.firstName.substring(0, 1)} */}
+              {/* {this.props.navigation.state.params.lastName.substring(0, 1)} */}
+              KK
+            </Text>
+          </LinearGradient>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 50
+            }}
+          >
+            <Text
+              style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+            >
+              Person
+            </Text>
+            <Text style={{ color: "#979797" }}>1298312</Text>
+            <Text
+              style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+            >
+              Is requesting to withdraw
+            </Text>
+            <Text style={{ color: "#5B86E5" }}>MYR 50</Text>
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+              bottom: 50
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                this.onActionAddVoletCash(this.state.price);
+              }}
+              style={{
+                width: width / 1.2,
+                marginBottom: 10
+              }}
+            >
+              <LinearGradient
+                colors={["#36D1DC", "#5B86E5"]}
+                style={styles.buttonStyle}
+              >
+                <View style={styles.buttonStyle}>
+                  <Text style={styles.loginText}>Accept</Text>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this.onActionAddVoletCash(this.state.price);
+              }}
+              style={{
+                width: width / 1.2
+              }}
+            >
+              <LinearGradient
+                colors={["#ED213A", "#93291E"]}
+                style={styles.buttonStyle}
+              >
+                <View style={styles.buttonStyle}>
+                  <Text style={styles.loginText}>Reject</Text>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -470,7 +624,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomWidth: 0,
     shadowColor: "transparent",
-    shadowOpacity: 0
+    shadowOpacity: 0,
+    marginBottom: 20
   },
   headerOneBody: {
     alignItems: "center",
@@ -495,13 +650,6 @@ const styles = StyleSheet.create({
   },
   savingsCard: {
     alignItems: "center"
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.3,
-    // shadowRadius: 8,
-    // elevation: 1,
-    // borderTopWidth: 0,
-    // borderLeftWidth: 0
   },
   payments: {
     flexDirection: "row",
@@ -512,7 +660,6 @@ const styles = StyleSheet.create({
   qrcode: {
     justifyContent: "center",
     alignItems: "flex-end"
-    // marginBottom: -5
   },
   savingsBar: {
     height: 16,
@@ -524,16 +671,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "white",
     padding: 10,
-    // borderColor:"white",
-    // borderRightWidth: 1,
-    // borderBottomWidth: 1,
-    // borderTopWidth: 0,
-    // borderLeftWidth: 0,
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.3,
-    // shadowRadius: 8,
-    // elevation: 1,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "white",
@@ -543,5 +680,86 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 1
-  }
+  },
+  listItemButtonSwitch: {
+    padding: 10,
+    // borderRadius: 10,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 5,
+    marginRight: 5
+  },
+  listItemButton: {
+    padding: 10,
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 5,
+    marginRight: 5
+  },
+  listItemText: {
+    fontSize: 15,
+    color: "#979797",
+    marginLeft: 5
+  },
+  listItemTextGreen: {
+    fontSize: 15,
+    color: "green",
+    marginLeft: 5
+  },
+  listItemTextBold: {
+    fontSize: 15,
+    color: "black",
+    fontWeight: "bold",
+    marginLeft: 5
+  },
+
+  shadowSet: {
+    marginLeft: 5,
+    marginRight: 5,
+    // borderRadius: 10,
+    borderColor: "#dbdbdb",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: 3, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 1,
+    marginBottom: 15
+  },
+  show: {
+    justifyContent: "flex-start",
+    width: width / 1.3,
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  buttonStyle: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    alignItems: "center",
+    width: width / 1.3,
+    borderRadius: 10
+  },
+  loginText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 16
+  },
+  modalContent: {
+    // backgroundColor: "pink",
+    padding: 10,
+    // // justifyContent: "center",
+    // alignItems: "center",
+    // // borderRadius: 8,
+    // borderColor: "rgba(0, 0, 0, 0.1)",
+    marginTop: height / 5,
+    marginBottom: height / 5,
+    // marginRight: 20,
+    // marginLeft: 20
+    backgroundColor: "white",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
 });
