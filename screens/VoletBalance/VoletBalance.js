@@ -252,7 +252,7 @@ export class VoletBalance extends Component {
                 style={{
                   padding: 10,
                   borderBottomWidth: 1.5,
-                  borderColor: "blue"
+                  borderColor: "#5B86E5"
                 }}
                 onPress={() => this.Onclick("Top Up")}
               >
@@ -272,7 +272,7 @@ export class VoletBalance extends Component {
                 style={{
                   padding: 10,
                   borderBottomWidth: 1.5,
-                  borderColor: "blue"
+                  borderColor: "#5B86E5"
                 }}
                 onPress={() => this.Onclick("Widthdraw")}
               >

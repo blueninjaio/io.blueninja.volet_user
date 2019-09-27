@@ -195,6 +195,16 @@ const StackNavigator = createStackNavigator(
     ResetPassword: {
       screen: ResetPassword,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Reset Password",
         headerStyle: {
@@ -205,6 +215,16 @@ const StackNavigator = createStackNavigator(
     OldPassword: {
       screen: OldPassword,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Reset Password",
         headerStyle: {
@@ -215,6 +235,16 @@ const StackNavigator = createStackNavigator(
     FPTac: {
       screen: FPTac,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Reset Password",
         headerStyle: {
@@ -225,6 +255,16 @@ const StackNavigator = createStackNavigator(
     ConfirmNewPassword: {
       screen: ConfirmNewPassword,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Reset Password",
         headerStyle: {
@@ -235,6 +275,16 @@ const StackNavigator = createStackNavigator(
     ResetPin: {
       screen: ResetPin,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Reset Pin",
         headerStyle: {
@@ -245,6 +295,7 @@ const StackNavigator = createStackNavigator(
     SendPayment: {
       screen: SendPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft:null,
         mode: "card",
         title: "Send Payment",
         headerStyle: {
@@ -260,6 +311,16 @@ const StackNavigator = createStackNavigator(
     EvenlyRPayment: {
       screen: EvenlyRPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -270,16 +331,32 @@ const StackNavigator = createStackNavigator(
     RequestPayment: {
       screen: RequestPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: null,
         mode: "card",
         title: "Request Payment",
         headerStyle: {
           backgroundColor: "white"
-        }
+        },
+        headerRight: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)}>
+            <Text style={styles.cancelBut}>Cancel</Text>
+          </TouchableOpacity>
+        )
       })
     },
     SplitRPayment: {
       screen: SplitRPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -291,6 +368,16 @@ const StackNavigator = createStackNavigator(
     SplitRSummary: {
       screen: SplitRSummary,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -301,6 +388,16 @@ const StackNavigator = createStackNavigator(
     SplitESummary: {
       screen: SplitESummary,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -311,6 +408,7 @@ const StackNavigator = createStackNavigator(
     SPaymentSuccess: {
       screen: SPaymentSuccess,
       navigationOptions: ({ navigation }) => ({
+        header:null,
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -321,6 +419,16 @@ const StackNavigator = createStackNavigator(
     SeparatelyRPayment: {
       screen: SeparatelyRPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -331,6 +439,16 @@ const StackNavigator = createStackNavigator(
     ReasonRPayment: {
       screen: ReasonRPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -341,6 +459,16 @@ const StackNavigator = createStackNavigator(
     ReasonEPayment: {
       screen: ReasonEPayment,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Request Payment",
         headerStyle: {
@@ -351,6 +479,16 @@ const StackNavigator = createStackNavigator(
     PaymentAmount: {
       screen: PaymentAmount,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Send Payment",
         headerStyle: {
@@ -361,6 +499,16 @@ const StackNavigator = createStackNavigator(
     VoletBalance: {
       screen: VoletBalance,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -371,6 +519,16 @@ const StackNavigator = createStackNavigator(
     WithdrawAgent: {
       screen: WithdrawAgent,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -381,6 +539,16 @@ const StackNavigator = createStackNavigator(
     TransferToBAcc: {
       screen: TransferToBAcc,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -391,6 +559,16 @@ const StackNavigator = createStackNavigator(
     TransferToBAccWithdraw: {
       screen: TransferToBAccWithdraw,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -401,6 +579,16 @@ const StackNavigator = createStackNavigator(
     TransferToBAccWithdrawReceipt: {
       screen: TransferToBAccWithdrawReceipt,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -411,6 +599,16 @@ const StackNavigator = createStackNavigator(
     TransferToBAccSuccess: {
       screen: TransferToBAccSuccess,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -421,6 +619,16 @@ const StackNavigator = createStackNavigator(
     FromAgentCollection: {
       screen: FromAgentCollection,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -431,6 +639,16 @@ const StackNavigator = createStackNavigator(
     FromAgentWithdrawal: {
       screen: FromAgentWithdrawal,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -441,6 +659,16 @@ const StackNavigator = createStackNavigator(
     FromAgentReadyCollect: {
       screen: FromAgentReadyCollect,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Volet Balance",
         headerStyle: {
@@ -451,6 +679,16 @@ const StackNavigator = createStackNavigator(
     TransferReason: {
       screen: TransferReason,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Send Payment",
         headerStyle: {
@@ -461,6 +699,16 @@ const StackNavigator = createStackNavigator(
     PaymentMethod: {
       screen: PaymentMethod,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding: 20}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 16, height: 16, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Send Payment",
         headerStyle: {
@@ -471,6 +719,16 @@ const StackNavigator = createStackNavigator(
     TransferSummary: {
       screen: TransferSummary,
       navigationOptions: ({ navigation }) => ({
+        headerLeft: (
+          <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ padding:15}}>
+            <Image
+              source={require("../assets/angle-left.png")}
+              resizeMode="contain"
+              style={{ width: 13, height: 13,paddingLeft: 15, }}
+            />
+            <Text style={styles.cancelBut}></Text>
+          </TouchableOpacity>
+        ),
         mode: "card",
         title: "Send Payment",
         headerStyle: {
@@ -494,6 +752,7 @@ const StackNavigator = createStackNavigator(
         }
       })
     },
+
     OpenWebView: {
       screen: OpenWebView,
       navigationOptions: ({ navigation }) => ({

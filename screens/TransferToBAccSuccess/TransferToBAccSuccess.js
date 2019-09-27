@@ -16,13 +16,14 @@ import { dev, prod, url } from "../../config";
 
 export default class TransferToBAccSuccess extends Component {
   constructor(props) {
-    super(props)
-  
+    super(props);
+
     this.state = {
-       balance:""
-    }
+      balance: "",
+      requestStatus: this.props.navigation.state.params.requestStatus
+    };
   }
-  
+
   componentDidMount = () => {
     this.getUserID();
   };
@@ -89,20 +90,32 @@ export default class TransferToBAccSuccess extends Component {
             paddingTop: 80
           }}
         >
+        {this.state.requestStatus === "Success" ? 
           <Image
             source={require("../../assets/check.png")}
             style={{ width: 50, height: 50 }}
           />
+          :
+          <Image
+            source={require("../../assets/close-circle-red.png")}
+            style={{ width: 50, height: 50 }}
+          />
+        }
           <Text style={{ color: "rgb(148,148,148)", marginTop: 15 }}>
             Balance
           </Text>
           <Text style={{ color: "rgb(148,148,148)", marginTop: 8 }}>
-            MYR 20.00
+            MYR {this.state.balance}
           </Text>
-          <Text style={{ marginTop: 25, fontWeight: "bold" }}>
-            {}
-            Transaction Successful!
-          </Text>
+          {this.state.requestStatus === "Success" ? (
+            <Text style={{ marginTop: 25, fontWeight: "bold" }}>
+              Transaction Successful!
+            </Text>
+          ) : (
+            <Text style={{ marginTop: 25, fontWeight: "bold" }}>
+              Transaction is Cancelled!
+            </Text>
+          )}
         </View>
         <View
           style={{
