@@ -38,11 +38,11 @@ export class ForgetPassword extends Component {
       method: "POST",
       mode: "cors",
       headers: {
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
+        'x-tac-token': this.props.navigation.state.params.token
       },
       body: JSON.stringify({
-        email: this.props.navigation.state.params.email,
-        token: this.props.navigation.state.params.token
+        email: this.props.navigation.state.params.email
       })
     })
       .then(res => res.json())
