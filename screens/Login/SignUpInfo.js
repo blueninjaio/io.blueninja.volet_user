@@ -57,6 +57,8 @@ export class SignUpInfo extends Component {
       alert("Invalid Email");
     } else if (this.state.password !== this.state.CPassword) {
       alert("Password is not matching");
+    } else if (this.state.password.length < 8) {
+      alert("Password length needs to be 8 characters or more.");
     } else {
       fetch(`${url}/users`, {
         method: "POST",
