@@ -515,7 +515,7 @@ export class VoletBalance extends Component {
               >
                 <TouchableOpacity
                   onPress={() => {
-                    this.onActionAddVoletCash(this.state.price);
+                    this.onActionAddVoletCash(parseInt(this.state.price) * 10);
                   }}
                   style={{
                     width: width / 1.2

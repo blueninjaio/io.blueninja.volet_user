@@ -29,7 +29,7 @@ export class ResetPassword extends Component {
         "Content-Type": "application/json; charset=utf-8"
       },
       body: JSON.stringify({
-        contact: this.state.contact,
+        contact: "+60"+this.state.contact,
       })
     })
       .then(res => res.json())
