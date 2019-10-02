@@ -31,6 +31,7 @@ function TransactionHistory(props) {
       let user = data.user;
       let payments = data.payments.map(payment => {
         const isSent = payment.from._id === user._id;
+        let recipient = isSent ? payment.to : payment.from;
         let page = payment.status === 'Complete' ? isSent ? Page.SENT : Page.RECEIVED : Page.REQUESTED;
         const input = [];
         if (page === Page.SENT) {
@@ -48,7 +49,7 @@ function TransactionHistory(props) {
           });
           input.push({
             style: styles.listItemTextBold,
-            value: payment.to.f_name + " " + payment.to.l_name
+            value: recipient.f_name + " " + recipient.l_name
           });
         } else if (page === Page.RECEIVED) {
           input.push({
@@ -65,7 +66,7 @@ function TransactionHistory(props) {
           });
           input.push({
             style: styles.listItemTextBold,
-            value: payment.from.f_name + " " + payment.from.l_name
+            value: recipient.f_name + " " + recipient.l_name
           });
         } else if (page === Page.REQUESTED) {
           if (payment.status === 'Requested') {
@@ -74,7 +75,7 @@ function TransactionHistory(props) {
             }
             input.push({
               style: styles.listItemTextBold,
-              value: payment.from.f_name + " " + payment.from.l_name
+              value: recipient.f_name + " " + recipient.l_name
             });
             input.push({
               style: styles.listItemText,
@@ -104,12 +105,12 @@ function TransactionHistory(props) {
               });
               input.push({
                 style: styles.listItemTextBold,
-                value: payment.to.f_name + " " + payment.to.l_name
+                value: recipient.f_name + " " + recipient.l_name
               });
             } else {
               input.push({
                 style: styles.listItemTextBold,
-                value: payment.from.f_name + " " + payment.from.l_name
+                value: recipient.f_name + " " + recipient.l_name
               });
               input.push({
                 style: styles.listItemText,
@@ -129,10 +130,15 @@ function TransactionHistory(props) {
         return {
           page,
           input,
-          acronym: user.f_name.charAt(0) + user.l_name.charAt(0)
+          acronym: user.f_name.charAt(0) + user.l_name.charAt(0),
+          isSent,
+          firstName: recipient.f_name,
+          lastName: recipient.l_name,
+          transferContact: recipient.contact,
+          requestType: page === Page.SENT ? "Sent" : page === Page.RECEIVED ? "Received" : "Request",
+          ...payment
         }
-      })
-      console.log(payments)
+      });
       setPayments(payments);
     })
   }, []);
@@ -192,12 +198,19 @@ function TransactionHistory(props) {
                       <>
                       <View style={styles.shadowSet}>
                         <TouchableOpacity
-                          // onPress={() =>
-                            
-                          //   this.props.navigation.navigate("Setting", {
-                          //     userType: userType
-                          //   })
-                          // }
+                          onPress={() =>
+                            props.navigation.navigate("TransactionDetails", {
+                              firstName: payment.firstName,
+                              lastName: payment.lastName,
+                              transferContact: payment.transferContact,
+                              requestType: payment.requestType,
+                              amount: payment.amount,
+                              isSent: payment.isSent,
+                              date: new Date(payment.date_created),
+                              reason: payment.reason,
+                              description: payment.description
+                            })
+                          }
                           style={styles.listItemButton}
                         >
                           <View style={styles.show}>
