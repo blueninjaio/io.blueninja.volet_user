@@ -110,9 +110,9 @@ export default class App extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log("Location :", data);
+          //console.log("Location :", data);
           if (data.success) {
-            console.log("Location success:", data);
+            //console.log("Location success:", data);
           } else {
             alert(data.message);
           }
@@ -266,7 +266,7 @@ export default class App extends React.Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log("Users :", data);
+          //console.log("Users :", data);
           if (data.success === true) {
             this.setState({ balance: data.user.credits });
             this.setState({ savings: data.user.monthly_savings });
@@ -289,6 +289,7 @@ export default class App extends React.Component {
               if (notification.payment) {
                 return {
                   type: NotificationType.PAYMENT,
+                  user: data.user._id,
                   payment: notification.payment,
                   ...this.convertPayment(data.user, notification.payment)
                 }
@@ -588,12 +589,27 @@ export default class App extends React.Component {
                     return (
                       <View style={styles.shadowSet}>
                         <TouchableOpacity
-                          onPress={() =>
-                            // this.props.navigation.navigate("TransactionDetails", {
-                            //   requestType: "Request"
-                            // })
-                            this.toggleModal()
-                          }
+                          onPress={() => {
+                            let payment = notification.payment;
+                            if (payment.status === 'Requested') {
+                              this.toggleModal();
+                            } else {
+                              const isSent = payment.from._id === notification.user;
+                              let recipient = isSent ? payment.to : payment.from;
+                              let requestType = payment.status === 'Complete' ? isSent ? "Sent" : "Received" : "Request";
+                              this.props.navigation.navigate("TransactionDetails", {
+                                firstName: recipient.f_name,
+                                lastName: recipient.l_name,
+                                transferContact: recipient.contact,
+                                requestType,
+                                amount: payment.amount,
+                                isSent: isSent,
+                                date: new Date(payment.date_created),
+                                reason: payment.reason,
+                                description: payment.description
+                              })
+                            }
+                          }}
                           style={styles.listItemButton}
                         >
                           <View style={styles.show}>
@@ -701,7 +717,7 @@ export default class App extends React.Component {
           >
             <TouchableOpacity
               onPress={() => {
-                this.onActionAddVoletCash(this.state.price);
+                this.toggleModal();
               }}
               style={{
                 width: width / 1.2,
@@ -719,7 +735,7 @@ export default class App extends React.Component {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                this.onActionAddVoletCash(this.state.price);
+                this.toggleModal();
               }}
               style={{
                 width: width / 1.2
