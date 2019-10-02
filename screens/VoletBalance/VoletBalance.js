@@ -395,7 +395,7 @@ export class VoletBalance extends Component {
                 </View>
               </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={styles.savingsCardTwo}
                 onPress={() => this.props.navigation.navigate("TransferToBAcc")}
               >
@@ -428,7 +428,7 @@ export class VoletBalance extends Component {
                     Transfer to Bank Account
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           )}
         </View>
@@ -458,7 +458,12 @@ export class VoletBalance extends Component {
                   this.toggleCredit();
                 }}
               >
-                <Icon style={{ color: "#5B86E5" }} name="close" />
+                {/* <Icon style={{ color: "#5B86E5" }} name="close" /> */}
+                <Image
+                      source={require("../../assets/close-circle.png")}
+                      resizeMode="contain"
+                      style={{ width: 20, height: 20 }}
+                    />
               </TouchableHighlight>
             </Right>
           </View>
@@ -653,7 +658,11 @@ export class VoletBalance extends Component {
                   this.toggleModal();
                 }}
               >
-                <Icon style={{ color: "#5B86E5" }} name="close" />
+                <Image
+                  source={require("../../assets/close-circle.png")}
+                  resizeMode="contain"
+                  style={{ width: 20, height: 20 }}
+                />
               </TouchableHighlight>
             </Right>
           </View>

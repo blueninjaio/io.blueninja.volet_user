@@ -193,7 +193,6 @@ export class Profile extends React.Component {
                   uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
                 }}
                 style={{
-                  backgroundColor: "grey",
                   borderColor: "white",
                   width: 120,
                   height: 120,

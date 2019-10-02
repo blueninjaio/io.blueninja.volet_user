@@ -153,7 +153,7 @@ export default class App extends React.Component {
   convertPayment = (user, payment) => {
     const isSent = payment.from._id === user._id;
     const input = [];
-    if (payment.status === 'Complete') {
+    if (payment.status === "Complete") {
       if (isSent) {
         input.push({
           style: styles.listItemText,
@@ -190,9 +190,9 @@ export default class App extends React.Component {
         });
       }
     } else {
-      if (payment.status === 'Requested') {
+      if (payment.status === "Requested") {
         if (isSent) {
-          return undefined;//should never happen
+          return undefined; //should never happen
         }
         input.push({
           style: styles.listItemTextBold,
@@ -210,7 +210,7 @@ export default class App extends React.Component {
           style: styles.listItemTextGreen,
           value: "MYR " + payment.amount
         });
-      } else if (payment.status === 'Pending') {
+      } else if (payment.status === "Pending") {
         if (isSent) {
           input.push({
             style: styles.listItemText,
@@ -251,7 +251,7 @@ export default class App extends React.Component {
     return {
       input,
       acronym: user.f_name.charAt(0) + user.l_name.charAt(0)
-    }
+    };
   };
 
   getVolet = async token => {
@@ -278,20 +278,20 @@ export default class App extends React.Component {
                 return {
                   type: NotificationType.MESSAGE,
                   message: notification.message
-                }
+                };
               }
               if (notification.voucher) {
                 return {
                   type: NotificationType.VOUCHER,
                   voucher: notification.voucher
-                }
+                };
               }
               if (notification.payment) {
                 return {
                   type: NotificationType.PAYMENT,
                   payment: notification.payment,
                   ...this.convertPayment(data.user, notification.payment)
-                }
+                };
               }
             });
             this.setState({ notifications });
@@ -314,7 +314,7 @@ export default class App extends React.Component {
     this.setState({ isOpen: !this.state.isOpen });
   };
   toggleModal = () => {
-    this.setState({isOpen: false})
+    this.setState({ isOpen: false });
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
@@ -367,13 +367,13 @@ export default class App extends React.Component {
               colors={["#36D1DC", "#5B86E5"]}
               style={styles.header}
             >
-              <Header style={styles.headerOne}>
-                <Left />
+              <View style={styles.headerOne}>
+                <Left style={styles.headerOneBody} />
                 <Body style={styles.headerOneBody}>
                   <Image
                     source={require("../../../assets/VoletLogo.png")}
                     resizeMode="contain"
-                    style={{ width: 90, height: 90 }}
+                    style={{ width: 90, height: 65, }}
                   />
                 </Body>
                 <Right style={styles.headerOneRight}>
@@ -385,7 +385,7 @@ export default class App extends React.Component {
                     />
                   </TouchableOpacity>
                 </Right>
-              </Header>
+              </View>
               <View style={styles.welcomeUser}>
                 <Text
                   style={{
@@ -414,7 +414,8 @@ export default class App extends React.Component {
                 <Thumbnail
                   large
                   source={{
-                    uri: `${this.state.userImage}`
+                    // uri: `${this.state.userImage}`
+                    uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
                   }}
                   style={{ borderColor: "white" }}
                 />
@@ -476,7 +477,7 @@ export default class App extends React.Component {
                 <Image
                   source={require("../../../assets/sendP.png")}
                   resizeMode="contain"
-                  style={{ width: 100, height: 100 }}
+                  style={{ width: width*0.212, height: width*0.212 }}
                 />
               </TouchableOpacity>
 
@@ -490,7 +491,7 @@ export default class App extends React.Component {
                 <Image
                   source={require("../../../assets/requestP.png")}
                   resizeMode="contain"
-                  style={{ width: 100, height: 100 }}
+                  style={{ width: width*0.212, height: width*0.212 }}
                 />
               </TouchableOpacity>
 
@@ -500,7 +501,7 @@ export default class App extends React.Component {
                 <Image
                   source={require("../../../assets/topUP.png")}
                   resizeMode="contain"
-                  style={{ width: 100, height: 100 }}
+                  style={{width: width*0.212, height: width*0.212}}
                 />
               </TouchableOpacity>
             </View>
@@ -545,10 +546,10 @@ export default class App extends React.Component {
               backgroundColor: "white"
             }}
           >
-            <Header style={styles.headerNotification}>
-              <Left />
+            <View style={{flexDirection:"row", paddingTop: 10}}>
+              <Left style={styles.headerOneBody}/>
               <Body style={styles.headerOneBody}>
-                <Text style={{ color: "#5B86E5", fontSize: 20 }}>
+                <Text style={{ color: "#5B86E5", fontSize: width*0.05 }}>
                   Notifications
                 </Text>
               </Body>
@@ -561,7 +562,7 @@ export default class App extends React.Component {
                   />
                 </TouchableOpacity>
               </Right>
-            </Header>
+            </View>
 
             {/* <View
               style={{
@@ -578,64 +579,69 @@ export default class App extends React.Component {
               <Text></Text>
             </View> */}
             <View style={{ flex: 1 }}>
-              {
-                this.state.notifications.map(notification => {
-                  if (notification.type === NotificationType.MESSAGE) {
-
-                  } else if (notification.type === NotificationType.VOUCHER) {
-
-                  } else if (notification.type === NotificationType.PAYMENT) {
-                    return (
-                      <View style={styles.shadowSet}>
-                        <TouchableOpacity
-                          onPress={() =>
-                            // this.props.navigation.navigate("TransactionDetails", {
-                            //   requestType: "Request"
-                            // })
-                            this.toggleModal()
-                          }
-                          style={styles.listItemButton}
-                        >
-                          <View style={styles.show}>
-                            <Image
-                              source={require("../../../assets/wallet.png")}
-                              resizeMode="contain"
-                              style={{ width: 50, height: 50 }}
-                            />
+              {this.state.notifications.map((notification, i) => {
+                if (notification.type === NotificationType.MESSAGE) {
+                } else if (notification.type === NotificationType.VOUCHER) {
+                } else if (notification.type === NotificationType.PAYMENT) {
+                  return (
+                    <View style={styles.shadowSet} key={i}>
+                      <TouchableOpacity
+                        // onPress={() =>
+                        //   this.props.navigation.navigate("TransactionDetails", {
+                        //     requestType: "Request"
+                        //   })
+                        //   // this.toggleModal()
+                        // }
+                        style={styles.listItemButton}
+                      >
+                        <View style={styles.show}>
+                          <Image
+                            source={require("../../../assets/wallet.png")}
+                            resizeMode="contain"
+                            style={{ width: 50, height: 50 }}
+                          />
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              marginLeft: 30
+                            }}
+                          >
                             <View
                               style={{
-                                flex: 1,
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                marginLeft: 30
+                                width: width / 2,
+                                flexDirection: "row",
+                                marginBottom: 8
                               }}
                             >
-                              <View
-                                style={{
-                                  width: width / 2,
-                                  flexDirection: "row",
-                                  marginBottom: 8
-                                }}
-                              >
-                                <Text style={notification.input[0].style}>{notification.input[0].value}</Text>
-                                <Text style={notification.input[1].style}>{notification.input[1].value}</Text>
-                              </View>
-                              <View
-                                style={{
-                                  width: width / 2,
-                                  flexDirection: "row"
-                                }}
-                              >
-                                <Text style={notification.input[2].style}>{notification.input[2].value}</Text>
-                                <Text style={notification.input[3].style}>{notification.input[3].value}</Text>
-                              </View>
+                              <Text style={notification.input[0].style}>
+                                {notification.input[0].value}
+                              </Text>
+                              <Text style={notification.input[1].style}>
+                                {notification.input[1].value}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                width: width / 2,
+                                flexDirection: "row"
+                              }}
+                            >
+                              <Text style={notification.input[2].style}>
+                                {notification.input[2].value}
+                              </Text>
+                              <Text style={notification.input[3].style}>
+                                {notification.input[3].value}
+                              </Text>
                             </View>
                           </View>
-                        </TouchableOpacity>
-                      </View>)
-                  }
-                })
-              }
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                }
+              })}
             </View>
           </View>
         ) : null}
@@ -653,7 +659,7 @@ export default class App extends React.Component {
             <Body>
               <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
             </Body>
-<Left/>
+            <Left />
           </View>
           <LinearGradient
             colors={["#36D1DC", "#5B86E5"]}
@@ -747,51 +753,61 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   header: {
-    height: height * 0.26
+    height: 180,
+    // paddingTop: 15
+    // paddingTop: 20
+
   },
   headerOne: {
-    backgroundColor: "transparent",
-    borderColor: null,
-    justifyContent: "center",
-    alignItems: "center",
-    borderBottomWidth: 0,
-    shadowColor: "transparent",
-    shadowOpacity: 0
+    // backgroundColor: "transparent",
+    // borderColor: null,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // borderBottomWidth: 0,
+    // shadowColor: "transparent",
+    // shadowOpacity: 0
+    flexDirection: "row",
+    //     // borderBottomWidth: 0,
+    // // shadowColor: "transparent",
+    // backgroundColor: "white"
+    // // shadowOpacity: 0
   },
 
   headerNotification: {
-    backgroundColor: "white",
-    borderColor: null,
-    justifyContent: "center",
-    alignItems: "center",
-    borderBottomWidth: 0,
-    shadowColor: "transparent",
-    shadowOpacity: 0,
-    marginBottom: 20
+    // backgroundColor: "white",
+    // borderColor: null,
+    // justifyContent: "center",
+    // alignItems: "center",
+    // borderBottomWidth: 0,
+    // shadowColor: "transparent",
+    // shadowOpacity: 0,
+    // marginBottom: 20
   },
   headerOneBody: {
     alignItems: "center",
-    flex: 1
+    // flex: 1
   },
   headerOneRight: {
-    alignItems: "center",
-    flex: 1
+    // alignItems: "center",
+    marginRight: 10,
+    // flex: 1
   },
   welcomeUser: {
-    alignItems: "center"
+    alignItems: "center",
+    // paddingTop: 20
     // flexDirection:"row"
   },
   userVolet: {
-    marginTop: -40,
+    marginTop: -height * 0.0432,
     justifyContent: "center",
     alignItems: "center"
   },
   voletBalance: {
-    padding: 15,
+    padding: 5,
     alignItems: "center"
   },
   savingsCard: {
-    alignItems: "center"
+    alignItems: "center",
   },
   payments: {
     flexDirection: "row",
@@ -903,5 +919,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     borderColor: "rgba(0, 0, 0, 0.1)"
-  },
+  }
 });
