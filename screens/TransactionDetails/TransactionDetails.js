@@ -19,6 +19,19 @@ import { LinearGradient } from "expo-linear-gradient";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config/index";
 
+
+function formatDate(date) {
+  return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+}
+
+function formatTime(date) {
+  let hours = date.getHours();
+  let hour12 = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  return hours + ":" + date.getMinutes() + ' ' + hour12
+}
+
 export class TransactionDetails extends Component {
   constructor(props) {
     super(props);
@@ -205,19 +218,17 @@ export class TransactionDetails extends Component {
                 }}
               >
                 <Text style={{ color: "white", fontSize: 18 }}>
-                  {/* {this.props.navigation.state.params.firstName.substring(0, 1)} */}
-                  {/* {this.props.navigation.state.params.lastName.substring(0, 1)} */}
-                  KK
+                  {this.props.navigation.state.params.firstName.charAt(0)}
+                  {this.props.navigation.state.params.lastName.charAt(0)}
                 </Text>
               </LinearGradient>
               <View style={{ paddingLeft: 20, paddingRight: 25 }}>
                 <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  {/* {this.props.navigation.state.params.transferUser} */}
+                  {this.props.navigation.state.params.firstName + ' ' + this.props.navigation.state.params.lastName}
                   User
                 </Text>
                 <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
-                  {/* {this.props.navigation.state.params.transferContact} */}
-                  12312
+                  {this.props.navigation.state.params.transferContact}
                 </Text>
               </View>
             </View>
@@ -256,12 +267,10 @@ export class TransactionDetails extends Component {
               <Text style={{ color: "rgb(144,144,144)" }}>Date & Time </Text>
               <View style={{ justifyContent: "center" }}>
                 <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                  {/* {this.props.navigation.state.params.paymentMethod} */}
-                  01/04/2019
+                  {formatDate(this.props.navigation.state.params.date)}
                 </Text>
                 <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                  {/* {this.props.navigation.state.params.paymentMethod} */}
-                  13:50 hours
+                  {formatTime(this.props.navigation.state.params.date)}
                 </Text>
               </View>
             </View>
@@ -269,8 +278,7 @@ export class TransactionDetails extends Component {
               Reasons of Transfer
             </Text>
             <Text style={{ marginTop: 20 }}>
-              {/* {this.props.navigation.state.params.reason} */}
-              Lorem Upsim
+              {this.props.navigation.state.params.reason}
             </Text>
           </View>
         </View>
