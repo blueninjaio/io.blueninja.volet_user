@@ -128,13 +128,14 @@ function TransactionHistory(props) {
           }
         }
         return {
+          page,
+          input,
+          acronym: user.f_name.charAt(0) + user.l_name.charAt(0),
+          isSent,
           firstName: recipient.f_name,
           lastName: recipient.l_name,
           transferContact: recipient.contact,
           requestType: page === Page.SENT ? "Sent" : page === Page.RECEIVED ? "Received" : "Request",
-          page,
-          input,
-          acronym: user.f_name.charAt(0) + user.l_name.charAt(0),
           ...payment
         }
       });
@@ -204,8 +205,8 @@ function TransactionHistory(props) {
                               transferContact: payment.transferContact,
                               requestType: payment.requestType,
                               amount: payment.amount,
-                              date: new Date(payment.date_created),//01/04/2019
-                              transferTime: payment.date_created,//13:50 hours
+                              isSent: payment.isSent,
+                              date: new Date(payment.date_created),
                               reason: payment.reason,
                               description: payment.description
                             })

@@ -135,7 +135,7 @@ export class TransactionDetails extends Component {
                     fontSize: width * 0.034
                   }}
                 >
-                  Payment requested from me
+                  {this.props.navigation.state.params.isSent ? 'Requested payment from ' + this.props.navigation.state.params.firstName + ' ' + this.props.navigation.state.params.lastName + " " : 'Payment requested from me'}
                 </Text>
               </View>
             ) : this.state.requestType === "Received" ? (
@@ -225,7 +225,6 @@ export class TransactionDetails extends Component {
               <View style={{paddingLeft: 20, paddingRight: 25}}>
                 <Text style={{fontSize: 14, fontWeight: "bold"}}>
                   {this.props.navigation.state.params.firstName + ' ' + this.props.navigation.state.params.lastName}
-                  User
                 </Text>
                 <Text style={{color: "rgb(144,144,144)", paddingTop: 5}}>
                   {this.props.navigation.state.params.transferContact}
@@ -295,7 +294,7 @@ export class TransactionDetails extends Component {
             width: width
           }}
         >
-          {this.state.requestType === "Request" ?
+          {this.state.requestType === "Request" && !this.props.navigation.state.params.isSent ?
             (<LinearGradient
               colors={["#36D1DC", "#5B86E5"]}
               style={styles.buttonStyle}
