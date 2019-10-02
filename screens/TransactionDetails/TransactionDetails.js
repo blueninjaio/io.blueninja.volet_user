@@ -280,6 +280,9 @@ export class TransactionDetails extends Component {
             <Text style={{ marginTop: 20 }}>
               {this.props.navigation.state.params.reason}
             </Text>
+            <Text style={{ marginTop: 20 }}>
+              {this.props.navigation.state.params.description}
+            </Text>
           </View>
         </View>
 

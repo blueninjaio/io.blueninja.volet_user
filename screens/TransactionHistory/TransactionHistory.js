@@ -206,7 +206,8 @@ function TransactionHistory(props) {
                               amount: payment.amount,
                               date: new Date(payment.date_created),//01/04/2019
                               transferTime: payment.date_created,//13:50 hours
-                              reason: payment.reason
+                              reason: payment.reason,
+                              description: payment.description
                             })
                           }
                           style={styles.listItemButton}
