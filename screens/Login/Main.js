@@ -11,8 +11,8 @@ import {
   Image
 } from "react-native";
 // import { LocalAuthentication, Expo, Constants, LinearGradient } from "expo";
-import * as LocalAuthentication from 'expo-local-authentication';
-import { LinearGradient } from 'expo-linear-gradient'
+import * as LocalAuthentication from "expo-local-authentication";
+import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 export const { width, height } = Dimensions.get("window");
 
@@ -110,7 +110,8 @@ export class Main extends Component {
         },
         {
           text: "Cancel",
-          onPress: () => this.props.navigation.navigate("Login"),
+          // onPress: () => this.props.navigation.navigate("Login"),
+          onPress: () => this.props.logMeIn(),
 
           style: "cancel"
         }
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: width,
     position: "absolute",
-    bottom: 70,
+    bottom: 70
   },
 
   signupText: {

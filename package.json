@@ -17,7 +17,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-date-picker": "^2.4.2",
     "react-native-elements": "^1.1.0",
-    "react-native-maps": "0.25.0",
+    "react-native-maps": "^0.24.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-modal-datetime-picker": "^7.4.2",
     "react-native-qrcode-svg": "^5.1.2",

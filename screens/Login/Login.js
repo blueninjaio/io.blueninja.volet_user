@@ -274,7 +274,7 @@ export class Login extends Component {
                   onChangeText={email => this.setState({ email })}
                   value={this.state.email}
                   type="text"
-                  placeholder="Your Mobile Number / Email"
+                  placeholder="6012345678 / example@test.com"
                   placeholderTextColor="rgb(215,215,215)"
                 />
               </View>

@@ -62,6 +62,7 @@ export class PersonalDetails extends Component {
       let lastName = await AsyncStorage.getItem("lastname");
       let email = await AsyncStorage.getItem("email");
       let contact = await AsyncStorage.getItem("contact");
+      let address = await AsyncStorage.getItem("address");
 
       if (token !== null) {
         this.setState({ token });
@@ -69,6 +70,7 @@ export class PersonalDetails extends Component {
         this.setState({ lastName });
         this.setState({ email });
         this.setState({ contact });
+        this.setState({ address });
       }
     } catch (error) {
       Alert.alert(
@@ -148,9 +150,20 @@ export class PersonalDetails extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        if (data.success === true) {
+        if (data.success) {
           console.log("Success", data);
-          this.props.navigation.navigate("Profile");
+          this._storeData(address);
+          Alert.alert(
+            "Success",
+            `Details Saved`,
+            [
+              {
+                text: "OK",
+                onPress: () => this.props.navigation.navigate("Profile")
+              }
+            ],
+            { cancelable: false }
+          );
         } else {
           alert(data.message);
         }
@@ -158,6 +171,14 @@ export class PersonalDetails extends Component {
       .catch(error => {
         alert(error);
       });
+  };
+
+  _storeData = async address => {
+    try {
+      await AsyncStorage.setItem("address", address);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   inputCheck = () => {
@@ -203,16 +224,13 @@ export class PersonalDetails extends Component {
                 }}
               >
                 {this.state.imageUri !== "" ? (
-                  (console.log("Base 64", this.state.imageUri),
-                  (
-                    <Thumbnail
-                      large
-                      style={{ backgroundColor: "grey" }}
-                      source={{
-                        uri: `data:image/png;base64,${this.state.imageUri}`
-                      }}
-                    />
-                  ))
+                  <Thumbnail
+                    large
+                    style={{ backgroundColor: "grey" }}
+                    source={{
+                      uri: `data:image/png;base64,${this.state.imageUri}`
+                    }}
+                  />
                 ) : (
                   <Thumbnail
                     large

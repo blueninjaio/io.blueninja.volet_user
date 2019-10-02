@@ -70,7 +70,9 @@ export default class MonthlySavingsPlan extends Component {
       .then(res => res.json())
       .then(data => {
         console.log("Save plan:", data);
-        if (data.success !== true) {
+        if (data.success) {
+          this.props.navigation.navigate("Profile");
+        } else {
           alert(data.message);
         }
       })
