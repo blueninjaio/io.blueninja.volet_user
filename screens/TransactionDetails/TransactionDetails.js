@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Text,
   View,
@@ -13,11 +13,11 @@ import {
   Keyboard,
   AsyncStorage
 } from "react-native";
-import { Icon, Thumbnail } from "native-base";
-import { LinearGradient } from "expo-linear-gradient";
+import {Icon, Thumbnail} from "native-base";
+import {LinearGradient} from "expo-linear-gradient";
 
-export const { width, height } = Dimensions.get("window");
-import { dev, prod, url } from "../../config/index";
+export const {width, height} = Dimensions.get("window");
+import {dev, prod, url} from "../../config/index";
 
 
 function formatDate(date) {
@@ -51,7 +51,7 @@ export class TransactionDetails extends Component {
     try {
       let token = await AsyncStorage.getItem("token");
       if (token !== null) {
-        this.setState({ token });
+        this.setState({token});
       }
     } catch (error) {
       console.log(error);
@@ -89,8 +89,8 @@ export class TransactionDetails extends Component {
           Alert.alert(
             "Error connecting to server Volet",
             `${error}`,
-            [{ text: "OK", onPress: () => null }],
-            { cancelable: false }
+            [{text: "OK", onPress: () => null}],
+            {cancelable: false}
           );
         });
     } catch (error) {
@@ -194,7 +194,7 @@ export class TransactionDetails extends Component {
               borderRadius: 10,
               borderColor: "#ddd",
               shadowColor: "#000",
-              shadowOffset: { width: 3, height: 5 },
+              shadowOffset: {width: 3, height: 5},
               shadowOpacity: 0.3,
               shadowRadius: 4,
               elevation: 1
@@ -217,17 +217,17 @@ export class TransactionDetails extends Component {
                   alignItems: "center"
                 }}
               >
-                <Text style={{ color: "white", fontSize: 18 }}>
+                <Text style={{color: "white", fontSize: 18}}>
                   {this.props.navigation.state.params.firstName.charAt(0)}
                   {this.props.navigation.state.params.lastName.charAt(0)}
                 </Text>
               </LinearGradient>
-              <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+              <View style={{paddingLeft: 20, paddingRight: 25}}>
+                <Text style={{fontSize: 14, fontWeight: "bold"}}>
                   {this.props.navigation.state.params.firstName + ' ' + this.props.navigation.state.params.lastName}
                   User
                 </Text>
-                <Text style={{ color: "rgb(144,144,144)", paddingTop: 5 }}>
+                <Text style={{color: "rgb(144,144,144)", paddingTop: 5}}>
                   {this.props.navigation.state.params.transferContact}
                 </Text>
               </View>
@@ -239,8 +239,8 @@ export class TransactionDetails extends Component {
                 marginTop: 10
               }}
             >
-              <Text style={{ color: "rgb(144,144,144)" }}>Amount To Pay</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+              <Text style={{color: "rgb(144,144,144)"}}>Amount To Pay</Text>
+              <Text style={{fontWeight: "bold", fontSize: 14}}>
                 MYR {this.props.navigation.state.params.amount}
               </Text>
             </View>
@@ -251,8 +251,8 @@ export class TransactionDetails extends Component {
                 marginTop: 20
               }}
             >
-              <Text style={{ color: "rgb(144,144,144)" }}>Payment Method</Text>
-              <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+              <Text style={{color: "rgb(144,144,144)"}}>Payment Method</Text>
+              <Text style={{fontWeight: "bold", fontSize: 14}}>
                 {/* {this.props.navigation.state.params.paymentMethod} */}
                 Volet
               </Text>
@@ -264,23 +264,23 @@ export class TransactionDetails extends Component {
                 marginTop: 20
               }}
             >
-              <Text style={{ color: "rgb(144,144,144)" }}>Date & Time </Text>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+              <Text style={{color: "rgb(144,144,144)"}}>Date & Time </Text>
+              <View style={{justifyContent: "center"}}>
+                <Text style={{fontWeight: "bold", fontSize: 14}}>
                   {formatDate(this.props.navigation.state.params.date)}
                 </Text>
-                <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+                <Text style={{fontWeight: "bold", fontSize: 14}}>
                   {formatTime(this.props.navigation.state.params.date)}
                 </Text>
               </View>
             </View>
-            <Text style={{ color: "rgb(144,144,144)", marginTop: 20 }}>
+            <Text style={{color: "rgb(144,144,144)", marginTop: 20}}>
               Reasons of Transfer
             </Text>
-            <Text style={{ marginTop: 20 }}>
+            <Text style={{marginTop: 20}}>
               {this.props.navigation.state.params.reason}
             </Text>
-            <Text style={{ marginTop: 20 }}>
+            <Text style={{marginTop: 20}}>
               {this.props.navigation.state.params.description}
             </Text>
           </View>
@@ -295,25 +295,25 @@ export class TransactionDetails extends Component {
             width: width
           }}
         >
-          <LinearGradient
-            colors={["#36D1DC", "#5B86E5"]}
-            style={styles.buttonStyle}
-          >
-            {this.state.requestType === "Request" ? (
+          {this.state.requestType === "Request" ?
+            (<LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={styles.buttonStyle}
+            >
               <TouchableOpacity
                 onPress={() => this.onActionTransfer()}
                 style={styles.buttonStyle}
               >
                 <Text style={styles.loginText}>Pay Now</Text>
               </TouchableOpacity>
-            ) : null}
-            {/* <TouchableOpacity
+              {/* <TouchableOpacity
               onPress={() => this.onActionTransfer()}
               style={styles.buttonStyle}
             >
               <Text style={styles.loginText}>Confirm</Text>
             </TouchableOpacity> */}
-          </LinearGradient>
+            </LinearGradient>)
+            : null}
         </View>
       </SafeAreaView>
     );
