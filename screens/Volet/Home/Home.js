@@ -53,7 +53,7 @@ export default class App extends React.Component {
       savings: 0,
       token: "",
       userImage: "",
-      isModalVisible: false,
+      paymentConfirmation: null,
       notifications: []
     };
   }
@@ -314,9 +314,9 @@ export default class App extends React.Component {
   isToggleOpen = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
-  toggleModal = () => {
+  toggleModal = (payment) => {
     this.setState({ isOpen: false });
-    this.setState({ isModalVisible: !this.state.isModalVisible });
+    this.setState({ paymentConfirmation: payment });
   };
 
   /**
@@ -592,11 +592,17 @@ export default class App extends React.Component {
                         <TouchableOpacity
                           onPress={() => {
                             let payment = notification.payment;
+                            const isSent = payment.from._id === notification.user;
+                            let recipient = isSent ? payment.to : payment.from;
                             if (payment.status === 'Requested') {
-                              this.toggleModal();
+                              this.toggleModal({
+                                firstName: recipient.f_name,
+                                lastName: recipient.l_name,
+                                transferContact: recipient.contact,
+                                isSent,
+                                ...payment
+                              });
                             } else {
-                              const isSent = payment.from._id === notification.user;
-                              let recipient = isSent ? payment.to : payment.from;
                               let requestType = payment.status === 'Complete' ? isSent ? "Sent" : "Received" : "Request";
                               this.props.navigation.navigate("TransactionDetails", {
                                 firstName: recipient.f_name,
@@ -604,7 +610,7 @@ export default class App extends React.Component {
                                 transferContact: recipient.contact,
                                 requestType,
                                 amount: payment.amount,
-                                isSent: isSent,
+                                isSent,
                                 date: new Date(payment.date_created),
                                 reason: payment.reason,
                                 description: payment.description
@@ -664,103 +670,103 @@ export default class App extends React.Component {
             </View>
           </View>
         ) : null}
-
-        <Modal
-          transparent={true}
-          style={styles.modalContent}
-          animationIn="slideInDown"
-          animationOut="slideOutUp"
-          isVisible={this.state.isModalVisible}
-          backdropColor="black"
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Left />
-            <Body>
-              <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
-            </Body>
-            <Left />
-          </View>
-          <LinearGradient
-            colors={["#36D1DC", "#5B86E5"]}
-            style={{
-              borderRadius: 30,
-              width: 70,
-              height: 70,
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 18 }}>
-              {/* {this.props.navigation.state.params.firstName.substring(0, 1)} */}
-              {/* {this.props.navigation.state.params.lastName.substring(0, 1)} */}
-              KK
-            </Text>
-          </LinearGradient>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 50
-            }}
-          >
-            <Text
-              style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+        {
+          !this.state.paymentConfirmation ? null :
+            (<Modal
+              transparent={true}
+              style={styles.modalContent}
+              animationIn="slideInDown"
+              animationOut="slideOutUp"
+              isVisible={!!this.state.paymentConfirmation}
+              backdropColor="black"
             >
-              Person
-            </Text>
-            <Text style={{ color: "#979797" }}>1298312</Text>
-            <Text
-              style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
-            >
-              Is requesting to withdraw
-            </Text>
-            <Text style={{ color: "#5B86E5" }}>MYR 50</Text>
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-              bottom: 50
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                this.toggleModal();
-              }}
-              style={{
-                width: width / 1.2,
-                marginBottom: 10
-              }}
-            >
+              <View style={{ flexDirection: "row" }}>
+                <Left />
+                <Body>
+                  <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
+                </Body>
+                <Left />
+              </View>
               <LinearGradient
                 colors={["#36D1DC", "#5B86E5"]}
-                style={styles.buttonStyle}
+                style={{
+                  borderRadius: 30,
+                  width: 70,
+                  height: 70,
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
               >
-                <View style={styles.buttonStyle}>
-                  <Text style={styles.loginText}>Accept</Text>
-                </View>
+                <Text style={{ color: "white", fontSize: 18 }}>
+                  {this.state.paymentConfirmation.firstName.charAt(0) + this.state.paymentConfirmation.lastName.charAt(0)}
+                </Text>
               </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.toggleModal();
-              }}
-              style={{
-                width: width / 1.2
-              }}
-            >
-              <LinearGradient
-                colors={["#ED213A", "#93291E"]}
-                style={styles.buttonStyle}
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 50
+                }}
               >
-                <View style={styles.buttonStyle}>
-                  <Text style={styles.loginText}>Reject</Text>
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+                <Text
+                  style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+                >
+                  {this.state.paymentConfirmation.firstName + ' ' + this.state.paymentConfirmation.lastName}
+                </Text>
+                <Text style={{ color: "#979797" }}>{this.state.paymentConfirmation.transferContact}</Text>
+                <Text
+                  style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+                >
+                  Is requesting to withdraw
+                </Text>
+                <Text style={{ color: "#5B86E5" }}>MYR {this.state.paymentConfirmation.amount}</Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "absolute",
+                  bottom: 50
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    this.toggleModal();
+                  }}
+                  style={{
+                    width: width / 1.2,
+                    marginBottom: 10
+                  }}
+                >
+                  <LinearGradient
+                    colors={["#36D1DC", "#5B86E5"]}
+                    style={styles.buttonStyle}
+                  >
+                    <View style={styles.buttonStyle}>
+                      <Text style={styles.loginText}>Accept</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.toggleModal();
+                  }}
+                  style={{
+                    width: width / 1.2
+                  }}
+                >
+                  <LinearGradient
+                    colors={["#ED213A", "#93291E"]}
+                    style={styles.buttonStyle}
+                  >
+                    <View style={styles.buttonStyle}>
+                      <Text style={styles.loginText}>Reject</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </Modal>)
+        }
       </View>
     );
   }
