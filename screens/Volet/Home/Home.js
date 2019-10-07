@@ -320,6 +320,36 @@ export default class App extends React.Component {
     this.setState({ isOpen: false });
     this.setState({ paymentConfirmation: payment });
   };
+  confirmWithdraw = async accepted => {
+    try {
+      let result = await fetch(
+        `${url}/volet/withdraw/${accepted ? "accept" : "reject"}`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            Authorization: "Bearer " + this.state.token
+          },
+          body: JSON.stringify({
+            payment_id: this.state.paymentConfirmation._id
+          })
+        }
+      );
+      let data = await result.json();
+      console.log(data);
+      if (data.success) {
+        this.toggleModal();
+      }
+    } catch (e) {
+      Alert.alert(
+        "Error connecting to server Volet",
+        `${error}`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
 
   /**
   |--------------------------------------------------
@@ -675,7 +705,7 @@ export default class App extends React.Component {
               <Body style={{ flex: 1 }}>
                 <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
               </Body>
-              <Right style={{flex: 1}}/>
+              <Right style={{ flex: 1 }} />
             </View>
             <LinearGradient
               colors={["#36D1DC", "#5B86E5"]}
@@ -752,14 +782,41 @@ export default class App extends React.Component {
                   width: width / 1.2
                 }}
               >
-                <LinearGradient
-                  colors={["#ED213A", "#93291E"]}
-                  style={styles.buttonStyle}
+                <TouchableOpacity
+                  onPress={() => {
+                    this.confirmWithdraw(true);
+                  }}
+                  style={{
+                    width: width / 1.2,
+                    marginBottom: 10
+                  }}
                 >
-                  <View style={styles.buttonStyle}>
-                    <Text style={styles.loginText}>Reject</Text>
-                  </View>
-                </LinearGradient>
+                  <LinearGradient
+                    colors={["#36D1DC", "#5B86E5"]}
+                    style={styles.buttonStyle}
+                  >
+                    <View style={styles.buttonStyle}>
+                      <Text style={styles.loginText}>Accept</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.confirmWithdraw(false);
+                  }}
+                  style={{
+                    width: width / 1.2
+                  }}
+                >
+                  <LinearGradient
+                    colors={["#36D1DC", "#5B86E5"]}
+                    style={styles.buttonStyle}
+                  >
+                    <View style={styles.buttonStyle}>
+                      <Text style={styles.loginText}>Reject</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
               </TouchableOpacity>
             </View>
           </Modal>
