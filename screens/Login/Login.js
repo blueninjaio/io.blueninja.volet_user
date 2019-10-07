@@ -13,7 +13,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableHighlight
 } from "react-native";
 import { Icon, Left, Body, Right, Thumbnail } from "native-base";
 import { connect } from "react-redux";
@@ -23,6 +24,8 @@ import { dev, prod, url } from "../../config";
 import { Notifications } from "expo";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
+import * as Facebook from "expo-facebook";
+import * as GoogleSignIn from 'expo-google-sign-in';
 
 export class Login extends Component {
   constructor(props) {
@@ -121,22 +124,34 @@ export class Login extends Component {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
       finalStatus = status;
     }
-
-    // let token = await Expo.Notifications.getExpoPushTokenAsync();
     let token = await Notifications.getExpoPushTokenAsync();
     return this.setState({ notificationToken: token });
+  };
 
-    // fetch(`${url}/users/updatePush`, {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     token: token,
-    //     email: this.state.email
-    //   })
-    // });
+  logIn = async () => {
+    try {
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions
+      } = await Facebook.logInWithReadPermissionsAsync("506893633189846", {
+        permissions: ["public_profile"]
+      });
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`
+        );
+        console.log("Facebook login", response);
+        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
   };
 
   render() {
@@ -180,8 +195,18 @@ export class Login extends Component {
                     width: width / 1.8
                   }}
                 >
-                  <Thumbnail style={styles.Thumbnail} />
-                  <Thumbnail style={styles.Thumbnail} />
+                  <TouchableHighlight onPress={() => this.logIn()}>
+                    <Image
+                      source={require("../../assets/fb.png")}
+                      resizeMode="contain"
+                      style={{ width: width * 0.192, height: width * 0.192 }}
+                    />
+                  </TouchableHighlight>
+                  <Image
+                    source={require("../../assets/google.png")}
+                    resizeMode="contain"
+                    style={{ width: width * 0.192, height: width * 0.192 }}
+                  />
                 </View>
               </View>
               <View

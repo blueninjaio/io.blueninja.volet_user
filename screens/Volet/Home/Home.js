@@ -26,6 +26,8 @@ import {
   Title,
   Icon
 } from "native-base";
+import { AntDesign } from "@expo/vector-icons";
+
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
@@ -153,7 +155,7 @@ export default class App extends React.Component {
   convertPayment = (user, payment) => {
     const isSent = payment.from._id === user._id;
     const input = [];
-    if (payment.status === 'Complete') {
+    if (payment.status === "Complete") {
       if (isSent) {
         input.push({
           style: styles.listItemText,
@@ -190,7 +192,7 @@ export default class App extends React.Component {
         });
       }
     } else {
-      if (payment.status === 'Requested') {
+      if (payment.status === "Requested") {
         if (isSent) {
           return undefined; //should never happen
         }
@@ -210,7 +212,7 @@ export default class App extends React.Component {
           style: styles.listItemTextGreen,
           value: "MYR " + payment.amount
         });
-      } else if (payment.status === 'Pending') {
+      } else if (payment.status === "Pending") {
         if (isSent) {
           input.push({
             style: styles.listItemText,
@@ -314,7 +316,7 @@ export default class App extends React.Component {
   isToggleOpen = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
-  toggleModal = (payment) => {
+  toggleModal = payment => {
     this.setState({ isOpen: false });
     this.setState({ paymentConfirmation: payment });
   };
@@ -374,7 +376,7 @@ export default class App extends React.Component {
                   <Image
                     source={require("../../../assets/VoletLogo.png")}
                     resizeMode="contain"
-                    style={{ width: 90, height: 65, }}
+                    style={{ width: 90, height: 65 }}
                   />
                 </Body>
                 <Right style={styles.headerOneRight}>
@@ -478,7 +480,7 @@ export default class App extends React.Component {
                 <Image
                   source={require("../../../assets/sendP.png")}
                   resizeMode="contain"
-                  style={{ width: width*0.212, height: width*0.212 }}
+                  style={{ width: width * 0.212, height: width * 0.212 }}
                 />
               </TouchableOpacity>
 
@@ -492,7 +494,7 @@ export default class App extends React.Component {
                 <Image
                   source={require("../../../assets/requestP.png")}
                   resizeMode="contain"
-                  style={{ width: width*0.212, height: width*0.212 }}
+                  style={{ width: width * 0.212, height: width * 0.212 }}
                 />
               </TouchableOpacity>
 
@@ -502,7 +504,7 @@ export default class App extends React.Component {
                 <Image
                   source={require("../../../assets/topUP.png")}
                   resizeMode="contain"
-                  style={{width: width*0.212, height: width*0.212}}
+                  style={{ width: width * 0.212, height: width * 0.212 }}
                 />
               </TouchableOpacity>
             </View>
@@ -547,64 +549,52 @@ export default class App extends React.Component {
               backgroundColor: "white"
             }}
           >
-            <View style={{flexDirection:"row", paddingTop: 10}}>
-              <Left style={styles.headerOneBody}/>
+            <View style={{ flexDirection: "row", paddingTop: 10 }}>
+              <Left style={styles.headerOneBody} />
               <Body style={styles.headerOneBody}>
-                <Text style={{ color: "#5B86E5", fontSize: width*0.05 }}>
+                <Text style={{ color: "#5B86E5", fontSize: width * 0.05 }}>
                   Notifications
                 </Text>
               </Body>
               <Right style={styles.headerOneRight}>
                 <TouchableOpacity onPress={() => this.isToggleOpen()}>
-                  <Icon
+                  <AntDesign
                     name="close"
-                    type="AntDesign"
                     style={{ color: "#5B86E5", fontSize: 20 }}
                   />
                 </TouchableOpacity>
               </Right>
             </View>
-
-            {/* <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                padding: 15
-              }}
-            >
-              <Image
-                source={require("../../../assets/wallet.png")}
-                resizeMode="contain"
-                style={{ width: 20, height: 20 }}
-              />
-              <Text></Text>
-            </View> */}
             <View style={{ flex: 1 }}>
-              {
-                this.state.notifications.map((notification, i) => {
-                  if (notification.type === NotificationType.MESSAGE) {
-
-                  } else if (notification.type === NotificationType.VOUCHER) {
-
-                  } else if (notification.type === NotificationType.PAYMENT) {
-                    return (
-                      <View style={styles.shadowSet} key={i}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            let payment = notification.payment;
-                            const isSent = payment.from._id === notification.user;
-                            let recipient = isSent ? payment.to : payment.from;
-                            if (payment.status === 'Requested') {
-                              this.toggleModal({
-                                firstName: recipient.f_name,
-                                lastName: recipient.l_name,
-                                transferContact: recipient.contact,
-                                isSent,
-                                ...payment
-                              });
-                            } else {
-                              let requestType = payment.status === 'Complete' ? isSent ? "Sent" : "Received" : "Request";
-                              this.props.navigation.navigate("TransactionDetails", {
+              {this.state.notifications.map((notification, i) => {
+                if (notification.type === NotificationType.MESSAGE) {
+                } else if (notification.type === NotificationType.VOUCHER) {
+                } else if (notification.type === NotificationType.PAYMENT) {
+                  return (
+                    <View style={styles.shadowSet} key={i}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          let payment = notification.payment;
+                          const isSent = payment.from._id === notification.user;
+                          let recipient = isSent ? payment.to : payment.from;
+                          if (payment.status === "Requested") {
+                            this.toggleModal({
+                              firstName: recipient.f_name,
+                              lastName: recipient.l_name,
+                              transferContact: recipient.contact,
+                              isSent,
+                              ...payment
+                            });
+                          } else {
+                            let requestType =
+                              payment.status === "Complete"
+                                ? isSent
+                                  ? "Sent"
+                                  : "Received"
+                                : "Request";
+                            this.props.navigation.navigate(
+                              "TransactionDetails",
+                              {
                                 firstName: recipient.f_name,
                                 lastName: recipient.l_name,
                                 transferContact: recipient.contact,
@@ -614,159 +604,166 @@ export default class App extends React.Component {
                                 date: new Date(payment.date_created),
                                 reason: payment.reason,
                                 description: payment.description
-                              })
-                            }
-                          }}
-                          style={styles.listItemButton}
-                        >
-                          <View style={styles.show}>
-                            <Image
-                              source={require("../../../assets/wallet.png")}
-                              resizeMode="contain"
-                              style={{ width: 50, height: 50 }}
-                            />
+                              }
+                            );
+                          }
+                        }}
+                        style={styles.listItemButton}
+                      >
+                        <View style={styles.show}>
+                          <Image
+                            source={require("../../../assets/wallet.png")}
+                            resizeMode="contain"
+                            style={{ width: 50, height: 50 }}
+                          />
+                          <View
+                            style={{
+                              flex: 1,
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              marginLeft: 30
+                            }}
+                          >
                             <View
                               style={{
-                                flex: 1,
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                marginLeft: 30
+                                width: width / 2,
+                                flexDirection: "row",
+                                marginBottom: 8
                               }}
                             >
-                              <View
-                                style={{
-                                  width: width / 2,
-                                  flexDirection: "row",
-                                  marginBottom: 8
-                                }}
-                              >
-                                <Text style={notification.input[0].style}>
-                                  {notification.input[0].value}
-                                </Text>
-                                <Text style={notification.input[1].style}>
-                                  {notification.input[1].value}
-                                </Text>
-                              </View>
-                              <View
-                                style={{
-                                  width: width / 2,
-                                  flexDirection: "row"
-                                }}
-                              >
-                                <Text style={notification.input[2].style}>
-                                  {notification.input[2].value}
-                                </Text>
-                                <Text style={notification.input[3].style}>
-                                  {notification.input[3].value}
-                                </Text>
-                              </View>
+                              <Text style={notification.input[0].style}>
+                                {notification.input[0].value}
+                              </Text>
+                              <Text style={notification.input[1].style}>
+                                {notification.input[1].value}
+                              </Text>
+                            </View>
+                            <View
+                              style={{
+                                width: width / 2,
+                                flexDirection: "row"
+                              }}
+                            >
+                              <Text style={notification.input[2].style}>
+                                {notification.input[2].value}
+                              </Text>
+                              <Text style={notification.input[3].style}>
+                                {notification.input[3].value}
+                              </Text>
                             </View>
                           </View>
-                        </TouchableOpacity>
-                      </View>)
-                  }
-                })
-              }
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                }
+              })}
             </View>
           </View>
         ) : null}
-        {
-          !this.state.paymentConfirmation ? null :
-            (<Modal
-              transparent={true}
-              style={styles.modalContent}
-              animationIn="slideInDown"
-              animationOut="slideOutUp"
-              isVisible={!!this.state.paymentConfirmation}
-              backdropColor="black"
+        {!this.state.paymentConfirmation ? null : (
+          <Modal
+            transparent={true}
+            style={styles.modalContent}
+            animationIn="slideInDown"
+            animationOut="slideOutUp"
+            isVisible={!!this.state.paymentConfirmation}
+            backdropColor="black"
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Left style={{ flex: 1 }} />
+              <Body style={{ flex: 1 }}>
+                <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
+              </Body>
+              <Right style={{flex: 1}}/>
+            </View>
+            <LinearGradient
+              colors={["#36D1DC", "#5B86E5"]}
+              style={{
+                borderRadius: 30,
+                width: 70,
+                height: 70,
+                justifyContent: "center",
+                alignItems: "center"
+              }}
             >
-              <View style={{ flexDirection: "row" }}>
-                <Left />
-                <Body>
-                  <Title style={{ color: "#5B86E5" }}>Withdraw Request</Title>
-                </Body>
-                <Left />
-              </View>
-              <LinearGradient
-                colors={["#36D1DC", "#5B86E5"]}
+              <Text style={{ color: "white", fontSize: 18 }}>
+                {this.state.paymentConfirmation.firstName.charAt(0) +
+                  this.state.paymentConfirmation.lastName.charAt(0)}
+              </Text>
+            </LinearGradient>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 50
+              }}
+            >
+              <Text
+                style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+              >
+                {this.state.paymentConfirmation.firstName +
+                  " " +
+                  this.state.paymentConfirmation.lastName}
+              </Text>
+              <Text style={{ color: "#979797" }}>
+                {this.state.paymentConfirmation.transferContact}
+              </Text>
+              <Text
+                style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+              >
+                Is requesting to withdraw
+              </Text>
+              <Text style={{ color: "#5B86E5" }}>
+                MYR {this.state.paymentConfirmation.amount}
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                position: "absolute",
+                bottom: 50
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  this.toggleModal();
+                }}
                 style={{
-                  borderRadius: 30,
-                  width: 70,
-                  height: 70,
-                  justifyContent: "center",
-                  alignItems: "center"
+                  width: width / 1.2,
+                  marginBottom: 10
                 }}
               >
-                <Text style={{ color: "white", fontSize: 18 }}>
-                  {this.state.paymentConfirmation.firstName.charAt(0) + this.state.paymentConfirmation.lastName.charAt(0)}
-                </Text>
-              </LinearGradient>
-              <View
+                <LinearGradient
+                  colors={["#36D1DC", "#5B86E5"]}
+                  style={styles.buttonStyle}
+                >
+                  <View style={styles.buttonStyle}>
+                    <Text style={styles.loginText}>Accept</Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.toggleModal();
+                }}
                 style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: 50
+                  width: width / 1.2
                 }}
               >
-                <Text
-                  style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
+                <LinearGradient
+                  colors={["#ED213A", "#93291E"]}
+                  style={styles.buttonStyle}
                 >
-                  {this.state.paymentConfirmation.firstName + ' ' + this.state.paymentConfirmation.lastName}
-                </Text>
-                <Text style={{ color: "#979797" }}>{this.state.paymentConfirmation.transferContact}</Text>
-                <Text
-                  style={{ color: "black", fontWeight: "bold", marginBottom: 5 }}
-                >
-                  Is requesting to withdraw
-                </Text>
-                <Text style={{ color: "#5B86E5" }}>MYR {this.state.paymentConfirmation.amount}</Text>
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  bottom: 50
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    this.toggleModal();
-                  }}
-                  style={{
-                    width: width / 1.2,
-                    marginBottom: 10
-                  }}
-                >
-                  <LinearGradient
-                    colors={["#36D1DC", "#5B86E5"]}
-                    style={styles.buttonStyle}
-                  >
-                    <View style={styles.buttonStyle}>
-                      <Text style={styles.loginText}>Accept</Text>
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    this.toggleModal();
-                  }}
-                  style={{
-                    width: width / 1.2
-                  }}
-                >
-                  <LinearGradient
-                    colors={["#ED213A", "#93291E"]}
-                    style={styles.buttonStyle}
-                  >
-                    <View style={styles.buttonStyle}>
-                      <Text style={styles.loginText}>Reject</Text>
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
-            </Modal>)
-        }
+                  <View style={styles.buttonStyle}>
+                    <Text style={styles.loginText}>Reject</Text>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        )}
       </View>
     );
   }
@@ -778,10 +775,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   header: {
-    height: 180,
+    height: 180
     // paddingTop: 15
     // paddingTop: 20
-
   },
   headerOne: {
     // backgroundColor: "transparent",
@@ -791,7 +787,7 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 0,
     // shadowColor: "transparent",
     // shadowOpacity: 0
-    flexDirection: "row",
+    flexDirection: "row"
     //     // borderBottomWidth: 0,
     // // shadowColor: "transparent",
     // backgroundColor: "white"
@@ -809,16 +805,16 @@ const styles = StyleSheet.create({
     // marginBottom: 20
   },
   headerOneBody: {
-    alignItems: "center",
+    alignItems: "center"
     // flex: 1
   },
   headerOneRight: {
     // alignItems: "center",
-    marginRight: 10,
+    marginRight: 10
     // flex: 1
   },
   welcomeUser: {
-    alignItems: "center",
+    alignItems: "center"
     // paddingTop: 20
     // flexDirection:"row"
   },
@@ -832,7 +828,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   savingsCard: {
-    alignItems: "center",
+    alignItems: "center"
   },
   payments: {
     flexDirection: "row",

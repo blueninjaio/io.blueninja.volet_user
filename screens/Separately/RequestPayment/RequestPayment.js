@@ -347,8 +347,8 @@ export class RequestPayment extends Component {
                 <View style={{ paddingTop: 5, paddingBottom: 5 }}>
                   <Text
                     style={{
-                      borderBottomColor: "black",
-                      borderBottomWidth: 1,
+                      // borderBottomColor: "black",
+                      // borderBottomWidth: 1,
                       fontSize: 18,
                       color: "#5B86E5"
                     }}
