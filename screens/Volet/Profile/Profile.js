@@ -13,7 +13,7 @@ import {
   Alert
 } from "react-native";
 import { Switch } from "native-base";
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from "expo-linear-gradient";
 import { url } from "../../../config/index";
 import { NavigationEvents } from "react-navigation";
 
@@ -145,7 +145,7 @@ export class Profile extends React.Component {
             this.setState({ savings: data.user.monthly_savings });
             this.setState({ userType: data.user.account_type });
             if (data.user.photo_base64) {
-              this.setState({ userImage: data.user.photo_base64});
+              this.setState({ userImage: data.user.photo_base64 });
             }
           }
         })
@@ -231,27 +231,29 @@ export class Profile extends React.Component {
             </LinearGradient>
           </View>
           <View>
-            <View style={styles.shadowSet}>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("")}
-                style={styles.listItemButtonSwitch}
-              >
-                <View style={styles.show}>
-                  <Image
-                    source={require("../../../assets/glasses.png")}
-                    resizeMode="contain"
-                    style={{ width: 40, height: 40 }}
+            {this.state.userType === "User" ? null : (
+              <View style={styles.shadowSet}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate("")}
+                  style={styles.listItemButtonSwitch}
+                >
+                  <View style={styles.show}>
+                    <Image
+                      source={require("../../../assets/glasses.png")}
+                      resizeMode="contain"
+                      style={{ width: 40, height: 40 }}
+                    />
+                    <Text style={styles.listItemText}>
+                      Show / Hide Visibility
+                    </Text>
+                  </View>
+                  <Switch
+                    value={this.state.isActive}
+                    onValueChange={() => this.onActionVisibility()}
                   />
-                  <Text style={styles.listItemText}>
-                    Show / Hide Visibility
-                  </Text>
-                </View>
-                <Switch
-                  value={this.state.isActive}
-                  onValueChange={() => this.onActionVisibility()}
-                />
-              </TouchableOpacity>
-            </View>
+                </TouchableOpacity>
+              </View>
+            )}
             <View style={styles.shadowSet}>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate("VoletBalance")}
@@ -270,7 +272,7 @@ export class Profile extends React.Component {
             <View style={styles.shadowSet}>
               <TouchableOpacity
                 onPress={() =>
-                  this.props.navigation.navigate("PersonalDetails",{
+                  this.props.navigation.navigate("PersonalDetails", {
                     userImage: this.state.userImage
                   })
                 }
@@ -305,7 +307,9 @@ export class Profile extends React.Component {
             </View>
             <View style={styles.shadowSet}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("TransactionHistory")}
+                onPress={() =>
+                  this.props.navigation.navigate("TransactionHistory")
+                }
                 style={styles.listItemButton}
               >
                 <View style={styles.show}>

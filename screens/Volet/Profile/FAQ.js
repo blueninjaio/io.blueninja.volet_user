@@ -17,7 +17,7 @@ export class FAQ extends Component {
 
     this.state = {
       faq: [],
-      token
+      token: ""
     };
   }
 

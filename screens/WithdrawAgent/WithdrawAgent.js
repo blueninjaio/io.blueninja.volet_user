@@ -158,144 +158,152 @@ export default class WithdrawAgent extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={{ flexGrow: 1 }}>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 20
-            }}
-          >
+        <SafeAreaView style={styles.container}>
+          <ScrollView style={{ flexGrow: 1 }}>
             <View
               style={{
                 justifyContent: "center",
-                alignItems: "flex-start",
-                paddingTop: 20,
-                width: width / 1.3
+                alignItems: "center",
+                marginTop: 20
               }}
             >
-              <Text
+              <View
                 style={{
-                  padding: 10,
-                  color: "#5B86E5",
-                  fontSize: width * 0.06,
-                  fontWeight: "500"
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  paddingTop: 20,
+                  width: width / 1.3
                 }}
               >
-                Withdraw With Agent
-              </Text>
-              <Text
-                style={{ padding: 10, color: "grey", fontSize: width * 0.034 }}
-              >
-                Nearby agents
-              </Text>
-            </View>
-            <View style={styles.mapContainer}>
-              <MapView
-                style={styles.map}
-                showsUserLocation={false}
-                region={{
-                  latitude: this.state.location.coords.latitude,
-                  longitude: this.state.location.coords.longitude,
-                  latitudeDelta: 0.0922,
-                  longitudeDelta: 0.0421
-                }}
-                // onRegionChange={this._handleMapRegionChange}
-              >
-                {this.state.agentCoords.map((x, i) => (
-                  <MapView.Marker
-                    coordinate={x}
-                    title="Agent"
-                    pinColor="blue"
-                    key={i}
-                  />
-                ))}
-
-                <MapView.Marker
-                  coordinate={this.state.location.coords}
-                  title="My Current location"
-                />
-              </MapView>
-            </View>
-
-            {this.state.userAgents.length >= 1 ? (
-              this.state.userAgents.map((x, i) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate("FromAgentWithdrawal", {
-                      widthdrawAgent: x,
-                      distance: this.userDistance(x.gps_coordinates)
-                    })
-                  }
-                  key={i}
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "#5B86E5",
+                    fontSize: width * 0.06,
+                    fontWeight: "500"
+                  }}
                 >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      paddingTop: 15,
-                      paddingBottom: 15,
-                      marginTop: 25,
-                      width: width,
-                      backgroundColor: "rgb(255,255,255)",
-                      borderColor: "#ddd",
-                      shadowColor: "#000",
-                      shadowOffset: { width: 3, height: 5 },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 4,
-                      elevation: 1
-                    }}
-                  >
-                    <LinearGradient
-                      colors={["#36D1DC", "#5B86E5"]}
-                      style={{
-                        borderRadius: 20,
-                        marginLeft: 20,
-                        width: 40,
-                        height: 40,
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <Text style={{ color: "white", fontSize: 18 }}>
-                        {x.f_name.substring(0, 1)}
-                        {x.l_name.substring(0, 1)}
-                      </Text>
-                    </LinearGradient>
-                    <View style={{ paddingLeft: 20, paddingRight: 25 }}>
-                      <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                        {x.f_name} {x.l_name}
-                      </Text>
-                      <Text
-                        style={{ color: "rgb(144,144,144)", paddingTop: 15 }}
-                      >
-                        {x.contact}
-                      </Text>
-                    </View>
-                    <View style={{ paddingLeft: 35, paddingTop: 31 }}>
-                      <Text
-                        style={{
-                          color: "rgb(153,153,153)",
-                          fontWeight: "bold"
-                        }}
-                      >
-                        {this.userDistance(x.gps_coordinates)}km away
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))
-            ) : (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                  No user agent around you
+                  Withdraw With Agent
+                </Text>
+                <Text
+                  style={{
+                    padding: 10,
+                    color: "grey",
+                    fontSize: width * 0.034
+                  }}
+                >
+                  Nearby agents
                 </Text>
               </View>
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+              <View style={styles.mapContainer}>
+                <MapView
+                  provider={MapView.PROVIDER_GOOGLE}
+                  style={styles.map}
+                  showCompass={true}
+                  rotateEnabled={false}
+                  showUserLocation={true}
+                  region={{
+                    latitude: this.state.location.coords.latitude,
+                    longitude: this.state.location.coords.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421
+                  }}
+                  // onRegionChange={this._handleMapRegionChange}
+                >
+                  {this.state.agentCoords.map((x, i) => (
+                    <MapView.Marker
+                      coordinate={x}
+                      title="Agent"
+                      pinColor="blue"
+                      key={i}
+                    />
+                  ))}
+
+                  <MapView.Marker
+                    coordinate={this.state.location.coords}
+                    title="My Current location"
+                  />
+                </MapView>
+              </View>
+
+              {this.state.userAgents.length >= 1 ? (
+                this.state.userAgents.map((x, i) => (
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate("FromAgentWithdrawal", {
+                        widthdrawAgent: x,
+                        distance: this.userDistance(x.gps_coordinates)
+                      })
+                    }
+                    key={i}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        paddingTop: 15,
+                        paddingBottom: 15,
+                        marginTop: 25,
+                        width: width,
+                        backgroundColor: "rgb(255,255,255)",
+                        borderColor: "#ddd",
+                        shadowColor: "#000",
+                        shadowOffset: { width: 3, height: 5 },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4,
+                        elevation: 1
+                      }}
+                    >
+                      <LinearGradient
+                        colors={["#36D1DC", "#5B86E5"]}
+                        style={{
+                          borderRadius: 20,
+                          marginLeft: 20,
+                          width: 40,
+                          height: 40,
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Text style={{ color: "white", fontSize: 18 }}>
+                          {x.f_name.substring(0, 1)}
+                          {x.l_name.substring(0, 1)}
+                        </Text>
+                      </LinearGradient>
+                      <View style={{ paddingLeft: 20, paddingRight: 25 }}>
+                        <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                          {x.f_name} {x.l_name}
+                        </Text>
+                        <Text
+                          style={{ color: "rgb(144,144,144)", paddingTop: 15 }}
+                        >
+                          {x.contact}
+                        </Text>
+                      </View>
+                      <View style={{ paddingLeft: 35, paddingTop: 31 }}>
+                        <Text
+                          style={{
+                            color: "rgb(153,153,153)",
+                            fontWeight: "bold"
+                          }}
+                        >
+                          {this.userDistance(x.gps_coordinates)}km away
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                    No user agent around you
+                  </Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       </TouchableWithoutFeedback>
     );
   }

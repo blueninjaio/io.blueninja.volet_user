@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { Switch } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 import { Input } from "react-native-elements";
 import { dev, prod, url } from "../../../config/index";
 
@@ -25,7 +25,7 @@ export default class MonthlySavingsPlan extends Component {
     super(props);
 
     this.state = {
-      isActive: false,
+      isActive: null,
       price: "",
       savings: 0,
       balance: 0
@@ -49,6 +49,7 @@ export default class MonthlySavingsPlan extends Component {
       alert(error);
     }
   };
+
 
   onActionSwitch = () => {
     this.setState({ isActive: !this.state.isActive });
@@ -103,6 +104,7 @@ export default class MonthlySavingsPlan extends Component {
           if (data.success === true) {
             this.setState({ balance: data.user.credits });
             this.setState({ savings: data.user.monthly_savings });
+            this.setState({ isActive: data.user.savings_active });
             if (data.user.photo_url) {
               this.setState({ userImage: data.user.photo_url });
             }
