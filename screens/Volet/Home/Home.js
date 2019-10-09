@@ -12,6 +12,7 @@ import {
   Alert,
   AsyncStorage,
   LayoutAnimation,
+  Platform,
   SafeAreaView,
   TouchableHighlight
 } from "react-native";
@@ -398,7 +399,13 @@ export default class App extends React.Component {
           <ScrollView>
             <LinearGradient
               colors={["#36D1DC", "#5B86E5"]}
-              style={styles.header}
+              style={
+                Platform.OS === "ios"
+                  ? styles.headerIOS
+                  : Platform.OS === "android"
+                  ? styles.header
+                  : null
+              }
             >
               <View style={styles.headerOne}>
                 <Left style={styles.headerOneBody} />
@@ -833,6 +840,10 @@ const styles = StyleSheet.create({
     height: 180
     // paddingTop: 15
     // paddingTop: 20
+  },
+  headerIOS: {
+    height: 200,
+    paddingTop: 20
   },
   headerOne: {
     // backgroundColor: "transparent",
