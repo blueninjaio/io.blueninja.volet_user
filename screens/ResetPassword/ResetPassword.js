@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 export const { width, height } = Dimensions.get("window");
 import { dev, prod, url } from "../../config";
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from "expo-linear-gradient";
 
 export class ResetPassword extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export class ResetPassword extends Component {
       password: "",
       Cpassword: "",
       newPassword: "",
-      oldPassword:""
+      oldPassword: ""
     };
   }
 
@@ -127,7 +128,8 @@ export class ResetPassword extends Component {
               style={{
                 justifyContent: "center",
                 alignItems: "flex-start",
-                paddingTop: 30
+                paddingTop: 30,
+                marginBottom: 20
               }}
             >
               <Text>Old Password</Text>
@@ -315,8 +317,8 @@ export class ResetPassword extends Component {
             <View
               style={{
                 justifyContent: "center",
-                alignItems: "flex-start",
-                paddingTop: 30
+                alignItems: "flex-start"
+                // paddingTop: 30
               }}
             >
               <Text>Confirm Password</Text>
