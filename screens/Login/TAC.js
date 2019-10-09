@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 export const { width, height } = Dimensions.get("window");
@@ -27,6 +28,7 @@ export class TAC extends Component {
       () => this.setState(prevState => ({ timer: prevState.timer - 1 })),
       1000
     );
+    console.log("social token", this.props.navigation.state.params.socialToken);
   }
   componentDidUpdate() {
     if (this.state.timer === 0) {
@@ -59,21 +61,22 @@ export class TAC extends Component {
             if (this.props.navigation.state.params.requestMethod === "SignUp")
               this.props.navigation.navigate("SignUpInfo", {
                 contact: this.props.navigation.state.params.contact,
-                // token: this.props.navigation.state.params.token
+                socialDetails: this.props.navigation.state.params.socialDetails,
+                socialToken: this.props.navigation.state.params.socialToken,
+                signUpType:this.props.navigation.state.params. signUpType,
                 token: data.token
               });
-            else if (this.props.navigation.state.params.requestMethod === "Reset"){
+            else if (
+              this.props.navigation.state.params.requestMethod === "Reset"
+            ) {
               this.props.navigation.navigate("ResetPassword", {
                 contact: this.props.navigation.state.params.contact,
-                // token: this.props.navigation.state.params.token,
                 token: data.token,
                 email: data.email
               });
-            }
-            else {
+            } else {
               this.props.navigation.navigate("ForgetPassword", {
                 contact: this.props.navigation.state.params.contact,
-                // token: this.props.navigation.state.params.token,
                 token: data.token,
                 email: data.email
               });

@@ -4644,6 +4644,13 @@ expo-app-auth@~5.0.1:
   dependencies:
     invariant "^2.2.4"
 
+expo-app-auth@~7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/expo-app-auth/-/expo-app-auth-7.0.0.tgz#6d75dd561ba12a6b039a76cdc8dc519c69a715d1"
+  integrity sha512-j5lSTm0uFcqSye8YJYB7bwBAS1VWYh1BcZc9NZPKn9hMz+RKdqJChB0Vx51mu07dDyD3eaV4U2Um7pKihAAatg==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-app-loader-provider@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/expo-app-loader-provider/-/expo-app-loader-provider-5.0.1.tgz#56f531e189de8407bdf257d5753ccec43dd253f7"
@@ -4770,6 +4777,13 @@ expo-constants@~5.0.1:
   dependencies:
     ua-parser-js "^0.7.19"
 
+expo-constants@~7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-7.0.0.tgz#668c3ec0100e219522ffd9515ec47fadfccd443d"
+  integrity sha512-oLINuMtGcAwfHGInSVhq6xGojp3atUpSIp7KImo9rqXhWwD5FNmqA5Jflo4J0ODPq590kN5ieiYCCqwls2/u0w==
+  dependencies:
+    ua-parser-js "^0.7.19"
+
 expo-contacts@~5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/expo-contacts/-/expo-contacts-5.0.2.tgz#4ed7102e31c426367ba3c9dca86d496b38546ab6"
@@ -4825,6 +4839,14 @@ expo-gl@~5.0.1:
   dependencies:
     expo-gl-cpp "~5.0.1"
     prop-types "^15.6.2"
+
+expo-google-app-auth@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/expo-google-app-auth/-/expo-google-app-auth-7.0.0.tgz#66d772339a2a61cdfb256f4094fa693eda02951b"
+  integrity sha512-sVVl5yYrKD0FTGpvxCo4M1xCLgdDGtAYostsavzZjRAui0GpmA96iS7jMePltSWpffg4r7dIjRZEUbLjQ03g6g==
+  dependencies:
+    expo-app-auth "~7.0.0"
+    expo-constants "~7.0.0"
 
 expo-google-sign-in@~5.0.1:
   version "5.0.1"

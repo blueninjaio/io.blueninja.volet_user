@@ -25,7 +25,7 @@ import { Notifications } from "expo";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Permissions from "expo-permissions";
 import * as Facebook from "expo-facebook";
-import * as GoogleSignIn from 'expo-google-sign-in';
+import * as Google from "expo-google-app-auth";
 
 export class Login extends Component {
   constructor(props) {
@@ -34,7 +34,9 @@ export class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      notificationToken: ""
+      notificationToken: "",
+      facebook_token: "",
+      google_token: ""
     };
   }
 
@@ -48,19 +50,37 @@ export class Login extends Component {
     this.registerForPushNotificationsAsync();
   }
 
-  reduxLogin = () => {
-    console.log("Token", this.state.notificationToken);
+  reduxLoginSocial = (socialToken, type) => {
+    if (type === "facebook") {
+      this.setState({ facebook_token: socialToken });
+      this.reduxLogin(type);
+    } else {
+      this.setState({ google_token: socialToken });
+      this.reduxLogin(type);
+    }
+  };
+
+  reduxLogin = type => {
+    console.log("Google token", this.state.google_token);
+    console.log("Google token", this.state.facebook_token);
+    let body = {
+      login_input: this.state.email,
+      password: this.state.password,
+      push_token: this.state.notificationToken
+    };
+    if (type === "facebook") {
+      body.facebook_token = this.state.facebook_token;
+    } else if (type === "google") {
+      body.google_token = this.state.google_token;
+    }
+
     fetch(`${url}/users/login`, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json; charset=utf-8"
       },
-      body: JSON.stringify({
-        login_input: this.state.email,
-        password: this.state.password,
-        push_token: this.state.notificationToken
-      })
+      body: JSON.stringify(body)
     })
       .then(response => response.json())
       .then(data => {
@@ -128,7 +148,7 @@ export class Login extends Component {
     return this.setState({ notificationToken: token });
   };
 
-  logIn = async () => {
+  facebookSignIn = async () => {
     try {
       const {
         type,
@@ -137,20 +157,48 @@ export class Login extends Component {
         permissions,
         declinedPermissions
       } = await Facebook.logInWithReadPermissionsAsync("506893633189846", {
-        permissions: ["public_profile"]
+        permissions: ["public_profile", "email"]
       });
+
       if (type === "success") {
-        // Get the user's name using Facebook's Graph API
         const response = await fetch(
           `https://graph.facebook.com/me?access_token=${token}`
         );
-        console.log("Facebook login", response);
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        this.reduxLoginSocial(token, "facebook");
       } else {
         // type === 'cancel'
+        alert("User not registered")
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
+    }
+  };
+
+  googleSign = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId:
+          "189450334534-b8kfh8mker01imvfq860d16nd6pr3qq6.apps.googleusercontent.com",
+        iosClientId:
+          "189450334534-i4jl9kdn5a10eavur8vhr0a5m478eshv.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
+        iosStandaloneAppClientId: `io.blueninja.Volet`,
+        androidStandaloneAppClientId: `io.blueninja.Volet`
+      });
+
+      if (result.type === "success") {
+        let userInfoResponse = await fetch(
+          "https://www.googleapis.com/userinfo/v2/me",
+          {
+            headers: { Authorization: `Bearer ${result.accessToken}` }
+          }
+        );
+        this.reduxLoginSocial(result.accessToken, "google");
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
     }
   };
 
@@ -195,18 +243,20 @@ export class Login extends Component {
                     width: width / 1.8
                   }}
                 >
-                  <TouchableHighlight onPress={() => this.logIn()}>
+                  <TouchableOpacity onPress={() => this.facebookSignIn()}>
                     <Image
                       source={require("../../assets/fb.png")}
                       resizeMode="contain"
                       style={{ width: width * 0.192, height: width * 0.192 }}
                     />
-                  </TouchableHighlight>
-                  <Image
-                    source={require("../../assets/google.png")}
-                    resizeMode="contain"
-                    style={{ width: width * 0.192, height: width * 0.192 }}
-                  />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.googleSign()}>
+                    <Image
+                      source={require("../../assets/google.png")}
+                      resizeMode="contain"
+                      style={{ width: width * 0.192, height: width * 0.192 }}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
               <View

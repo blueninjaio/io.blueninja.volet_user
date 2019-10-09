@@ -87,8 +87,6 @@ export class Main extends Component {
   login = response => {
     if (response === true) {
       this.props.logMeIn();
-    } else {
-      this.props.navigation.navigate("Login");
     }
   };
 
