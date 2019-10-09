@@ -559,9 +559,7 @@ export default class App extends React.Component {
                     resizeMode="contain"
                     style={{ width: 20, height: 20 }}
                   />
-                  <Text style={{ paddingLeft: 10 }}>
-                    Swipe up To scan QR Code
-                  </Text>
+                  <Text style={{ paddingLeft: 10 }}>Click to scan QR Code</Text>
                 </Body>
               </CardItem>
             </Card>
