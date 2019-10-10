@@ -16,9 +16,9 @@ import {
 } from "react-native";
 import { Icon, Thumbnail } from "native-base";
 // import { LinearGradient, Contacts, Permissions } from "expo";
-import { LinearGradient } from 'expo-linear-gradient'
-import * as Permissions from 'expo-permissions'
-import * as Contacts from 'expo-contacts';
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
+import * as Contacts from "expo-contacts";
 export const { width, height } = Dimensions.get("window");
 import ContactList from "../../../component/ContactList";
 import OnVoletContactList from "../../../component/OnVoletContactList";
@@ -66,7 +66,6 @@ export class RequestPayment extends Component {
 
   componentDidMount() {
     this.getPermissionAsync();
-    setTimeout(() => this.showFirstContactAsync(), 1);
     // this.showFirstContactAsync();
   }
 
@@ -75,7 +74,7 @@ export class RequestPayment extends Component {
       fields: [Contacts.PHONE_NUMBERS]
     });
 
-    console.log("Contacts: ", contacts)
+    console.log("Contacts: ", contacts);
     this.filterNumbers(contacts.data);
 
     if (contacts !== "") {
@@ -164,19 +163,22 @@ export class RequestPayment extends Component {
 
   getPermissionAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
+    console.log("contact permission", status);
+    if (status === "granted") {
+      setTimeout(() => this.showFirstContactAsync(), 1);
+    }
   };
 
   onActionSelectNumber = contact => {
     // console.log("Selected contact", contactList)
     let selectedContact = this.state.selectedContact;
     if (contact._id) {
-      if (!selectedContact.find((selected) => selected._id === contact._id)) selectedContact.push(contact);
+      if (!selectedContact.find(selected => selected._id === contact._id))
+        selectedContact.push(contact);
       this.setState({ contact: contact.contact });
       this.setState({ selectedContact });
-    }
-    else {
+    } else {
       alert("This Contact is not on Volet");
-
     }
   };
 

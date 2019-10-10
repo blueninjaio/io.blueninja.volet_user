@@ -49,6 +49,38 @@ export class PersonalDetails extends Component {
     this.getUserInfo();
   }
 
+  getVolet = async token => {
+    try {
+      fetch(`${url}/users/me`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Bearer " + token
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Personal Detials", data);
+          if (data.success) {
+            if (data.user.photo_base64) {
+              this.setState({ imageUri: data.user.photo_base64 });
+            }
+          }
+        })
+        .catch(error => {
+          Alert.alert(
+            "Error connecting to server Volet",
+            `${error}`,
+            [{ text: "OK", onPress: () => null }],
+            { cancelable: false }
+          );
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   /**
   |--------------------------------------------------
   | Implementation of retrieving user info from AsyncStorage
@@ -65,6 +97,7 @@ export class PersonalDetails extends Component {
       let address = await AsyncStorage.getItem("address");
 
       if (token !== null) {
+        this.getVolet(token);
         this.setState({ token });
         this.setState({ firstName });
         this.setState({ lastName });
@@ -105,7 +138,7 @@ export class PersonalDetails extends Component {
     });
     console.log("Image link", result); // this logs correctly
     if (!result.cancelled) {
-      this.setState({ imageUri: result.base64 });
+      this.setState({ imageUri: `data:image/jpg;base64,` + result.base64 });
     }
   };
 
@@ -140,7 +173,7 @@ export class PersonalDetails extends Component {
         Authorization: "Bearer " + token
       },
       body: JSON.stringify({
-        image: `data:image/jpg;base64,${imageUri}`,
+        image: imageUri,
         f_name: firstName,
         l_name: lastName,
         email: email,
@@ -152,7 +185,10 @@ export class PersonalDetails extends Component {
       .then(data => {
         if (data.success) {
           console.log("Success", data);
-          this._storeData(address);
+          console.log("Address", address)
+          if (address !== null) {
+            this._storeData(address);
+          }
           Alert.alert(
             "Success",
             `Details Saved`,
@@ -226,9 +262,8 @@ export class PersonalDetails extends Component {
                 {this.state.imageUri !== "" ? (
                   <Thumbnail
                     large
-                    style={{ backgroundColor: "grey" }}
                     source={{
-                      uri: `data:image/png;base64,${this.state.imageUri}`
+                      uri: `${this.state.imageUri}`
                     }}
                   />
                 ) : (

@@ -16,9 +16,9 @@ import {
 import { Icon, Thumbnail } from "native-base";
 export const { width, height } = Dimensions.get("window");
 // import { Contacts, Permissions, Constants, LinearGradient } from "expo";
-import { LinearGradient } from 'expo-linear-gradient'
-import * as Permissions from 'expo-permissions'
-import * as Contacts from 'expo-contacts';
+import { LinearGradient } from "expo-linear-gradient";
+import * as Permissions from "expo-permissions";
+import * as Contacts from "expo-contacts";
 import ContactList from "../../component/ContactList/index";
 import OnVoletContactList from "../../component/OnVoletContactList";
 import { dev, prod, url } from "../../config/index";
@@ -63,7 +63,6 @@ export class SendPayment extends Component {
 
   componentDidMount() {
     this.getPermissionAsync();
-    this.showFirstContactAsync();
   }
 
   showFirstContactAsync = async () => {
@@ -163,9 +162,9 @@ export class SendPayment extends Component {
   getPermissionAsync = async () => {
     const { status } = await Permissions.askAsync(Permissions.CONTACTS);
     console.log("contact permission", status);
-    // this.setState({
-    //   hasCameraPermission: status === "granted"
-    // });
+    if (status === "granted") {
+      this.showFirstContactAsync();
+    }
   };
 
   onActionSelectNumber = contactList => {

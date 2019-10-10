@@ -10,7 +10,9 @@ import {
   Alert,
   AsyncStorage,
   Linking,
-  Image
+  Image,
+  Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Icon, Left, Right, Body, Title } from "native-base";
 export const { width, height } = Dimensions.get("window");
@@ -432,208 +434,210 @@ export class VoletBalance extends Component {
             </View>
           )}
         </View>
-        <Modal
-          transparent={true}
-          //   backdropColor="black"
-          // visible={this.state.isModalVisible}
-          style={styles.modalContent}
-          animationIn="slideInDown"
-          animationOut="slideOutUp"
-          isVisible={this.state.isCreditModal}
-          // deviceWidth={10}
-          // deviceHeight={250}
-          backdropColor="black"
-          // backdropOpacity={0.2}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Left style={{ flex: 1 }} />
-            <Body style={{ flex: 1 }}>
-              <Title style={{ color: "#5B86E5", width: width / 1.5 }}>
-                Credit / Debits Card
-              </Title>
-            </Body>
-            <Right style={{ flex: 1 }}>
-              <TouchableHighlight
-                onPress={() => {
-                  this.toggleCredit();
-                }}
-              >
-                {/* <Icon style={{ color: "#5B86E5" }} name="close" /> */}
-                <Image
-                      source={require("../../assets/close-circle.png")}
-                      resizeMode="contain"
-                      style={{ width: 20, height: 20 }}
-                    />
-              </TouchableHighlight>
-            </Right>
-          </View>
-
-          <Text
-            style={{
-              color: "grey",
-              fontSize: 18,
-              paddingTop: 10,
-              paddingBottom: 10
-            }}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Modal
+            transparent={true}
+            style={styles.modalContent}
+            animationIn="slideInDown"
+            animationOut="slideOutUp"
+            isVisible={this.state.isCreditModal}
+            backdropColor="black"
           >
-            Top Up Amount
-          </Text>
-          {this.state.addCash ? (
-            <View style={{ flex: 1 }}>
-              <View
-                style={{
-                  width: width / 1.3,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  paddingTop: 20
-                }}
-              >
-                <Input
-                  inputStyle={{
-                    flex: 1,
-                    alignSelf: "center",
-                    color: "black",
-                    fontSize: 18,
-                    paddingLeft: 8
-                  }}
-                  inputContainerStyle={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: "#5B86E5"
-                  }}
-                  // onChangeText={price => this.checkVoletBalance(price)}
-                  onChangeText={price => this.setState({ price })}
-                  value={this.state.price}
-                  keyboardType="numeric"
-                  placeholderTextColor="rgb(74,74,74)"
-                  leftIcon={
-                    <Text style={{ fontSize: 18, color: "#5B86E5" }}>MYR</Text>
-                  }
-                />
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  position: "absolute",
-                  bottom: 50
-                }}
-              >
-                <TouchableOpacity
+            <View style={{ flexDirection: "row" }}>
+              <Left style={{ flex: 1 }} />
+              <Body style={{ flex: 1 }}>
+                <Title style={{ color: "#5B86E5", width: width / 1.5 }}>
+                  Credit / Debits Card
+                </Title>
+              </Body>
+              <Right style={{ flex: 1 }}>
+                <TouchableHighlight
                   onPress={() => {
-                    this.onActionAddVoletCash(parseInt(this.state.price) * 10);
-                  }}
-                  style={{
-                    width: width / 1.2
+                    this.toggleCredit();
                   }}
                 >
-                  <LinearGradient
-                    colors={["#36D1DC", "#5B86E5"]}
-                    style={styles.buttonStyle}
-                  >
-                    <View style={styles.buttonStyle}>
-                      <Text style={styles.loginText}>Next</Text>
-                    </View>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
+                  {/* <Icon style={{ color: "#5B86E5" }} name="close" /> */}
+                  <Image
+                    source={require("../../assets/close-circle.png")}
+                    resizeMode="contain"
+                    style={{ width: 20, height: 20 }}
+                  />
+                </TouchableHighlight>
+              </Right>
             </View>
-          ) : (
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  width: width / 1.3,
-                  paddingBottom: 15
-                }}
-              >
-                <View style={styles.shadowSet}>
-                  <TouchableOpacity
-                    style={{
-                      padding: 15,
-                      backgroundColor: "white",
-                      borderRadius: 60,
-                      justifyContent: "center",
-                      alignItems: "center"
+
+            <Text
+              style={{
+                color: "grey",
+                fontSize: 18,
+                paddingTop: 10,
+                paddingBottom: 10
+              }}
+            >
+              Top Up Amount
+            </Text>
+            {this.state.addCash ? (
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    width: width / 1.3,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    paddingTop: 20
+                  }}
+                >
+                  <Input
+                    inputStyle={{
+                      flex: 1,
+                      alignSelf: "center",
+                      color: "black",
+                      fontSize: 18,
+                      paddingLeft: 8
                     }}
-                    onPress={() => this.onActionAddVoletCash("2000")}
-                  >
-                    <Image
-                      source={require("../../assets/RM20.png")}
-                      resizeMode="contain"
-                      style={{ width: width * 0.22, height: width * 0.22 }}
-                    />
-                  </TouchableOpacity>
+                    inputContainerStyle={{
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#5B86E5"
+                    }}
+                    // onChangeText={price => this.checkVoletBalance(price)}
+                    onChangeText={price => this.setState({ price })}
+                    value={this.state.price}
+                    keyboardType="numeric"
+                    placeholderTextColor="rgb(74,74,74)"
+                    leftIcon={
+                      <Text style={{ fontSize: 18, color: "#5B86E5" }}>
+                        MYR
+                      </Text>
+                    }
+                  />
                 </View>
-                <View style={styles.shadowSet}>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "absolute",
+                    bottom: 50
+                  }}
+                >
                   <TouchableOpacity
-                    style={{
-                      padding: 15,
-                      backgroundColor: "white",
-                      borderRadius: 60,
-                      justifyContent: "center",
-                      alignItems: "center"
+                    onPress={() => {
+                      this.onActionAddVoletCash(
+                        parseInt(this.state.price) * 10
+                      );
                     }}
-                    onPress={() => this.onActionAddVoletCash("5000")}
-                  >
-                    <Image
-                      source={require("../../assets/RM50.png")}
-                      resizeMode="contain"
-                      style={{ width: width * 0.22, height: width * 0.22 }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  width: width / 1.3,
-                  paddingBottom: 15
-                }}
-              >
-                <View style={styles.shadowSet}>
-                  <TouchableOpacity
                     style={{
-                      padding: 15,
-                      backgroundColor: "white",
-                      borderRadius: 60,
-                      justifyContent: "center",
-                      alignItems: "center"
+                      width: width / 1.2
                     }}
-                    onPress={() => this.onActionAddVoletCash("10000")}
                   >
-                    <Image
-                      source={require("../../assets/RM100.png")}
-                      resizeMode="contain"
-                      style={{ width: width * 0.22, height: width * 0.22 }}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.shadowSet}>
-                  <TouchableOpacity
-                    style={{
-                      padding: 15,
-                      backgroundColor: "white",
-                      borderRadius: 60,
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                    onPress={() => this.setState({ addCash: true })}
-                  >
-                    <Image
-                      source={require("../../assets/RMother.png")}
-                      resizeMode="contain"
-                      style={{ width: width * 0.22, height: width * 0.22 }}
-                    />
+                    <LinearGradient
+                      colors={["#36D1DC", "#5B86E5"]}
+                      style={styles.buttonStyle}
+                    >
+                      <View style={styles.buttonStyle}>
+                        <Text style={styles.loginText}>Next</Text>
+                      </View>
+                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
-            </View>
-          )}
-        </Modal>
+            ) : (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <View
+                  style={{
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    width: width / 1.3,
+                    paddingBottom: 15
+                  }}
+                >
+                  <View style={styles.shadowSet}>
+                    <TouchableOpacity
+                      style={{
+                        padding: 15,
+                        backgroundColor: "white",
+                        borderRadius: 60,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      onPress={() => this.onActionAddVoletCash("2000")}
+                    >
+                      <Image
+                        source={require("../../assets/RM20.png")}
+                        resizeMode="contain"
+                        style={{ width: width * 0.22, height: width * 0.22 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.shadowSet}>
+                    <TouchableOpacity
+                      style={{
+                        padding: 15,
+                        backgroundColor: "white",
+                        borderRadius: 60,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      onPress={() => this.onActionAddVoletCash("5000")}
+                    >
+                      <Image
+                        source={require("../../assets/RM50.png")}
+                        resizeMode="contain"
+                        style={{ width: width * 0.22, height: width * 0.22 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    width: width / 1.3,
+                    paddingBottom: 15
+                  }}
+                >
+                  <View style={styles.shadowSet}>
+                    <TouchableOpacity
+                      style={{
+                        padding: 15,
+                        backgroundColor: "white",
+                        borderRadius: 60,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      onPress={() => this.onActionAddVoletCash("10000")}
+                    >
+                      <Image
+                        source={require("../../assets/RM100.png")}
+                        resizeMode="contain"
+                        style={{ width: width * 0.22, height: width * 0.22 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.shadowSet}>
+                    <TouchableOpacity
+                      style={{
+                        padding: 15,
+                        backgroundColor: "white",
+                        borderRadius: 60,
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                      onPress={() => this.setState({ addCash: true })}
+                    >
+                      <Image
+                        source={require("../../assets/RMother.png")}
+                        resizeMode="contain"
+                        style={{ width: width * 0.22, height: width * 0.22 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
+          </Modal>
+        </TouchableWithoutFeedback>
+
         <Modal
           transparent={true}
           //   backdropColor="black"

@@ -560,7 +560,7 @@ export default class App extends React.Component {
                     style={{ width: 20, height: 20 }}
                   />
                   <Text style={{ paddingLeft: 10 }}>
-                    Swipe up To scan QR Code
+                    Click here to scan QR Code
                   </Text>
                 </Body>
               </CardItem>

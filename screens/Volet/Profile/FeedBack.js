@@ -26,7 +26,8 @@ export class FeedBack extends Component {
       feedback: "",
       email: "",
       contact: "",
-      fullname: ""
+      fullname: "",
+      token:""
     };
   }
 
@@ -44,7 +45,7 @@ export class FeedBack extends Component {
       let email = await AsyncStorage.getItem("email");
       let contact = await AsyncStorage.getItem("contact");
 
-      if (toekn !== null) {
+      if (token !== null) {
         let fullname = firstname + " " + lastname;
         this.setState({ token });
         this.setState({ fullname });
@@ -54,7 +55,7 @@ export class FeedBack extends Component {
     } catch (error) {
       Alert.alert(
         "Error connecting to server",
-        `Please check your internet or try again later`,
+        `${error}`,
         [{ text: "OK", onPress: () => null }],
         { cancelable: false }
       );
@@ -115,7 +116,7 @@ export class FeedBack extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View
             style={{
               justifyContent: "center",

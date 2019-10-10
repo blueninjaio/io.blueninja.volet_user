@@ -133,7 +133,7 @@ export class OldPassword extends Component {
                     fontSize: width * 0.034
                   }}
                 >
-                  Please enter your mobile number and you will receive a new TAC
+                  Please enter your password and you will receive a new TAC
                   code
                 </Text>
               </View>
