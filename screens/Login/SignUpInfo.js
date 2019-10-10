@@ -41,27 +41,15 @@ export class SignUpInfo extends Component {
       signUpType: this.props.navigation.state.params.signUpType,
       socialToken: this.props.navigation.state.params.socialToken,
       socialDetails: this.props.navigation.state.params.socialDetails,
-      fbToken: undefined,
-      google_id: undefined,
       notificationToken: ""
     };
   }
 
   componentDidMount() {
     this.checkDeviceForHardware();
-    this.checkForFingerprints();
-    this.checkSocialLogin();
     this.checkUserInput();
     this.registerForPushNotificationsAsync();
   }
-
-  checkSocialLogin = () => {
-    if (this.state.signUpType === "google") {
-      this.setState({ google_id: this.state.socialToken });
-    } else if (this.state.signUpType === "facebook") {
-      this.setState({ fbToken: this.state.socialToken });
-    }
-  };
 
   checkUserInput = () => {
     if (this.state.socialDetails.name) {
@@ -87,6 +75,12 @@ export class SignUpInfo extends Component {
     } else if (this.state.password.length < 8) {
       alert("Password length needs to be 8 characters or more.");
     } else {
+      let googleToken, fbToken;
+      if (this.state.signUpType === "google") {
+        googleToken = this.state.socialToken;
+      } else if (this.state.signUpType === "facebook") {
+        fbToken = this.state.socialToken;
+      }
       fetch(`${url}/users`, {
         method: "POST",
         mode: "cors",
@@ -96,8 +90,8 @@ export class SignUpInfo extends Component {
         },
         body: JSON.stringify({
           // facebook_id: this.state.facebook_id.id,
-          facebook_token: this.state.fbToken,
-          google_token: this.state.google_id,
+          facebook_token: fbToken,
+          google_token: googleToken,
           f_name: this.state.firstName,
           l_name: this.state.lastName,
           email: this.state.email,
@@ -192,11 +186,14 @@ export class SignUpInfo extends Component {
       .then(data => {
         if (data.success) {
           this._storeData(data.token, data.user).then(() => {
-            if (Platform.OS === "android") {
-              this.showAndroidAlert();
-            } else {
-              this.scanFingerprint();
-            }
+            this.login(true);
+            /*if (this.state.compatible && this.state.fingerprints) {
+              if (Platform.OS === "android") {
+                this.showAndroidAlert();
+              } else {
+                this.scanFingerprint();
+              }
+            }*/
           });
         } else alert(data.message);
       })
@@ -267,12 +264,11 @@ export class SignUpInfo extends Component {
 
   checkDeviceForHardware = async () => {
     let compatible = await LocalAuthentication.hasHardwareAsync();
-    this.setState({ compatible });
-  };
-
-  checkForFingerprints = async () => {
-    let fingerprints = await LocalAuthentication.isEnrolledAsync();
-    this.setState({ fingerprints });
+    this.setState({compatible});
+    if (compatible) {
+      let fingerprints = await LocalAuthentication.isEnrolledAsync();
+      this.setState({fingerprints});
+    }
   };
 
   scanFingerprint = async () => {

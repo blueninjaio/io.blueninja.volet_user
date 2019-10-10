@@ -29,9 +29,9 @@ export class Main extends Component {
   }
 
   componentDidMount() {
-    this.checkDeviceForHardware();
-    this.checkForFingerprints();
-    this.getToken();
+    //this.checkDeviceForHardware();
+    //this.checkForFingerprints();
+    this.autoLogin();
   }
 
   /**
@@ -49,6 +49,55 @@ export class Main extends Component {
         } else {
           this.scanFingerprint();
         }
+      }
+    } catch (error) {
+      Alert.alert(
+        "Error connecting to server",
+        `Please check your internet or try again later`,
+        [{ text: "OK", onPress: () => null }],
+        { cancelable: false }
+      );
+    }
+  };
+
+  autoLogin = async () => {
+    let compatible = await LocalAuthentication.hasHardwareAsync();
+    if (!compatible) {
+      console.log("Not compatible.");
+      return;
+    }
+    let fingerprints = await LocalAuthentication.isEnrolledAsync();
+    if (!fingerprints) {
+      console.log("No fingerprints.");
+      return;
+    }
+    let value = await AsyncStorage.getItem("token");
+    if (value === null) {
+      console.log("No token.");
+      return;
+    }
+    try {
+      this.setState({token: value});
+      if (Platform.OS === "android") {
+        Alert.alert(
+          "Fingerprint Scan",
+          "Place your finger over the touch sensor and press scan.",
+          [
+            {
+              text: "Scan",
+              onPress: () => {
+                this.scanFingerprint();
+              }
+            },
+            {
+              text: "Cancel",
+              style: "cancel",
+              onPress: () => this.props.logMeIn(),
+            }
+          ]
+        );
+      } else {
+        this.scanFingerprint();
       }
     } catch (error) {
       Alert.alert(
