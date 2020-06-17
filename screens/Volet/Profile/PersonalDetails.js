@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -10,29 +10,29 @@ import {
   Alert,
   AsyncStorage,
   TouchableWithoutFeedback,
-  Keyboard
-} from "react-native";
-import { Icon, Thumbnail } from "native-base";
-import { TextInput } from "react-native-gesture-handler";
-export const { width, height } = Dimensions.get("window");
+  Keyboard,
+} from 'react-native';
+import { Icon, Thumbnail } from 'native-base';
+import { TextInput } from 'react-native-gesture-handler';
+export const { width, height } = Dimensions.get('window');
 // import { ImagePicker, Permissions, LinearGradient } from "expo";
-import * as ImagePicker from "expo-image-picker";
-import { LinearGradient } from "expo-linear-gradient";
-import * as Permissions from "expo-permissions";
+import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Permissions from 'expo-permissions';
 
-import { dev, prod, url } from "../../../config";
+import { dev, prod, url } from '../../../config';
 
 export class PersonalDetails extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      contact: "",
-      address: "",
-      imageUri: ""
+      firstName: '',
+      lastName: '',
+      email: '',
+      contact: '',
+      address: '',
+      imageUri: '',
     };
   }
 
@@ -49,30 +49,30 @@ export class PersonalDetails extends Component {
     this.getUserInfo();
   }
 
-  getVolet = async token => {
+  getVolet = async (token) => {
     try {
       fetch(`${url}/users/me`, {
-        method: "GET",
-        mode: "cors",
+        method: 'GET',
+        mode: 'cors',
         headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          Authorization: "Bearer " + token
-        }
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: 'Bearer ' + token,
+        },
       })
-        .then(res => res.json())
-        .then(data => {
-          console.log("Personal Detials", data);
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('Personal Detials', data);
           if (data.success) {
             if (data.user.photo_base64) {
               this.setState({ imageUri: data.user.photo_base64 });
             }
           }
         })
-        .catch(error => {
+        .catch((error) => {
           Alert.alert(
-            "Error connecting to server Volet",
+            'Error connecting to server Volet',
             `${error}`,
-            [{ text: "OK", onPress: () => null }],
+            [{ text: 'OK', onPress: () => null }],
             { cancelable: false }
           );
         });
@@ -89,12 +89,12 @@ export class PersonalDetails extends Component {
   getUserInfo = async () => {
     //get user id and set state to _id
     try {
-      let token = await AsyncStorage.getItem("token");
-      let firstName = await AsyncStorage.getItem("firstname");
-      let lastName = await AsyncStorage.getItem("lastname");
-      let email = await AsyncStorage.getItem("email");
-      let contact = await AsyncStorage.getItem("contact");
-      let address = await AsyncStorage.getItem("address");
+      let token = await AsyncStorage.getItem('token');
+      let firstName = await AsyncStorage.getItem('firstname');
+      let lastName = await AsyncStorage.getItem('lastname');
+      let email = await AsyncStorage.getItem('email');
+      let contact = await AsyncStorage.getItem('contact');
+      let address = await AsyncStorage.getItem('address');
 
       if (token !== null) {
         this.getVolet(token);
@@ -107,9 +107,9 @@ export class PersonalDetails extends Component {
       }
     } catch (error) {
       Alert.alert(
-        "Error connecting to server",
+        'Error connecting to server',
         `Please check your internet or try again later`,
-        [{ text: "OK", onPress: () => null }],
+        [{ text: 'OK', onPress: () => null }],
         { cancelable: false }
       );
     }
@@ -117,9 +117,9 @@ export class PersonalDetails extends Component {
 
   getPermissionAsync = async () => {
     const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-    if (permission.status !== "granted") {
+    if (permission.status !== 'granted') {
       const newPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (newPermission.status === "granted") {
+      if (newPermission.status === 'granted') {
         //its granted.
       }
     }
@@ -134,9 +134,9 @@ export class PersonalDetails extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
-      base64: true
+      base64: true,
     });
-    console.log("Image link", result); // this logs correctly
+    console.log('Image link', result); // this logs correctly
     if (!result.cancelled) {
       this.setState({ imageUri: `data:image/jpg;base64,` + result.base64 });
     }
@@ -162,41 +162,43 @@ export class PersonalDetails extends Component {
       contact,
       address,
       imageUri,
-      token
+      token,
     } = this.state;
 
     fetch(`${url}/users/edit`, {
-      method: "POST",
-      mode: "cors",
+      method: 'POST',
+      mode: 'cors',
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        Authorization: "Bearer " + token
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify({
-        image: imageUri,
+        // image: '',
+        // image: imageUri,
         f_name: firstName,
         l_name: lastName,
         email: email,
         address: address,
-        contact: contact
-      })
+        contact: contact,
+      }),
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('data user edit', data);
         if (data.success) {
-          console.log("Success", data);
-          console.log("Address", address)
+          console.log('Success', data);
+          console.log('Address', address);
           if (address !== null) {
             this._storeData(address);
           }
           Alert.alert(
-            "Success",
+            'Success',
             `Details Saved`,
             [
               {
-                text: "OK",
-                onPress: () => this.props.navigation.navigate("Profile")
-              }
+                text: 'OK',
+                onPress: () => this.props.navigation.navigate('Profile'),
+              },
             ],
             { cancelable: false }
           );
@@ -204,14 +206,14 @@ export class PersonalDetails extends Component {
           alert(data.message);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         alert(error);
       });
   };
 
-  _storeData = async address => {
+  _storeData = async (address) => {
     try {
-      await AsyncStorage.setItem("address", address);
+      await AsyncStorage.setItem('address', address);
     } catch (error) {
       alert(error);
     }
@@ -224,16 +226,18 @@ export class PersonalDetails extends Component {
       email,
       contact,
       address,
-      imageUri
+      imageUri,
     } = this.state;
-    if (firstName === "" || lastName === "") {
-      alert("Please enter valid name");
-    } else if (email.length < 5 || !email.includes("@")) {
+    if (firstName === '' || lastName === '') {
+      alert('Please enter valid name');
+    } else if (email.length < 5 || !email.includes('@')) {
       alert(`Please enter a valid email address.`);
-    } else if (imageUri === "") {
-      alert("Please upload an image");
-    } else if (address === "") {
-      alert("Please enter valid address");
+    }
+    // else if (imageUri === '') {
+    //   alert('Please upload an image');
+    // }
+    else if (address === '') {
+      alert('Please enter valid address');
     } else {
       this.editUserInfo();
     }
@@ -246,31 +250,31 @@ export class PersonalDetails extends Component {
           <ScrollView>
             <View
               style={{
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 // paddingLeft: 15,
                 // paddingRight: 20,
-                marginTop: 30
+                marginTop: 30,
               }}
             >
               <View
                 style={{
-                  alignItems: "center",
-                  justifyContent: "center"
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                {this.state.imageUri !== "" ? (
+                {this.state.imageUri !== '' ? (
                   <Thumbnail
                     large
                     source={{
-                      uri: `${this.state.imageUri}`
+                      uri: `${this.state.imageUri}`,
                     }}
                   />
                 ) : (
                   <Thumbnail
                     large
                     source={{
-                      uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`
+                      uri: `https://cdn4.iconfinder.com/data/icons/basic-interface-overcolor/512/user-512.png`,
                     }}
                   />
                 )}
@@ -278,19 +282,19 @@ export class PersonalDetails extends Component {
                 <TouchableOpacity
                   style={{
                     //   justifyContent: "flex-start",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    paddingTop: 30
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    paddingTop: 30,
                   }}
                   onPress={() => this._onChoosePic()}
                 >
                   <Icon
-                    name="ios-add-circle-outline"
-                    type="Ionicons"
-                    style={{ fontSize: 17, color: "#5B86E5" }}
+                    name='ios-add-circle-outline'
+                    type='Ionicons'
+                    style={{ fontSize: 17, color: '#5B86E5' }}
                   />
                   <Text
-                    style={{ marginLeft: 10, fontSize: 14, fontWeight: "500" }}
+                    style={{ marginLeft: 10, fontSize: 14, fontWeight: '500' }}
                   >
                     Upload Profile Images
                   </Text>
@@ -298,35 +302,35 @@ export class PersonalDetails extends Component {
               </View>
               <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  paddingTop: 30
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  paddingTop: 30,
                 }}
               >
-                <Text style={{ color: "rgb(74, 74, 74)" }}>First Name</Text>
+                <Text style={{ color: 'rgb(74, 74, 74)' }}>First Name</Text>
                 <TextInput
                   style={{
                     width: width / 1.2,
                     marginBottom: 15,
                     marginTop: 10,
                     height: 20,
-                    color: "rgb(74,74,74)",
+                    color: 'rgb(74,74,74)',
                     borderBottomWidth: 1,
-                    borderBottomColor: "#5B86E5",
-                    fontSize: 13
+                    borderBottomColor: '#5B86E5',
+                    fontSize: 13,
                   }}
-                  onChangeText={firstName => this.setState({ firstName })}
+                  onChangeText={(firstName) => this.setState({ firstName })}
                   value={this.state.firstName}
-                  type="text"
-                  placeholder="First name"
-                  placeholderTextColor="rgb(74,74,74)"
+                  type='text'
+                  placeholder='First name'
+                  placeholderTextColor='rgb(74,74,74)'
                 />
               </View>
               <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  paddingTop: 30
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  paddingTop: 30,
                 }}
               >
                 <Text>Last Name</Text>
@@ -336,23 +340,23 @@ export class PersonalDetails extends Component {
                     marginBottom: 15,
                     marginTop: 10,
                     height: 20,
-                    color: "rgb(74,74,74)",
+                    color: 'rgb(74,74,74)',
                     borderBottomWidth: 1,
-                    borderBottomColor: "#5B86E5",
-                    fontSize: 13
+                    borderBottomColor: '#5B86E5',
+                    fontSize: 13,
                   }}
-                  onChangeText={lastName => this.setState({ lastName })}
+                  onChangeText={(lastName) => this.setState({ lastName })}
                   value={this.state.lastName}
-                  type="text"
-                  placeholder="Last name"
-                  placeholderTextColor="rgb(74,74,74)"
+                  type='text'
+                  placeholder='Last name'
+                  placeholderTextColor='rgb(74,74,74)'
                 />
               </View>
               <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  paddingTop: 30
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  paddingTop: 30,
                 }}
               >
                 <Text>Email</Text>
@@ -362,23 +366,23 @@ export class PersonalDetails extends Component {
                     marginBottom: 15,
                     marginTop: 10,
                     height: 20,
-                    color: "rgb(74,74,74)",
+                    color: 'rgb(74,74,74)',
                     borderBottomWidth: 1,
-                    borderBottomColor: "#5B86E5",
-                    fontSize: 13
+                    borderBottomColor: '#5B86E5',
+                    fontSize: 13,
                   }}
-                  onChangeText={email => this.setState({ email })}
+                  onChangeText={(email) => this.setState({ email })}
                   value={this.state.email}
-                  type="text"
-                  placeholder="Email"
-                  placeholderTextColor="rgb(74,74,74)"
+                  type='text'
+                  placeholder='Email'
+                  placeholderTextColor='rgb(74,74,74)'
                 />
               </View>
               <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  paddingTop: 30
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  paddingTop: 30,
                 }}
               >
                 <Text>Mobile Number</Text>
@@ -388,24 +392,24 @@ export class PersonalDetails extends Component {
                     marginBottom: 15,
                     marginTop: 10,
                     height: 20,
-                    color: "rgb(74,74,74)",
+                    color: 'rgb(74,74,74)',
                     borderBottomWidth: 1,
-                    borderBottomColor: "#5B86E5",
-                    fontSize: 13
+                    borderBottomColor: '#5B86E5',
+                    fontSize: 13,
                   }}
                   // onChangeText={contact => this.setState({ contact })}
                   value={this.state.contact}
-                  type="number"
-                  placeholder="First name"
-                  placeholderTextColor="rgb(74,74,74)"
+                  type='number'
+                  placeholder='First name'
+                  placeholderTextColor='rgb(74,74,74)'
                 />
               </View>
               <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "flex-start",
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
                   paddingTop: 30,
-                  marginBottom: 20
+                  marginBottom: 20,
                 }}
               >
                 <Text>Address </Text>
@@ -415,20 +419,20 @@ export class PersonalDetails extends Component {
                     marginBottom: 15,
                     marginTop: 10,
                     height: 20,
-                    color: "rgb(74,74,74)",
+                    color: 'rgb(74,74,74)',
                     borderBottomWidth: 1,
-                    borderBottomColor: "#5B86E5",
-                    fontSize: 13
+                    borderBottomColor: '#5B86E5',
+                    fontSize: 13,
                   }}
-                  onChangeText={address => this.setState({ address })}
+                  onChangeText={(address) => this.setState({ address })}
                   value={this.state.address}
-                  type="text"
-                  placeholder="Address"
-                  placeholderTextColor="rgb(74,74,74)"
+                  type='text'
+                  placeholder='Address'
+                  placeholderTextColor='rgb(74,74,74)'
                 />
               </View>
               <LinearGradient
-                colors={["#36D1DC", "#5B86E5"]}
+                colors={['#36D1DC', '#5B86E5']}
                 style={styles.buttonStyle}
               >
                 <TouchableOpacity
@@ -450,24 +454,24 @@ export default PersonalDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
-    color: "#979797",
-    fontSize: 20
+    color: '#979797',
+    fontSize: 20,
   },
   buttonStyle: {
     paddingTop: 5,
     paddingBottom: 5,
-    alignItems: "center",
+    alignItems: 'center',
     width: width / 1.3,
-    borderRadius: 10
+    borderRadius: 10,
   },
   loginText: {
-    color: "white",
-    fontWeight: "500",
-    fontSize: 16
-  }
+    color: 'white',
+    fontWeight: '500',
+    fontSize: 16,
+  },
 });
